@@ -1,0 +1,46 @@
+name: Daily job feed
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # 06:00 UTC = 07:00 UK in summer, 06:00 in winter (11:30 IST)
+  workflow_dispatch: {}    # "Run workflow" button for a manual refresh
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: data-writes
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install the encryption library
+        run: pip install --quiet "cryptography>=42"
+      - name: Unlock data
+        env:
+          JOBHQ_PASSCODE: ${{ secrets.JOBHQ_PASSCODE }}
+        run: python scripts/vault.py open
+      - name: Fetch and score roles
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JOBHQ_PASSCODE: ${{ secrets.JOBHQ_PASSCODE }}
+        run: python scripts/fetch_jobs.py
+      - name: Lock data again
+        env:
+          JOBHQ_PASSCODE: ${{ secrets.JOBHQ_PASSCODE }}
+        run: python scripts/vault.py seal
+      - name: Save results
+        run: |
+          git config user.name "job-hunt-hq-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "Daily job feed $(date -u +%F)"
+          git push
