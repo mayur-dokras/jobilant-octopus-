@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Job Hunt HQ</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>
+    <span>Job Hunt HQ</span>
+  </div>
+  <nav class="tabs" aria-label="Sections">
+    <button type="button" class="tab" data-tab="feed" aria-current="page">New for you <span class="pill" id="b-feed"></span></button>
+    <button type="button" class="tab" data-tab="board">Board <span class="pill" id="b-board"></span></button>
+    <button type="button" class="tab" data-tab="companies">Companies <span class="pill quiet" id="b-co"></span></button>
+    <button type="button" class="tab" data-tab="discovered">Discovered <span class="pill" id="b-disc"></span></button>
+    <button type="button" class="tab" data-tab="rules">CV rules</button>
+  </nav>
+  <div class="meta">
+    <span id="refresh" class="mono"></span>
+    <button type="button" class="btn" id="exportBtn">Export backup</button>
+    <label class="btn" for="importFile">Import</label>
+    <input type="file" id="importFile" accept="application/json" hidden>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- NEW FOR YOU -->
+  <section id="tab-feed" class="panel">
+    <div class="head">
+      <h1>New for you</h1>
+      <p class="sub">MLOps, Python backend and AI Engineer roles from the companies you track and Sweden's public job board, refreshed every morning. The corner badge is your skills match; the purple chip is visa odds when applying from India.</p>
+    </div>
+    <div class="bar" role="search">
+      <input id="q" type="search" placeholder="Search role, company, skill…" aria-label="Search roles">
+      <label for="f-kind">Type <select id="f-kind"><option value="">All</option><option value="MLOps">MLOps / platform</option><option value="Backend">Backend / Python</option><option value="AI">AI / ML engineer</option></select></label>
+      <label for="f-reg">Region <select id="f-reg"><option value="">All</option><option>UK</option><option>Europe</option><option>Sweden</option><option>Remote from India</option><option>US</option><option>Middle East</option></select></label>
+      <label for="f-match">Min match <select id="f-match"><option value="0">Any</option><option value="60" selected>60%+</option><option value="70">70%+</option><option value="80">80%+</option></select></label>
+      <label for="f-visa">Min visa <select id="f-visa"><option value="-1">Any</option><option value="40">40%+</option><option value="55" selected>55%+</option></select></label>
+      <button type="button" class="toggle" id="f-strong" aria-pressed="false">70%+ sponsors only</button>
+      <label class="check"><input type="checkbox" id="f-new"> New since last visit</label>
+      <button type="button" class="btn small" id="unhide">Unhide all</button>
+      <span class="count" id="feedCount"></span>
+    </div>
+    <div class="grid" id="feedGrid" aria-live="polite"></div>
+  </section>
+
+  <!-- BOARD -->
+  <section id="tab-board" class="panel" hidden>
+    <div class="head row">
+      <div>
+        <h1>Pipeline board</h1>
+        <p class="sub">Drag a card to the next column, or open it to change the stage, dates and notes. Saved in this browser; use Export backup to keep a copy.</p>
+      </div>
+      <button type="button" class="btn primary" id="addRoleBtn">+ Add role manually</button>
+    </div>
+    <div class="stats" id="boardStats"></div>
+    <div class="board-scroll"><div class="board" id="board"></div></div>
+  </section>
+
+  <!-- COMPANIES -->
+  <section id="tab-companies" class="panel" hidden>
+    <div class="head">
+      <h1>Companies tracked</h1>
+      <p class="sub">Every company the daily feed checks. "Board found" means its job board has a public feed; companies still being mapped get checked a few per day until a board is found.</p>
+    </div>
+    <div class="bar"><input id="cq" type="search" placeholder="Search companies…" aria-label="Search companies"><span class="count" id="coCount"></span></div>
+    <div class="tbl"><table><thead><tr><th>Company</th><th>Region</th><th>Job board</th><th>Sponsorship</th><th>Why it's tracked</th></tr></thead><tbody id="coBody"></tbody></table></div>
+  </section>
+
+  <!-- DISCOVERED -->
+  <section id="tab-discovered" class="panel" hidden>
+    <div class="head">
+      <h1>Discovered this week</h1>
+      <p class="sub">New UK licensed sponsors whose public job board has at least one role that fits you. <b>Track</b> opens a GitHub issue that adds the company to the daily feed; <b>Skip</b> hides it here.</p>
+    </div>
+    <div class="grid" id="discGrid"></div>
+  </section>
+
+  <!-- CV RULES -->
+  <section id="tab-rules" class="panel prose" hidden>
+    <div class="head"><h1>CV tailoring rules</h1><p class="sub">The rules the "Download tailored CV" button follows, and the ones to apply when you edit a CV by hand.</p></div>
+    <div class="rules">
+      <article><h2>Never change</h2><ul>
+        <li>Job titles, word for word: <b>Backend Engineer, Part-time</b> · <b>Associate II - Software Engineer</b> · <b>Freelance Mobile Application Developer</b>.</li>
+        <li>Employers, dates, degrees, metrics and certification names. They are facts about you, not copy to optimise.</li>
+        <li>Never add a skill you haven't used because a posting asks for it. Name the gap in the cover letter instead.</li>
+        <li>All 5 projects and all 9 certifications stay on every CV. The AI engineering platform always says <b>in progress</b>.</li>
+      </ul></article>
+      <article><h2>Header and subtitle</h2><ul>
+        <li>Line 1: <b>MAYUR DOKRAS</b>. Line 2: <b>Backend Software Engineer | [title from the posting] | 4+ Years Production Experience</b>.</li>
+        <li>Second titles you can use: MLOps Engineer, Platform Engineer, DevOps Engineer, Site Reliability Engineer, Python Developer, Software Development Engineer, Data Platform Engineer, Cloud Engineer, API Engineer.</li>
+        <li>Never use Senior, Lead, Principal, Staff, Architect or Mid-Level, or titles you can't back up (Data Scientist, ML Research Engineer).</li>
+        <li>Location: <b>Pune, India</b> plus "Open to relocation to [country of the role]". Never visa, sponsorship, nationality, date of birth or full address on the CV.</li>
+      </ul></article>
+      <article><h2>Summary</h2><ul>
+        <li>One paragraph, 4–5 lines, rebuilt for each role type: MLOps, Backend or AI.</li>
+        <li>Open with the title and 4+ years, then your strongest proof with a number (around 80% less manual investigation, 40+ defects, 25% lower MTTR).</li>
+        <li>Use the posting's own words for tools ("Kubernetes", not "K8s") and put the ones you really have in <b>bold</b>.</li>
+        <li>No "passionate", "results-driven" or "leveraged", and no list of three vague qualities.</li>
+      </ul></article>
+      <article><h2>Experience bullets</h2><ul>
+        <li>Start with an action verb that shows ownership: Built, Designed, Owned, Led, Delivered, Resolved, Reduced.</li>
+        <li>Verb + the actual system or tool + a number you can defend. Numbers as digits.</li>
+        <li>Put the bullets that match the posting first inside each role; never delete one to save space without saying so.</li>
+        <li>No throughput, latency or "high-scale" claims until you have a real figure to quote.</li>
+      </ul></article>
+      <article><h2>Skills section</h2><ul>
+        <li>Grouped lines in the "Label: items" format. The group that matches the role type goes first (MLOps and Platform for MLOps roles).</li>
+        <li>Inside each line, the posting's tools come first.</li>
+        <li>Snowflake = workshop certificates only; GCP = one certificate. Keep them listed, never build a bullet around them.</li>
+        <li>Not on your CV until you've used them: PyTorch, Spark, Kubeflow, SageMaker, ArgoCD, Django, Celery, Rust, C#.</li>
+      </ul></article>
+      <article><h2>Writing and format</h2><ul>
+        <li>A4, one page, single column, no tables, text boxes, images or header/footer content. Standard section names.</li>
+        <li>No em or en dashes, curly quotes or ellipsis characters; plain hyphens. No Oxford comma in lists.</li>
+        <li>Avoid: spearheaded, leveraged, utilised, delve, robust, seamless, cutting-edge, dynamic, passionate, synergy.</li>
+        <li>Document author set to Mayur Dokras. Read the PDF once before sending.</li>
+      </ul></article>
+      <article><h2>Before you press Submit</h2><ul>
+        <li>The form's screening questions decide most rejections: work authorisation, sponsorship, notice period, salary, relocation. Answer them truthfully and the same way every time.</li>
+        <li>Check the posting is still open on the company's own site, not only on an aggregator.</li>
+        <li>UK roles: the employer must hold a sponsor licence and the salary must meet the Skilled Worker rate for the role.</li>
+        <li>If a role asks for more years than you have, apply only where the posting says years are a guide, and say why in the cover letter.</li>
+      </ul></article>
+    </div>
+  </section>
+</main>
+
+<!-- Card editor -->
+<dialog id="cardDlg" aria-labelledby="cardDlgTitle">
+  <form method="dialog" id="cardForm" class="dlg">
+    <h2 id="cardDlgTitle">Role</h2>
+    <p id="cardDlgSub" class="sub"></p>
+    <label for="d-stage">Stage <select id="d-stage"></select></label>
+    <div class="two">
+      <label for="d-applied">Applied on <input type="date" id="d-applied"></label>
+      <label for="d-follow">Follow up on <input type="date" id="d-follow"></label>
+    </div>
+    <label for="d-next">Next step <input type="text" id="d-next" placeholder="e.g. Take-home due Fri"></label>
+    <label for="d-notes">Notes <textarea id="d-notes" rows="4"></textarea></label>
+    <div class="dlg-actions">
+      <a id="d-open" class="btn" target="_blank" rel="noopener">Open posting ↗</a>
+      <button type="button" class="btn" id="d-cv">Download tailored CV</button>
+      <button type="button" class="btn danger" id="d-remove">Remove</button>
+      <span class="spacer"></span>
+      <button value="cancel" class="btn">Cancel</button>
+      <button value="save" class="btn primary" id="d-save">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Manual add -->
+<dialog id="addDlg" aria-labelledby="addDlgTitle">
+  <form method="dialog" id="addForm" class="dlg">
+    <h2 id="addDlgTitle">Add a role</h2>
+    <label for="a-title">Job title <input id="a-title" required></label>
+    <label for="a-company">Company <input id="a-company" required></label>
+    <label for="a-url">Posting link <input id="a-url" type="url" placeholder="https://"></label>
+    <div class="two">
+      <label for="a-loc">Location <input id="a-loc" placeholder="Amsterdam"></label>
+      <label for="a-reg">Region <select id="a-reg"><option>UK</option><option>Europe</option><option>Sweden</option><option>Remote from India</option><option>US</option><option>Middle East</option></select></label>
+    </div>
+    <label for="a-jd">Paste the job description (optional, used for the match %) <textarea id="a-jd" rows="5"></textarea></label>
+    <div class="dlg-actions"><span class="spacer"></span><button value="cancel" class="btn">Cancel</button><button value="add" class="btn primary">Add to Shortlisted</button></div>
+  </form>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/vendor/pdfmake.min.js"></script>
+<script src="assets/vendor/vfs_fonts.js"></script>
+<script src="assets/match.js"></script>
+<script src="assets/cv.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
