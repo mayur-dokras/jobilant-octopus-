@@ -1,4 +1,4 @@
-# Jobilant Octopus
+# Jobilant Octopus 🐙
 
 A private job board for MLOps, Python backend and AI Engineer roles in the UK and Europe.
 It collects new openings every morning, scores each one against my CV, estimates the chance
