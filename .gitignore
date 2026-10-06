@@ -1,0 +1,10 @@
+# Personal data stays inside data/vault.json (encrypted). Never commit the plain files.
+data/jobs.json
+data/companies.json
+data/discovered.json
+data/profile.json
+data/ats_cache.json
+data/discover_cache.json
+__pycache__/
+*.pyc
+.DS_Store
