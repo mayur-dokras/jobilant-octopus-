@@ -343,7 +343,11 @@
     try { bundle = await Vault.open(box, pass); } catch (e) { $("lockMsg").textContent = "That passcode does not open this board."; return false; }
     try { remember ? localStorage.setItem(PASS_KEY, pass) : localStorage.removeItem(PASS_KEY); } catch (e) { /* private mode */ }
     PASS = pass;
-    DATA = bundle["jobs.json"] || { jobs: [] }; COMPANIES = (bundle["companies.json"] || {}).companies || [];
+    DATA = bundle["jobs.json"] || { jobs: [] };
+    // target countries only (older data may still hold roles from elsewhere, e.g. Pakistan)
+    const OK = new Set(["UK", "Europe", "Sweden", "Turkey", "New Zealand", "US", "Remote from India"]);
+    const OFF = /\b(pakistan|karachi|lahore|islamabad|dubai|uae|saudi|riyadh|qatar|doha|egypt|cairo|bangalore|bengaluru|hyderabad|mumbai|gurgaon|noida|singapore|manila|jakarta)\b/i;
+    DATA.jobs = (DATA.jobs || []).filter(j => OK.has(j.region) && !(OFF.test(j.location || "") && !/london|uk|europe|amsterdam|berlin|dublin|stockholm/i.test(j.location || ""))); COMPANIES = (bundle["companies.json"] || {}).companies || [];
     DISC = bundle["discovered.json"] || { items: [] }; BASE_PROFILE = bundle["profile.json"] || null; applyProfile();
     document.body.classList.remove("locked"); $("lock").hidden = true;
     const when = DATA.generated_at ? new Date(DATA.generated_at) : null;

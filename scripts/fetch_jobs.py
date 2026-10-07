@@ -13,7 +13,7 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(__file__))
 import ats  # noqa: E402
-from scoring import (HAVE, TERMS, keep_title, kind_of, load_json, region_of,  # noqa: E402
+from scoring import (ALLOWED_REGIONS, HAVE, TERMS, keep_title, kind_of, load_json, region_of,  # noqa: E402
                      save_json, skills_match, visa_odds)
 
 TODAY = dt.date.today().isoformat()
@@ -21,7 +21,7 @@ RESOLVE_PER_RUN = int(os.environ.get("RESOLVE_PER_RUN", "40"))
 RECHECK_DAYS = 30
 SWEDEN_QUERIES = ["mlops", "machine learning engineer", "ml engineer", "python backend",
                   "python developer", "ai engineer", "platform engineer", "data engineer python"]
-DROP_REGIONS = {"Other"}
+DROP_REGIONS = {"Other", "Middle East", "Asia", "LATAM", "Africa"}
 
 
 def job_id(url, title):
@@ -33,7 +33,7 @@ def score(raw, company):
     region = region_of(loc, company.get("region", ""))
     if region == "Remote":  # company marked remote but this posting gave no country
         region = "Remote from India" if ats.GLOBAL_REMOTE_HINT.search(desc) else "Other"
-    if region in DROP_REGIONS:
+    if region in DROP_REGIONS or region not in ALLOWED_REGIONS:
         return None
     match, have, miss, flag = skills_match(title, desc)
     visa, basis = visa_odds(desc, loc, region, company, raw.get("company", ""))
@@ -131,6 +131,8 @@ def main():
     for jid, prev in old_by_id.items():
         if jid in by_id:
             continue
+        if prev.get("region") not in ALLOWED_REGIONS:
+            continue  # outside the target countries (for example Pakistan): drop for good
         if prev.get("checked") == "manual":
             if prev.get("url") in fresh_urls:
                 continue  # the feed now tracks this posting itself

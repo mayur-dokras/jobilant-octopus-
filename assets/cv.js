@@ -117,6 +117,7 @@ window.CV = (function () {
     if (job.region === "UK") return "Open to relocation to the UK";
     const city = (job.location || "").split(/[·,|/]/).map(x => x.trim()).find(x => x && !/remote|hybrid|on-site|office/i.test(x));
     if (job.region === "Europe" || job.region === "Sweden") return city ? `Open to relocation to ${city}` : "Open to relocation within the EU";
+    if (job.region === "New Zealand" || job.region === "Turkey") return city ? `Open to relocation to ${city}` : `Open to relocation to ${job.region}`;
     return "Open to relocation";
   }
 

@@ -133,12 +133,20 @@ POS = re.compile(
 )
 AGENCY = re.compile(r"recruit|rekrytering|bemanning|staffing|talent partners|jobgether", re.I)
 GLOBAL_REMOTE = re.compile(r"worldwide|anywhere|global|any country|deel", re.I)
+# Only these regions are kept: Mayur targets the UK, Europe (incl. Sweden and Turkey),
+# the US and New Zealand, plus fully remote roles he can do from India.
+ALLOWED_REGIONS = {"UK", "Sweden", "Europe", "Turkey", "New Zealand", "US", "Remote from India"}
 REGION_WORDS = {
-    "UK": r"\b(uk|united kingdom|england|scotland|wales|london|manchester|edinburgh|bristol|cambridge|oxford|leeds|glasgow|belfast|cardiff|birmingham|hatfield)\b",
-    "Sweden": r"\b(sweden|stockholm|gothenburg|göteborg|malmö|malmo|lund|uppsala|linköping)\b",
-    "US": r"\b(united states|usa|u\.s\.|new york|san francisco|seattle|austin|boston|chicago|remote[- ]us|amer)\b",
-    "Europe": r"\b(netherlands|amsterdam|rotterdam|germany|berlin|munich|hamburg|ireland|dublin|cork|france|paris|spain|madrid|barcelona|portugal|lisbon|finland|helsinki|denmark|copenhagen|norway|oslo|estonia|tallinn|latvia|riga|lithuania|vilnius|poland|warsaw|czech|prague|austria|vienna|switzerland|zurich|belgium|brussels|luxembourg|italy|milan|emea|europe)\b",
+    "UK": r"\b(uk|united kingdom|england|scotland|wales|london|manchester|edinburgh|bristol|cambridge|oxford|leeds|glasgow|belfast|cardiff|birmingham|hatfield|reading|nottingham|sheffield|newcastle|southampton|liverpool)\b",
+    "Sweden": r"\b(sweden|stockholm|gothenburg|göteborg|goteborg|malmö|malmo|lund|uppsala|linköping|linkoping)\b",
+    "Turkey": r"\b(turkey|türkiye|turkiye|istanbul|ankara|izmir)\b",
+    "New Zealand": r"\b(new zealand|auckland|wellington|christchurch)\b",
+    "Europe": r"\b(netherlands|amsterdam|rotterdam|utrecht|eindhoven|the hague|germany|berlin|munich|münchen|hamburg|frankfurt|cologne|köln|stuttgart|ireland|dublin|cork|galway|france|paris|lyon|toulouse|spain|madrid|barcelona|valencia|portugal|lisbon|porto|finland|helsinki|espoo|tampere|denmark|copenhagen|aarhus|norway|oslo|bergen|iceland|reykjavik|estonia|tallinn|latvia|riga|lithuania|vilnius|kaunas|poland|warsaw|krakow|kraków|wroclaw|wrocław|gdansk|czech|prague|brno|austria|vienna|switzerland|zurich|zürich|geneva|basel|lausanne|belgium|brussels|antwerp|ghent|luxembourg|italy|milan|rome|turin|greece|athens|romania|bucharest|cluj|bulgaria|sofia|hungary|budapest|croatia|zagreb|slovenia|ljubljana|slovakia|bratislava|cyprus|limassol|malta|emea|europe|eu)\b",
+    "US": r"\b(united states|usa|u\.s\.|us|new york|nyc|brooklyn|san francisco|bay area|palo alto|mountain view|seattle|austin|boston|chicago|los angeles|denver|atlanta|miami|washington,? dc|remote[- ]us|amer)\b",
 }
+# Places outside the target list: a posting that names only these is dropped,
+# even when the company is usually filed under an allowed region.
+NOT_TARGET = re.compile(r"\b(pakistan|karachi|lahore|islamabad|rawalpindi|india|bangalore|bengaluru|pune|hyderabad|mumbai|delhi|gurgaon|gurugram|noida|chennai|kolkata|ahmedabad|bangladesh|dhaka|sri lanka|colombo|nepal|uae|dubai|abu dhabi|saudi|riyadh|jeddah|qatar|doha|bahrain|kuwait|oman|egypt|cairo|jordan|amman|lebanon|beirut|morocco|tunisia|nigeria|lagos|kenya|nairobi|south africa|cape town|johannesburg|israel|tel aviv|singapore|malaysia|kuala lumpur|indonesia|jakarta|philippines|manila|vietnam|ho chi minh|hanoi|thailand|bangkok|china|shanghai|beijing|shenzhen|hong kong|taiwan|taipei|japan|tokyo|korea|seoul|australia|sydney|melbourne|brisbane|canada|toronto|vancouver|montreal|mexico|brazil|são paulo|sao paulo|argentina|buenos aires|colombia|bogota|bogotá|chile|santiago|peru|lima|latam|apac|ukraine|kyiv|russia|moscow|belarus|minsk|serbia|belgrade|georgia|tbilisi|armenia|yerevan)\b", re.I)
 _REGIONS = {k: re.compile(v, re.I) for k, v in REGION_WORDS.items()}
 
 
@@ -146,10 +154,12 @@ def region_of(location: str, default: str = "") -> str:
     loc = location or ""
     if re.search(r"remote", loc, re.I) and GLOBAL_REMOTE.search(loc):
         return "Remote from India"
-    for name in ("UK", "Sweden", "Europe", "US"):
+    for name in ("UK", "Sweden", "Turkey", "New Zealand", "Europe", "US"):
         if _REGIONS[name].search(loc):
             return name
-    return default or "Other"
+    if NOT_TARGET.search(loc):
+        return "Other"
+    return default if default in ALLOWED_REGIONS | {"Remote"} else "Other"
 
 
 def visa_odds(description: str, location: str, region: str, company: dict, employer_name: str = ""):
@@ -182,6 +192,10 @@ def visa_odds(description: str, location: str, region: str, company: dict, emplo
     }
     if region in ("Europe", "Sweden") and sponsor in ("verify", "none"):
         return 50, "EU employer-led permit; no wording in posting"
+    if region == "New Zealand" and sponsor in ("verify", "none"):
+        return 50, "NZ Accredited Employer Work Visa; employer must be accredited"
+    if region == "Turkey" and sponsor in ("verify", "none"):
+        return 45, "Turkish work permit is employer-led; no wording in posting"
     return table.get(sponsor, (45, "Sponsor status unconfirmed"))
 
 
