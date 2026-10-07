@@ -28,9 +28,6 @@ The site is hosted on GitHub Pages and updated by GitHub Actions. It costs nothi
 | No update for a day | Open **Actions**. If scheduled runs were paused after a quiet period, select **Enable**. |
 | Board empty on a new device | Boards are stored per browser. Use **Export backup** and **Import**. |
 
-## Changing the passcode
-
-Open `Lock-your-data.html`, create a new `vault.json` with the new passcode, upload it to `data/` (replacing the old file), and update the `JOBHQ_PASSCODE` secret. The next daily run rebuilds the role list; companies approved after setup need approving again.
 
 ## Credits
 
