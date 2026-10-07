@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Job Octo</title>
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="dark light">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body class="locked">
+<section id="lock" class="lock" hidden aria-labelledby="lockTitle">
+  <form id="lockForm" class="lock-box">
+    <div class="logo lg"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0A6E9E"/><stop offset="1" stop-color="#3FA9D6"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lgA)"/><path d="M10 13h12v9a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 10 22z" fill="none" stroke="#fff" stroke-width="2"/><path d="M13.5 13v-1.5a2.5 2.5 0 0 1 5 0V13" fill="none" stroke="#fff" stroke-width="2"/></svg></div>
+    <h1 id="lockTitle">Private workspace</h1>
+    <p class="sub">Enter your passcode to open the board.</p>
+    <label for="lockPass">Passcode <input id="lockPass" type="password" autocomplete="current-password" required></label>
+    <label class="check" for="lockRemember"><input type="checkbox" id="lockRemember" checked> Remember on this device</label>
+    <button type="submit" class="btn primary block">Unlock</button>
+    <p id="lockMsg" class="msg" role="status"></p>
+  </form>
+</section>
+
+<div class="app">
+<aside class="side" aria-label="Main">
+  <div class="brand"><div class="logo"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lgB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0A6E9E"/><stop offset="1" stop-color="#3FA9D6"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lgB)"/><path d="M10 13h12v9a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 10 22z" fill="none" stroke="#fff" stroke-width="2"/><path d="M13.5 13v-1.5a2.5 2.5 0 0 1 5 0V13" fill="none" stroke="#fff" stroke-width="2"/></svg></div><div><b>Job Octo</b><small>Mayur Dokras</small></div></div>
+  <nav class="nav" aria-label="Sections">
+    <span class="nav-h">Workspace</span>
+    <button type="button" class="tab" data-tab="feed"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Jobs for you</span><span class="pill" id="b-feed"></span></button><button type="button" class="tab" data-tab="board"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/></svg><span>Pipeline</span><span class="pill" id="b-board"></span></button><button type="button" class="tab" data-tab="companies"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16"/><path d="M15 9h4a1 1 0 0 1 1 1v11"/><path d="M8 8h3M8 12h3M8 16h3M3 21h18"/></svg><span>Companies</span><span class="pill" id="b-co"></span></button><button type="button" class="tab" data-tab="discovered"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Discovered</span><span class="pill" id="b-disc"></span></button>
+    <span class="nav-h">Applications</span>
+    <button type="button" class="tab" data-tab="rules"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l2 2 4-4"/><rect x="4" y="3" width="16" height="18" rx="2"/></svg><span>CV rules</span></button><button type="button" class="tab" data-tab="details"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>My CV details</span></button>
+  </nav>
+  <div class="side-foot">
+    <div class="sync"><i class="dot"></i><span id="refresh"></span></div>
+    <div class="side-btns">
+      <button type="button" class="btn ghost sm" id="exportBtn">Export</button>
+      <label class="btn ghost sm" for="importFile">Import</label>
+      <input type="file" id="importFile" accept="application/json" hidden>
+      <button type="button" class="btn ghost sm" id="lockBtn" title="Forget the passcode on this device">Lock</button>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <!-- JOBS -->
+  <section id="tab-feed" class="panel">
+    <header class="ph">
+      <div><h1>Jobs for you</h1><p class="sub">MLOps, Python backend and AI Engineer roles, refreshed every morning and scored against your CV.</p></div>
+    </header>
+    <div class="kpis" id="kpis"></div>
+    <div class="toolbar" role="search">
+      <div class="search"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Search role, company or skill" aria-label="Search roles"></div>
+      <div class="seg" id="kindSeg" role="group" aria-label="Role type">
+        <button type="button" data-v="" aria-pressed="true">All</button><button type="button" data-v="Backend" aria-pressed="false">Backend</button><button type="button" data-v="MLOps" aria-pressed="false">MLOps</button><button type="button" data-v="AI" aria-pressed="false">AI / ML</button>
+      </div>
+      <input type="hidden" id="f-kind" value="">
+      <select id="f-reg" aria-label="Region"><option value="">All regions</option><option>UK</option><option>Europe</option><option>Sweden</option><option>Remote from India</option><option>US</option><option>Middle East</option></select>
+      <select id="f-match" aria-label="Minimum match"><option value="0">Any match</option><option value="60" selected>Match 60%+</option><option value="70">Match 70%+</option><option value="80">Match 80%+</option></select>
+      <select id="f-visa" aria-label="Minimum visa odds"><option value="-1">Any visa odds</option><option value="40">Visa 40%+</option><option value="55" selected>Visa 55%+</option></select>
+      <button type="button" class="chipbtn" id="f-strong" aria-pressed="false">Strong sponsors</button>
+      <input type="checkbox" id="f-new" hidden>
+    </div>
+    <div class="listhead"><span class="count" id="feedCount"></span><span class="grow"></span><button type="button" class="btn ghost sm" id="unhide">Unhide all</button></div>
+    <div class="md">
+      <div class="list" id="feedGrid" aria-live="polite"></div>
+      <aside class="detail" id="jobDetail" aria-label="Role details"></aside>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section id="tab-board" class="panel" hidden>
+    <header class="ph">
+      <div><h1>Pipeline</h1><p class="sub">Drag a card to move it, or click it to update the stage, dates and notes. Saved in this browser; use Export to keep a copy.</p></div>
+      <button type="button" class="btn primary" id="addRoleBtn">Add role</button>
+    </header>
+    <div class="kpis" id="boardStats"></div>
+    <div class="board-scroll"><div class="board" id="board"></div></div>
+  </section>
+
+  <!-- COMPANIES -->
+  <section id="tab-companies" class="panel" hidden>
+    <header class="ph"><div><h1>Companies</h1><p class="sub">Every company the daily run checks. Companies still being mapped are checked a few per day until a readable job board is found.</p></div></header>
+    <div class="toolbar"><div class="search"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="cq" type="search" placeholder="Search companies" aria-label="Search companies"></div><span class="grow"></span><span class="count" id="coCount"></span></div>
+    <div class="tbl"><table><thead><tr><th>Company</th><th>Region</th><th>Job board</th><th>Sponsorship</th><th>Why it is tracked</th></tr></thead><tbody id="coBody"></tbody></table></div>
+  </section>
+
+  <!-- DISCOVERED -->
+  <section id="tab-discovered" class="panel" hidden>
+    <header class="ph"><div><h1>Discovered</h1><p class="sub">New UK licensed sponsors with at least one role that fits you. <b>Track</b> adds the company to the daily run through a private GitHub issue; <b>Skip</b> hides it.</p></div></header>
+    <div class="cards" id="discGrid"></div>
+  </section>
+
+  <!-- CV RULES -->
+  <section id="tab-rules" class="panel prose" hidden>
+    <header class="ph"><div><h1>CV rules</h1><p class="sub">What the CV and cover letter buttons follow, and what to apply when you edit by hand.</p></div></header>
+    <div class="rules">
+      <article><h2>Never change</h2><ul>
+        <li>Job titles, word for word: <b>Backend Engineer, Part-time</b> · <b>Associate II - Software Engineer</b> · <b>Freelance Mobile Application Developer</b>.</li>
+        <li>Employers, dates, degrees, metrics and certification names. They are facts about you, not copy to optimise.</li>
+        <li>Never add a skill you haven't used because a posting asks for it. Name the gap in the cover letter instead.</li>
+        <li>All 5 projects and all 9 certifications stay on every CV. The AI engineering platform always says <b>in progress</b>.</li>
+      </ul></article>
+      <article><h2>Header and subtitle</h2><ul>
+        <li>Line 1: <b>MAYUR DOKRAS</b>. Line 2: <b>Backend Software Engineer | [title from the posting] | 4+ Years Production Experience</b>.</li>
+        <li>Second titles you can use: MLOps Engineer, Platform Engineer, DevOps Engineer, Site Reliability Engineer, Python Developer, Software Development Engineer, Data Platform Engineer, Cloud Engineer, API Engineer.</li>
+        <li>Never use Senior, Lead, Principal, Staff, Architect or Mid-Level, or titles you can't back up (Data Scientist, ML Research Engineer).</li>
+        <li>Location: <b>Pune, India</b> plus "Open to relocation to [country of the role]". Never visa, sponsorship, nationality, date of birth or full address on the CV.</li>
+      </ul></article>
+      <article><h2>Summary</h2><ul>
+        <li>One paragraph, 4–5 lines, rebuilt for each role type: MLOps, Backend or AI.</li>
+        <li>Open with the title and 4+ years, then your strongest proof with a number (around 80% less manual investigation, 40+ defects, 25% lower MTTR).</li>
+        <li>Use the posting's own words for tools ("Kubernetes", not "K8s") and put the ones you really have in <b>bold</b>.</li>
+        <li>No "passionate", "results-driven" or "leveraged", and no list of three vague qualities.</li>
+      </ul></article>
+      <article><h2>Experience bullets</h2><ul>
+        <li>Start with an action verb that shows ownership: Built, Designed, Owned, Led, Delivered, Resolved, Reduced.</li>
+        <li>Verb + the actual system or tool + a number you can defend. Numbers as digits.</li>
+        <li>Put the bullets that match the posting first inside each role; never delete one to save space without saying so.</li>
+        <li>No throughput, latency or "high-scale" claims until you have a real figure to quote.</li>
+      </ul></article>
+      <article><h2>Skills section</h2><ul>
+        <li>Grouped lines in the "Label: items" format. The group that matches the role type goes first (MLOps and Platform for MLOps roles).</li>
+        <li>Inside each line, the posting's tools come first.</li>
+        <li>Snowflake = workshop certificates only; GCP = one certificate. Keep them listed, never build a bullet around them.</li>
+        <li>Not on your CV until you've used them: PyTorch, Spark, Kubeflow, SageMaker, ArgoCD, Django, Celery, Rust, C#.</li>
+      </ul></article>
+      <article><h2>Writing and format</h2><ul>
+        <li>A4, one page, single column, no tables, text boxes, images or header/footer content. Standard section names.</li>
+        <li>No em or en dashes, curly quotes or ellipsis characters; plain hyphens. No Oxford comma in lists.</li>
+        <li>Avoid: spearheaded, leveraged, utilised, delve, robust, seamless, cutting-edge, dynamic, passionate, synergy.</li>
+        <li>Document author set to Mayur Dokras. Read the PDF once before sending.</li>
+      </ul></article>
+      <article><h2>Before you press Submit</h2><ul>
+        <li>The form's screening questions decide most rejections: work authorisation, sponsorship, notice period, salary, relocation. Answer them truthfully and the same way every time.</li>
+        <li>Check the posting is still open on the company's own site, not only on an aggregator.</li>
+        <li>UK roles: the employer must hold a sponsor licence and the salary must meet the Skilled Worker rate for the role.</li>
+        <li>If a role asks for more years than you have, apply only where the posting says years are a guide, and say why in the cover letter.</li>
+      </ul></article>
+    </div>
+  </section>
+
+  <!-- MY CV DETAILS -->
+  <section id="tab-details" class="panel" hidden>
+    <header class="ph"><div><h1>My CV details</h1><p class="sub">The text the CV and cover letter buttons use. Changes are saved on this device only; use Export to keep them. Never change job titles, dates or metrics here unless they have really changed.</p></div>
+      <div class="ph-actions"><button type="button" class="btn ghost" id="profileReset">Undo my changes</button><button type="button" class="btn primary" id="profileSave">Save</button></div></header>
+    <textarea id="profileText" class="code" rows="30" spellcheck="false" aria-label="CV details (JSON)"></textarea>
+  </section>
+</main>
+</div>
+
+<!-- Card editor -->
+<dialog id="cardDlg" aria-labelledby="cardDlgTitle">
+  <form method="dialog" id="cardForm" class="dlg">
+    <h2 id="cardDlgTitle">Role</h2>
+    <p id="cardDlgSub" class="sub"></p>
+    <label for="d-stage">Stage <select id="d-stage"></select></label>
+    <div class="two">
+      <label for="d-applied">Applied on <input type="date" id="d-applied"></label>
+      <label for="d-follow">Follow up on <input type="date" id="d-follow"></label>
+    </div>
+    <label for="d-next">Next step <input type="text" id="d-next" placeholder="e.g. Take-home due Fri"></label>
+    <label for="d-notes">Notes <textarea id="d-notes" rows="4"></textarea></label>
+    <div class="dlg-actions">
+      <a id="d-open" class="btn ghost" target="_blank" rel="noopener">Open posting ↗</a>
+      <button type="button" class="btn ghost" id="d-studio">Tailor &amp; preview</button>
+      <button type="button" class="btn ghost" id="d-cv">Download tailored CV</button>
+      <button type="button" class="btn ghost" id="d-letter">Cover letter</button>
+      <button type="button" class="btn danger" id="d-remove">Remove</button>
+      <span class="spacer"></span>
+      <button value="cancel" class="btn ghost">Cancel</button>
+      <button value="save" class="btn primary" id="d-save">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Manual add -->
+<dialog id="addDlg" aria-labelledby="addDlgTitle">
+  <form method="dialog" id="addForm" class="dlg">
+    <h2 id="addDlgTitle">Add a role</h2>
+    <label for="a-title">Job title <input id="a-title" required></label>
+    <label for="a-company">Company <input id="a-company" required></label>
+    <label for="a-url">Posting link <input id="a-url" type="url" placeholder="https://"></label>
+    <div class="two">
+      <label for="a-loc">Location <input id="a-loc" placeholder="Amsterdam"></label>
+      <label for="a-reg">Region <select id="a-reg"><option>UK</option><option>Europe</option><option>Sweden</option><option>Remote from India</option><option>US</option><option>Middle East</option></select></label>
+    </div>
+    <label for="a-jd">Paste the job description (optional, used for the match %) <textarea id="a-jd" rows="5"></textarea></label>
+    <div class="dlg-actions"><span class="spacer"></span><button value="cancel" class="btn ghost">Cancel</button><button value="add" class="btn primary">Add to Shortlisted</button></div>
+  </form>
+</dialog>
+
+<!-- Tailor studio -->
+<dialog id="studio" class="studio" aria-labelledby="st-title" data-pane="edit">
+  <header class="st-head">
+    <div><h2 id="st-title">Tailor CV</h2><p id="st-sub" class="sub"></p></div>
+    <div class="st-tabs seg" id="st-tabs" role="group" aria-label="View"><button type="button" data-pane="edit" aria-pressed="true">Edit</button><button type="button" data-pane="preview" aria-pressed="false">Preview</button><button type="button" data-pane="scores" aria-pressed="false">Scores</button></div>
+    <div class="st-actions">
+      <button type="button" class="btn ghost" id="st-reset" title="Throw away your edits for this role">Reset to automatic</button>
+      <button type="button" class="btn ghost" id="st-letter">Cover letter</button>
+      <button type="button" class="btn primary" id="st-dl">Download this CV</button>
+      <button type="button" class="btn ghost" id="st-close" aria-label="Close">Close</button>
+    </div>
+  </header>
+  <div class="st-body">
+    <form id="st-form" class="st-edit" onsubmit="return false">
+      <p class="hint">Edits are saved for this role on this device. Keep job titles, employers, dates and numbers true; the Readiness score flags any number that changes. Use <b>**double asterisks**</b> to make words bold.</p>
+      <label for="st-second">Second title <select id="st-second"></select></label>
+      <label for="st-summary">Summary <textarea id="st-summary" rows="7"></textarea></label>
+      <label for="st-skills">Technical skills <span class="m">one line per group, "Label: item, item"</span><textarea id="st-skills" rows="9"></textarea></label>
+      <div id="st-roles" class="st-roles"></div>
+      <label for="st-projects">Projects <span class="m">one per line, top line prints first</span><textarea id="st-projects" rows="7"></textarea></label>
+      <label for="st-jd">Job description used for scoring <span class="m">paste the full posting for exact scores</span><textarea id="st-jd" rows="8"></textarea></label>
+    </form>
+    <div class="st-preview"><div id="st-status" class="st-status" role="status"></div><div id="st-frame" class="st-pages" aria-label="CV preview"></div></div>
+    <div class="st-scores" id="st-scores" aria-live="polite"></div>
+  </div>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/vendor/pdfmake.min.js"></script>
+<script src="assets/vendor/carlito_vfs.js"></script>
+<script src="assets/vault.js"></script>
+<script src="assets/match.js"></script>
+<script src="assets/cv.js"></script>
+<script src="assets/studio.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
