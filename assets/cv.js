@@ -74,8 +74,13 @@ window.CV = (function () {
   const ADD_SKILLS = { "Quality and Ways of Working": ["Unit Testing", "Automated Testing"], "Databases": ["Relational Databases", "Query Optimisation"] };
   function upgrade(profile) {
     const p = JSON.parse(JSON.stringify(profile));
-    // Mayur confirmed 5 automation tools (older vault copies say 2)
+    // 5 automation tools on CVs built by the site (the vault copy says 2)
     (p.experience || []).forEach(r => (r.bullets || []).forEach(b => { b.text = b.text.replace(/\b2 Python automation tools\b/, "5 Python automation tools"); }));
+    // UK number after the Indian one
+    if (p.contact && p.contact.phone && !/\+44/.test(p.contact.phone)) p.contact.phone = p.contact.phone + " / +44 7776 773819";
+    // newest certification first (completed 7 Oct 2026); older vault copies do not list it yet
+    const GH = "Career Essentials in GitHub Professional Certificate (LinkedIn Learning and GitHub, 2026)";
+    if (Array.isArray(p.certifications) && !p.certifications.some(c => /Career Essentials in GitHub/.test(c))) p.certifications.unshift(GH);
     (p.skill_groups || []).forEach(g => (ADD_SKILLS[g.label] || []).forEach((x, j) => { if (!g.items.includes(x)) g.items.splice(g.label === "Databases" ? g.items.length : 1 + j, 0, x); }));
     return p;
   }
@@ -298,7 +303,8 @@ window.CV = (function () {
       content: [
         { text: profile.name, fontSize: 16, bold: true },
         { text: [profile.first_title, job.second_title || secondTitle(profile, job)].join("  |  "), color: "#333333", margin: [0, 1, 0, 2] },
-        { text: [c.location, c.phone, c.email, c.links[0]].join("  |  "), fontSize: 9.5 },
+        { text: [c.location, c.phone, c.email].join("  |  "), fontSize: 9.5 },
+        { text: c.links.slice(0, 2).join("  |  "), fontSize: 9.5, margin: [0, 1, 0, 0] },
         { canvas: [{ type: "line", x1: 0, y1: 0, x2: 471.28, y2: 0, lineWidth: 0.75, lineColor: "#888888" }], margin: [0, 6, 0, 18] },
         { text: today, margin: [0, 0, 0, 12] },
         { text: ["Recruitment Team", job.company, placeOf(job)].filter(Boolean).join("\n"), margin: [0, 0, 0, 14] },

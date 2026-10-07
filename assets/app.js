@@ -92,7 +92,7 @@
         <button type="button" class="btn" data-act="studio">Tailor &amp; preview</button>
         <button type="button" class="btn" data-act="cv">Quick CV</button>
         <button type="button" class="btn" data-act="letter">Cover letter</button>
-        <button type="button" class="btn" data-act="add">Add to pipeline</button>
+        <button type="button" class="btn" data-act="add" title="Moves this role to Applied, dated today">Mark as applied</button>
         <button type="button" class="btn ghost" data-act="hide">Hide role</button>
       </div>
       <div class="d-body">
@@ -118,7 +118,7 @@
     const j = DATA.jobs.find(x => x.id === selected);
     if (b.dataset.act === "close") { $("jobDetail").classList.remove("open"); return; }
     if (!j) return;
-    if (b.dataset.act === "add") { addToBoard(j, "Shortlisted"); $("jobDetail").classList.remove("open"); toast("Added to Shortlisted"); }
+    if (b.dataset.act === "add") { addToBoard(j, "Applied"); $("jobDetail").classList.remove("open"); toast("Added to Applied, dated today"); }
     if (b.dataset.act === "hide") { S.hidden[j.id] = today(); save(); $("jobDetail").classList.remove("open"); renderFeed(); toast("Hidden. Use \"Unhide all\" to bring it back."); }
     if (b.dataset.act === "cv") await makeCV(j);
     if (b.dataset.act === "letter") await makeLetter(j);
@@ -167,7 +167,7 @@
 
   // ------------------------------------------------------------ board ---
   function addToBoard(j, stage) {
-    S.board[j.id] = { stage, added: today(), moved: today(), applied: "", follow: "", next: "", notes: "", job: j };
+    S.board[j.id] = { stage, added: today(), moved: today(), applied: stage === "Applied" ? today() : "", follow: "", next: "", notes: "", job: j };
     save(); renderFeed(); renderBoard();
   }
   function renderBoard() {
@@ -180,7 +180,9 @@
       <section class="col" data-stage="${s}" aria-label="${s}">
         <h3><i style="background:${color}"></i>${s}<span>${by[s].length}</span></h3>
         ${by[s].sort((a, b) => (b[1].moved || "").localeCompare(a[1].moved || "")).map(([id, it]) => {
-          const j = it.job, due = it.follow && it.follow <= today() && !["Accepted", "Rejected"].includes(s);
+          // show today's visa odds and match when the role is still in the feed
+          const fresh = DATA.jobs.find(x => x.id === id);
+          const j = fresh ? Object.assign({}, it.job, { visa: fresh.visa, visa_basis: fresh.visa_basis, match: fresh.match }) : it.job, due = it.follow && it.follow <= today() && !["Accepted", "Rejected"].includes(s);
           const closed = DATA.jobs.length && j.url && !live.has(id) && !String(id).startsWith("manual-");
           return `<button type="button" class="bcard" draggable="true" data-id="${esc(id)}">
             ${j.match != null ? `<span class="mm ${matchCls(j.match)}">${j.match}%</span>` : ""}
@@ -247,7 +249,7 @@
     const sc = jd.trim() ? Match.score(title, jd) : { match: null, matched: [], missing: [], flag: "" };
     const j = { id: "manual-" + Date.now(), title, company: $("a-company").value.trim(), url: $("a-url").value.trim(), location: $("a-loc").value.trim(),
       region: $("a-reg").value, kind: Match.kind(title), match: sc.match, matched: sc.matched, missing: sc.missing, flag: sc.flag, visa: null, source: "Added by you" };
-    addToBoard(j, "Shortlisted"); show("board"); toast("Added to Shortlisted");
+    addToBoard(j, "Applied"); show("board"); toast("Added to Applied, dated today");
   });
 
   // -------------------------------------------------------- companies ---
