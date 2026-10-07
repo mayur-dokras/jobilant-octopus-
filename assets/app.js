@@ -323,6 +323,16 @@
   });
   $("profileReset").addEventListener("click", () => { delete S.profileOverride; save(); applyProfile(); fillDetails(); toast("Back to the CV details stored in your vault"); });
 
+  // ------------------------------------------------------------ theme ---
+  // Follows the system until the toggle is used; the choice is remembered on this device.
+  function currentTheme() { return document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"); }
+  document.querySelectorAll("[data-theme-toggle]").forEach(b => b.addEventListener("click", () => {
+    const next = currentTheme() === "light" ? "dark" : "light";
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("jobocto.theme", next); } catch (e) {}
+    toast(next === "light" ? "Light mode" : "Dark mode");
+  }));
+
   // ------------------------------------------------------------- lock ---
   const PASS_KEY = "jobhunthq.pass";
   function remembered() { try { return localStorage.getItem(PASS_KEY) || ""; } catch (e) { return ""; } }

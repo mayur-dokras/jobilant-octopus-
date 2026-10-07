@@ -10,8 +10,9 @@
   --r:12px; --f:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
   color-scheme:dark;
 }
+/* Light theme: follows the system unless the toggle chose a theme (html[data-theme]). */
 @media (prefers-color-scheme: light){
-  :root{
+  :root:not([data-theme=dark]){
     --bg:#F2F6F8; --side:#005077; --surface:#FFFFFF; --surface-2:#F6F9FB; --hover:#EDF3F6; --line:#DCE5EA; --line-2:#C9D6DD;
     --text:#0E2530; --muted:#4F6772; --faint:#7F949D;
     --accent:#005077; --accent-2:#0A6E9E; --accent-soft:rgba(0,80,119,.09);
@@ -19,12 +20,26 @@
     --bad:#C2410C; --bad-soft:rgba(194,65,12,.09); --visa:#6D28D9; --visa-soft:rgba(109,40,217,.09);
     --shadow:0 1px 2px rgba(0,40,52,.06),0 10px 28px rgba(0,40,52,.08); color-scheme:light;
   }
-  /* the sidebar stays in Southampton blue with white text */
-  .side{--text:#FFFFFF; --muted:rgba(255,255,255,.78); --faint:rgba(255,255,255,.58); --hover:rgba(255,255,255,.09);
+/* the sidebar stays in Southampton blue with white text */
+  :root:not([data-theme=dark]) .side{--text:#FFFFFF; --muted:rgba(255,255,255,.78); --faint:rgba(255,255,255,.58); --hover:rgba(255,255,255,.09);
     --line:rgba(255,255,255,.16); --line-2:rgba(255,255,255,.3); --surface-2:rgba(255,255,255,.1); --accent-soft:rgba(255,255,255,.16); --accent:#FFFFFF; color:#fff}
-  .side .btn{color:#fff}
-  .lock{background:radial-gradient(700px 420px at 50% 15%,rgba(0,80,119,.16),transparent 70%),var(--bg)}
+  :root:not([data-theme=dark]) .side .btn{color:#fff}
+  :root:not([data-theme=dark]) .lock{background:radial-gradient(700px 420px at 50% 15%,rgba(0,80,119,.16),transparent 70%),var(--bg)}
 }
+:root[data-theme=light]{
+    --bg:#F2F6F8; --side:#005077; --surface:#FFFFFF; --surface-2:#F6F9FB; --hover:#EDF3F6; --line:#DCE5EA; --line-2:#C9D6DD;
+    --text:#0E2530; --muted:#4F6772; --faint:#7F949D;
+    --accent:#005077; --accent-2:#0A6E9E; --accent-soft:rgba(0,80,119,.09);
+    --good:#047857; --good-soft:rgba(4,120,87,.10); --warn:#B45309; --warn-soft:rgba(217,119,6,.12);
+    --bad:#C2410C; --bad-soft:rgba(194,65,12,.09); --visa:#6D28D9; --visa-soft:rgba(109,40,217,.09);
+    --shadow:0 1px 2px rgba(0,40,52,.06),0 10px 28px rgba(0,40,52,.08); color-scheme:light;
+  }
+/* the sidebar stays in Southampton blue with white text */
+  :root[data-theme=light] .side{--text:#FFFFFF; --muted:rgba(255,255,255,.78); --faint:rgba(255,255,255,.58); --hover:rgba(255,255,255,.09);
+    --line:rgba(255,255,255,.16); --line-2:rgba(255,255,255,.3); --surface-2:rgba(255,255,255,.1); --accent-soft:rgba(255,255,255,.16); --accent:#FFFFFF; color:#fff}
+  :root[data-theme=light] .side .btn{color:#fff}
+  :root[data-theme=light] .lock{background:radial-gradient(700px 420px at 50% 15%,rgba(0,80,119,.16),transparent 70%),var(--bg)}
+:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 body{background:var(--bg);color:var(--text);font:14px/1.5 var(--f);-webkit-font-smoothing:antialiased}
@@ -63,8 +78,8 @@ body.locked .app{display:none}
 .lock-box h1{font-size:20px}
 .lock-box .sub{margin-top:-10px}
 .msg{min-height:20px;margin:0;color:var(--bad);font-size:13px}
-.logo svg{width:32px;height:32px;display:block}
-.logo.lg svg{width:44px;height:44px}
+.logo{font-size:28px;line-height:1;width:34px;text-align:center;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.logo.lg{font-size:44px;width:auto;text-align:left}
 
 /* ---------- shell ---------- */
 .app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
@@ -87,6 +102,14 @@ body.locked .app{display:none}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px var(--good-soft);flex:none;margin-top:4px}
 .sync.stale .dot{background:var(--warn);box-shadow:0 0 0 3px var(--warn-soft)}
 .side-btns{display:flex;gap:6px}.side-btns .btn{flex:1}
+.theme-btn{flex:0 0 auto!important;width:34px;padding:0!important}
+.theme-btn .ic{width:16px;height:16px}
+.theme-btn .moon{display:none}
+:root[data-theme=light] .theme-btn .sun,:root:not([data-theme]) .theme-btn .sun{display:none}
+:root[data-theme=light] .theme-btn .moon{display:block}
+@media (prefers-color-scheme: light){:root:not([data-theme]) .theme-btn .moon{display:block}}
+@media (prefers-color-scheme: dark){:root:not([data-theme]) .theme-btn .sun{display:block}}
+.lock-theme{position:fixed;top:16px;right:16px}
 
 .main{min-width:0;padding:28px 32px 48px}
 .panel{max-width:1440px;margin:0 auto}
