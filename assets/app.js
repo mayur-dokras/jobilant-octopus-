@@ -3,8 +3,7 @@
    localStorage under one key, with Export / Import for backups. */
 (function () {
   const STAGES = [
-    ["Shortlisted", "#8aa0a6"], ["Applied", "#1f6f78"], ["In consideration", "#2f7fc1"], ["Technical test", "#c27a00"],
-    ["HR round", "#7a5cc7"], ["Salary discussion", "#b4527a"], ["Accepted", "#1d7a46"], ["Rejected", "#a43a32"],
+    ["Applied", "#1f6f78"], ["Technical test", "#c27a00"], ["In consideration", "#2f7fc1"], ["Rejected", "#a43a32"],
   ];
   const KIND = { MLOps: "MLOps / platform", Backend: "Backend / Python", AI: "AI / ML engineer" };
   const KEY = "jobhunthq.v1";
@@ -14,6 +13,9 @@
 
   let DATA = { jobs: [] }, COMPANIES = [], DISC = { items: [] }, PROFILE = null, BASE_PROFILE = null, PASS = "";
   let S = load();
+  // cards saved under the old 8 stages move to the nearest of the 4 stages kept
+  const OLD_STAGE = { "Shortlisted": "Applied", "HR round": "In consideration", "Salary discussion": "In consideration", "Accepted": "In consideration" };
+  Object.values(S.board || {}).forEach(it => { if (OLD_STAGE[it.stage]) it.stage = OLD_STAGE[it.stage]; });
   const prevVisit = S.lastVisit || "1970-01-01";
   let strong = false, editing = null;
 
@@ -27,11 +29,11 @@
 
   // -------------------------------------------------------------- tabs --
   function show(tab) {
-    document.querySelectorAll(".tab").forEach(b => b.dataset.tab === tab ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
+    document.querySelectorAll(".tab[data-tab]").forEach(b => b.dataset.tab === tab ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
     document.querySelectorAll(".panel").forEach(p => p.hidden = p.id !== "tab-" + tab);
     if (location.hash.slice(1) !== tab) history.replaceState(null, "", "#" + tab);
   }
-  document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => show(b.dataset.tab)));
+  document.querySelectorAll(".tab[data-tab]").forEach(b => b.addEventListener("click", () => show(b.dataset.tab)));
 
   // ------------------------------------------------------------- feed ---
   const matchCls = m => m >= 75 ? "m-hi" : m >= 60 ? "m-mid" : "m-lo";
@@ -59,7 +61,7 @@
     const fresh = all.filter(isNew).length;
     $("b-feed").textContent = fresh ? fresh + " new" : "";
     const strongN = all.filter(j => j.match >= 80).length, sponsor = all.filter(j => j.visa >= 70).length;
-    const applied = Object.values(S.board).filter(it => !["Shortlisted", "Rejected"].includes(it.stage)).length;
+    const applied = Object.values(S.board).filter(it => it.stage !== "Rejected").length;
     $("kpis").innerHTML = [
       ["New since last visit", fresh, "added to the feed", "var(--accent)"],
       ["Open roles", all.length, `${DATA.companies_checked ?? COMPANIES.length} companies checked`, "var(--accent-2)"],
@@ -174,7 +176,7 @@
     const items = Object.entries(S.board);
     $("b-board").textContent = items.length || "";
     const by = Object.fromEntries(STAGES.map(([s]) => [s, []]));
-    items.forEach(([id, it]) => (by[it.stage] || by.Shortlisted).push([id, it]));
+    items.forEach(([id, it]) => (by[it.stage] || by.Applied).push([id, it]));
     const live = new Set(DATA.jobs.filter(j => !j.closed).map(j => j.id));
     $("board").innerHTML = STAGES.map(([s, color]) => `
       <section class="col" data-stage="${s}" aria-label="${s}">
@@ -182,7 +184,7 @@
         ${by[s].sort((a, b) => (b[1].moved || "").localeCompare(a[1].moved || "")).map(([id, it]) => {
           // show today's visa odds and match when the role is still in the feed
           const fresh = DATA.jobs.find(x => x.id === id);
-          const j = fresh ? Object.assign({}, it.job, { visa: fresh.visa, visa_basis: fresh.visa_basis, match: fresh.match }) : it.job, due = it.follow && it.follow <= today() && !["Accepted", "Rejected"].includes(s);
+          const j = fresh ? Object.assign({}, it.job, { visa: fresh.visa, visa_basis: fresh.visa_basis, match: fresh.match }) : it.job, due = it.follow && it.follow <= today() && s !== "Rejected";
           const closed = DATA.jobs.length && j.url && !live.has(id) && !String(id).startsWith("manual-");
           return `<button type="button" class="bcard" draggable="true" data-id="${esc(id)}">
             ${j.match != null ? `<span class="mm ${matchCls(j.match)}">${j.match}%</span>` : ""}
@@ -192,13 +194,18 @@
           </button>`;
         }).join("")}
       </section>`).join("");
-    const count = s => (by[s] || []).length, active = items.length - count("Accepted") - count("Rejected") - count("Shortlisted");
-    const dueN = items.filter(([, it]) => it.follow && it.follow <= today() && !["Accepted", "Rejected"].includes(it.stage)).length;
-    $("boardStats").innerHTML = [["Active applications", active], ["Technical tests", count("Technical test")], ["HR / salary stage", count("HR round") + count("Salary discussion")], ["Follow-ups due", dueN], ["Offers accepted", count("Accepted")]]
-      .map(([l, n], i) => `<div class="kpi" style="--k:${["var(--accent)", "var(--warn)", "#C084FC", "var(--bad)", "var(--good)"][i]}"><span>${l}</span><b>${n}</b></div>`).join("");
+    const count = s => (by[s] || []).length, active = items.length - count("Rejected");
+    const dueN = items.filter(([, it]) => it.follow && it.follow <= today() && it.stage !== "Rejected").length;
+    $("boardStats").innerHTML = [["Active applications", active], ["Technical tests", count("Technical test")], ["In consideration", count("In consideration")], ["Follow-ups due", dueN], ["Rejected", count("Rejected")]]
+      .map(([l, n], i) => `<div class="kpi" style="--k:${["var(--accent)", "var(--warn)", "#C084FC", "var(--good)", "var(--bad)"][i]}"><span>${l}</span><b>${n}</b></div>`).join("");
   }
   // drag and drop
   $("board").addEventListener("dragstart", e => { const c = e.target.closest(".bcard"); if (c) e.dataTransfer.setData("text/plain", c.dataset.id); });
+  // while dragging a card, moving near the left or right edge scrolls the stages sideways
+  document.querySelector(".board-scroll").addEventListener("dragover", e => {
+    const box = e.currentTarget, r = box.getBoundingClientRect(), edge = 80;
+    if (e.clientX > r.right - edge) box.scrollLeft += 18; else if (e.clientX < r.left + edge) box.scrollLeft -= 18;
+  });
   $("board").addEventListener("dragover", e => { const col = e.target.closest(".col"); if (col) { e.preventDefault(); col.classList.add("drop"); } });
   $("board").addEventListener("dragleave", e => { const col = e.target.closest(".col"); if (col) col.classList.remove("drop"); });
   $("board").addEventListener("drop", e => {

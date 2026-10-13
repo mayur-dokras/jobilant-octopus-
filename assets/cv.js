@@ -17,6 +17,14 @@ window.CV = (function () {
     if (/python|backend|back-end|back end/.test(t)) return s.backend;
     return s.software;
   }
+  // MLOps and AI postings lead with "MLOps Engineer | GenAI Engineer"; backend postings keep Backend Software Engineer.
+  const genaiKind = job => job.kind === "MLOps" || job.kind === "AI";
+  function titles(p, job) {
+    const first = job.first_title || (genaiKind(job) ? "MLOps Engineer" : p.first_title);
+    let second = job.second_title || (genaiKind(job) ? "GenAI Engineer" : secondTitle(p, job));
+    if (second === first) second = genaiKind(job) ? "GenAI Engineer" : secondTitle(p, job);
+    return [first, second];
+  }
   function summaryKey(job) { return job.kind === "MLOps" ? "mlops" : job.kind === "AI" ? "ai" : "backend"; }
 
   // Summary sentence bank. Every sentence restates a fact already on the CV.
@@ -25,8 +33,8 @@ window.CV = (function () {
   const DEFAULT_BANK = {
     openers: {
       backend: "Backend Software Engineer with 4+ years building production Python services, REST integrations and the data layers behind them.",
-      mlops: "MLOps and Backend Engineer with 4+ years building production Python services and pipelines.",
-      ai: "Backend Software Engineer with 4+ years of production Python, now building an AI engineering platform (in progress) with LLMs, RAG, LangChain and the OpenAI API.",
+      mlops: "MLOps and GenAI Engineer building model pipelines and LLM applications in Python, backed by 4+ years of production software experience.",
+      ai: "MLOps and GenAI Engineer building LLM applications with RAG, LangChain and the OpenAI API, backed by 4+ years of production Python.",
     },
     sentences: [
       { id: "gov", p: 9, text: "Designed the PostgreSQL data model and REST integrations for 3 UK Government data services at a 6-person cybersecurity startup.", tags: ["postgresql", "sql", "database", "rest", "api", "integration", "data model", "backend", "relational"] },
@@ -78,6 +86,10 @@ window.CV = (function () {
     (p.experience || []).forEach(r => (r.bullets || []).forEach(b => { b.text = b.text.replace(/\b2 Python automation tools\b/, "5 Python automation tools"); }));
     // UK number after the Indian one
     if (p.contact && p.contact.phone && !/\+44/.test(p.contact.phone)) p.contact.phone = p.contact.phone + " / +44 7776 773819";
+    // SotonBuddy project (added Oct 2026); older vault copies do not list it yet
+    const SB = "SotonBuddy, University of Southampton campus assistant. Chatbot that gives students turn-by-turn walking directions to lecture buildings and answers questions about the university, using an LLM fine-tuned on question and answer pairs built from university website documents. Python, OpenAI API fine-tuning, FastAPI and React.";
+    if (Array.isArray(p.projects) && !p.projects.some(x => /SotonBuddy/.test(typeof x === "string" ? x : x.text)))
+      p.projects.splice(Math.min(3, p.projects.length), 0, { text: SB, tags: ["ai", "llm", "genai", "chatbot", "fine-tuning", "nlp", "python", "openai"] });
     // newest certification first (completed 7 Oct 2026); older vault copies do not list it yet
     const GH = "Career Essentials in GitHub Professional Certificate (LinkedIn Learning and GitHub, 2026)";
     if (Array.isArray(p.certifications) && !p.certifications.some(c => /Career Essentials in GitHub/.test(c))) p.certifications.unshift(GH);
@@ -87,7 +99,7 @@ window.CV = (function () {
   const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
   function boldRuns(text, terms) {
-    const fixed = ["4+ years", "around 80%", "40+", "25%", "3 UK Government", "Backend Software Engineer", "MLOps and Backend Engineer", "in progress"];
+    const fixed = ["MLOps and GenAI Engineer", "4+ years", "around 80%", "40+", "25%", "3 UK Government", "Backend Software Engineer", "MLOps and Backend Engineer", "in progress"];
     const all = [...new Set([...fixed, ...terms])].filter(Boolean).sort((a, b) => b.length - a.length);
     if (!all.length) return [text];
     const alt = all.map(esc).join("|");
@@ -118,6 +130,7 @@ window.CV = (function () {
       .sort((x, y) => y.s - x.s || x.i - y.i).map(x => x.b.text);
   }
   function relocation(job) {
+    if (typeof job.relocation === "string") return job.relocation;
     if (job.region === "Remote from India") return "";
     if (job.region === "UK") return "Open to relocation to the UK";
     const city = (job.location || "").split(/[·,|/]/).map(x => x.trim()).find(x => x && !/remote|hybrid|on-site|office/i.test(x));
@@ -161,8 +174,9 @@ window.CV = (function () {
   const dated = (left, dates, fs, top) => ({ columns: [{ width: "*", text: left }, { width: "auto", text: dates, fontSize: fs - 1, color: GRAY, alignment: "right", margin: [0, 0.8, 0, 0] }], margin: [0, top, 0, 0] });
 
   function doc(profile, job, fs = 9.5, gap = 2.4, ids = []) {
-    const p = upgrade(profile), c = p.contact;
-    const sub = [p.first_title, job.second_title || secondTitle(p, job), p.experience_tag].join("  |  ");
+    // hand-edited versions (job.fixed) were already upgraded by applyTailor; keep their wording as typed
+    const p = job.fixed ? profile : upgrade(profile), c = p.contact;
+    const sub = [...titles(p, job), p.experience_tag].join("  |  ");
     const reloc = relocation(job);
     const contact = [c.location, reloc, c.phone, c.email].filter(Boolean).join("  |  ");
     const raw = composeSummary(p, job, ids), summary = job.summary ? marked(raw) : boldRuns(raw, job.matched || []);
@@ -302,7 +316,7 @@ window.CV = (function () {
       defaultStyle: { font: "Carlito", fontSize: fs, lineHeight: 1.18 },
       content: [
         { text: profile.name, fontSize: 16, bold: true },
-        { text: [profile.first_title, job.second_title || secondTitle(profile, job)].join("  |  "), color: "#333333", margin: [0, 1, 0, 2] },
+        { text: titles(profile, job).join("  |  "), color: "#333333", margin: [0, 1, 0, 2] },
         { text: [c.location, c.phone, c.email].join("  |  "), fontSize: 9.5 },
         { text: c.links.slice(0, 2).join("  |  "), fontSize: 9.5, margin: [0, 1, 0, 0] },
         { canvas: [{ type: "line", x1: 0, y1: 0, x2: 471.28, y2: 0, lineWidth: 0.75, lineColor: "#888888" }], margin: [0, 6, 0, 18] },
@@ -333,7 +347,7 @@ window.CV = (function () {
     const raw = composeSummary(p, job, r.used[2]);
     const summary = job.summary ? raw : boldRuns(raw, job.matched || []).map(x => typeof x === "string" ? x : `**${x.text}**`).join("");
     return {
-      second: job.second_title || secondTitle(p, job), summary,
+      second: titles(p, job)[1], summary,
       skills: orderSkills(p, job).map(g => g.label + ": " + g.items.join(", ")).join("\n"),
       bullets: p.experience.map(e => orderBullets(e.bullets, job)),
       projects: orderBullets(p.projects, job),
@@ -351,7 +365,7 @@ window.CV = (function () {
   }
   function plainText(p, j) {
     const c = p.contact;
-    return [p.name, [p.first_title, j.second_title, p.experience_tag].join(" | "), [c.location, c.phone, c.email].join(" | "), c.links.join(" | "),
+    return [p.name, [...titles(p, j), p.experience_tag].join(" | "), [c.location, c.phone, c.email].join(" | "), c.links.join(" | "),
       "SUMMARY", String(j.summary).replace(/\*\*/g, ""), "TECHNICAL SKILLS", ...p.skill_groups.map(g => g.label + ": " + g.items.join(", ")),
       "PROFESSIONAL EXPERIENCE", ...p.experience.flatMap(e => [e.title + " | " + e.org + " " + e.dates, ...e.bullets.map(b => b.text)]),
       "PROJECTS", ...p.projects.map(b => b.text), "EDUCATION", ...p.education.map(e => e.degree + ", " + e.org + " " + e.dates),
@@ -362,6 +376,6 @@ window.CV = (function () {
     pdfMake.createPdf(def).download(`Mayur_Dokras_CV_${safe}.pdf`);
   }
 
-  return { tailored, applyTailor, plainText, downloadDef, SECOND_TITLES: ["MLOps Engineer", "Platform Engineer", "DevOps Engineer", "Site Reliability Engineer", "Python Developer", "Software Development Engineer", "Data Platform Engineer", "Cloud Engineer", "API Engineer"],
+  return { tailored, applyTailor, plainText, downloadDef, SECOND_TITLES: ["GenAI Engineer", "MLOps Engineer", "Platform Engineer", "DevOps Engineer", "Site Reliability Engineer", "Python Developer", "Software Development Engineer", "Data Platform Engineer", "Cloud Engineer", "API Engineer"],
     download, downloadLetter, letterDoc, letterParas, doc, build, secondTitle, composeSummary, upgrade, DEFAULT_BANK };
 })();

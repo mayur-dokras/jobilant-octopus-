@@ -195,10 +195,12 @@ button.kpi[aria-pressed=true]{border-color:var(--accent);background:linear-gradi
 .empty{padding:40px 20px;text-align:center;color:var(--muted);background:var(--surface);border:1px dashed var(--line-2);border-radius:var(--r)}
 
 /* ---------- pipeline ---------- */
-.board-scroll{overflow-x:auto;padding-bottom:8px}
-.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-@media (max-width:980px){.board{grid-template-columns:repeat(8,260px)}}
-.col{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r);padding:10px;min-height:220px;display:flex;flex-direction:column;gap:8px}
+/* Pipeline: all stages in one row; scroll sideways across stages, and inside a stage when it holds many cards */
+.board-scroll{overflow-x:auto;padding-bottom:10px;scroll-behavior:smooth}
+.board{display:grid;grid-template-columns:repeat(4,minmax(260px,1fr));gap:12px;min-width:1076px}
+.col{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r);padding:0 10px 10px;height:calc(100vh - 300px);min-height:380px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.col h3{position:sticky;top:0;z-index:1;background:var(--surface-2);margin:0 -10px;padding:12px 14px 8px!important}
+@media (max-width:980px){.board{grid-template-columns:repeat(4,260px);min-width:0}.col{height:calc(100vh - 240px)}}
 .col.drop{border-color:var(--accent);background:var(--accent-soft)}
 .col h3{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;padding:4px 4px 6px}
 .col h3 i{width:8px;height:8px;border-radius:50%}
@@ -335,3 +337,13 @@ dialog.studio[open]{display:flex}
   .studio[data-pane=scores] .st-scores{display:grid}
   .st-actions .btn{height:32px;padding:0 10px}
 }
+
+a.tab{text-decoration:none}
+
+/* own second titles in the tailor studio */
+.st-titles{display:grid;gap:8px;margin-top:-4px}
+.st-titles .addrow{display:flex;gap:6px}.st-titles .addrow input{flex:1;min-width:0}
+.st-titles .chips{display:flex;flex-wrap:wrap;gap:6px}
+.st-titles .chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border:1px solid var(--line-2);border-radius:99px;background:var(--surface-2);font:500 12px var(--f);color:var(--text)}
+.st-titles .chip button{border:0;background:none;color:var(--muted);cursor:pointer;font:700 13px var(--f);padding:0}
+.st-titles .m{font-size:12px}

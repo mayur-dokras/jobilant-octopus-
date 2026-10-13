@@ -30,7 +30,7 @@ window.Studio = (function () {
     const coverage = terms.length ? wOn / wAll : 0.6;
     const missingHave = weighted.filter(x => !x.on && Match.has(x.k)), missingGap = weighted.filter(x => !x.on && !Match.has(x.k));
     const titleWords = (ctx.job.title || "").toLowerCase().split(/[^a-z+]+/).filter(w => w.length > 2 && !/senior|junior|mid|level|team|the|and/.test(w));
-    const sub = [p.first_title, j.second_title].join(" ").toLowerCase();
+    const sub = [p.first_title, j.first_title, j.second_title].join(" ").toLowerCase();
     const titleHit = titleWords.length ? titleWords.filter(w => sub.includes(w)).length / titleWords.length : 1;
     const top = [...weighted].sort((a, b) => b.w - a.w).slice(0, 6), topInSum = top.length ? top.filter(x => x.inSum).length / top.length : 1;
     const words = cv.split(/\s+/).length;
@@ -123,11 +123,41 @@ window.Studio = (function () {
     };
   }
   function fillForm(t) {
-    $("st-second").innerHTML = [...new Set([t.second, ...CV.SECOND_TITLES])].map(x => `<option${x === t.second ? " selected" : ""}>${esc(x)}</option>`).join("");
+    fillTitles(t.second);
     $("st-summary").value = t.summary; $("st-skills").value = t.skills; $("st-projects").value = t.projects.join("\n");
     $("st-roles").innerHTML = ctx.base.experience.map((e, i) => `<label for="st-b${i}">${esc(e.title)} <span class="m">· ${esc(e.org.split(",")[0])} · ${esc(e.dates)}</span>
       <textarea id="st-b${i}" rows="${Math.max(3, (t.bullets[i] || []).length * 2 + 1)}">${esc((t.bullets[i] || []).join("\n"))}</textarea></label>`).join("");
     $("st-jd").value = t.jd || jdDefault(ctx.job);
+  }
+
+  // Second titles: the built-in list plus up to 8 of Mayur's own, kept in this browser.
+  const TKEY = "jobocto.titles";
+  function ownTitles() { try { return JSON.parse(localStorage.getItem(TKEY) || "[]"); } catch (e) { return []; } }
+  function saveTitles(list) { try { localStorage.setItem(TKEY, JSON.stringify(list)); } catch (e) {} }
+  function fillTitles(selected) {
+    const own = ownTitles();
+    const all = [...new Set([selected, ...own, ...CV.SECOND_TITLES].filter(Boolean))];
+    $("st-second").innerHTML = all.map(x => `<option${x === selected ? " selected" : ""}>${esc(x)}</option>`).join("");
+    $("st-title-list").innerHTML = own.length ? own.map(x => `<span class="chip">${esc(x)}<button type="button" data-title="${esc(x)}" aria-label="Remove ${esc(x)}">×</button></span>`).join("")
+      : `<span class="m">Your own titles appear here and stay for next time.</span>`;
+  }
+  function note(m) { const t = $("toast"); if (!t) return; t.textContent = m; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 3200); }
+  function addTitle() {
+    const v = $("st-title-new").value.trim().replace(/\s+/g, " ");
+    if (!v) return;
+    const own = ownTitles();
+    if (/\b(senior|lead|principal|staff|head|architect|manager)\b/i.test(v)) { note("Keep the subtitle at your level: Senior, Lead, Principal, Staff, Head, Architect and Manager titles are left out on purpose."); return; }
+    if (!own.some(x => x.toLowerCase() === v.toLowerCase()) && !CV.SECOND_TITLES.some(x => x.toLowerCase() === v.toLowerCase())) {
+      if (own.length >= 8) { note("You can keep up to 8 of your own titles. Remove one first."); return; }
+      own.push(v); saveTitles(own);
+    }
+    $("st-title-new").value = "";
+    fillTitles(v); later();
+  }
+  function removeTitle(v) {
+    saveTitles(ownTitles().filter(x => x !== v));
+    const cur = $("st-second").value;
+    fillTitles(cur === v ? CV.SECOND_TITLES[0] : cur); if (cur === v) later();
   }
 
   async function refresh() {
@@ -185,7 +215,10 @@ window.Studio = (function () {
     fillForm(t); refresh();
   }
   function init() {
-    $("st-form").addEventListener("input", later);
+    $("st-form").addEventListener("input", e => { if (e.target.id !== "st-title-new") later(); });
+    $("st-title-add").addEventListener("click", addTitle);
+    $("st-title-new").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); addTitle(); } });
+    $("st-title-list").addEventListener("click", e => { const b = e.target.closest("[data-title]"); if (b) removeTitle(b.dataset.title); });
     $("st-reset").addEventListener("click", async () => {
       const jd = $("st-jd").value; ctx.store.set(null);
       fillForm(Object.assign(await CV.tailored(ctx.base, ctx.job), { jd })); refresh();
