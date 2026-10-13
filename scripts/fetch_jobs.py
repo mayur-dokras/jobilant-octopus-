@@ -13,6 +13,7 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(__file__))
 import ats  # noqa: E402
+import public_feed  # noqa: E402
 from scoring import (ALLOWED_REGIONS, HAVE, TERMS, keep_title, kind_of, load_json, region_of,  # noqa: E402
                      save_json, skills_match, visa_odds)
 
@@ -20,8 +21,21 @@ TODAY = dt.date.today().isoformat()
 RESOLVE_PER_RUN = int(os.environ.get("RESOLVE_PER_RUN", "40"))
 RECHECK_DAYS = 30
 SWEDEN_QUERIES = ["mlops", "machine learning engineer", "ml engineer", "python backend",
-                  "python developer", "ai engineer", "platform engineer", "data engineer python"]
+                  "python developer", "ai engineer", "platform engineer", "data engineer python",
+                  "llmops", "generative ai engineer", "genai engineer", "llm engineer", "ai platform engineer"]
+# extra Platsbanken searches for the public CV Match page (wider than Mayur's roles)
+PUBLIC_SWEDEN_QUERIES = ["software engineer", "java developer", "frontend developer", "full stack developer",
+                         "devops engineer", "data engineer", "qa engineer"]
 DROP_REGIONS = {"Other", "Middle East", "Asia", "LATAM", "Africa"}
+
+
+_JOBTECH = {}
+
+
+def jobtech(q):  # each Platsbanken search runs once per day even if two feeds use it
+    if q not in _JOBTECH:
+        _JOBTECH[q] = ats.jobtech(q)
+    return _JOBTECH[q]
 
 
 def job_id(url, title):
@@ -84,7 +98,7 @@ def main():
             cache[c["name"]] = {"miss": TODAY}
 
     # 2) read boards
-    fresh, checked, errors = [], 0, []
+    fresh, checked, errors, public = [], 0, [], []
     for c in companies:
         if not c.get("token"):
             continue
@@ -94,9 +108,12 @@ def main():
             continue
         checked += 1
         for r in rows:
+            r["source"] = c["ats"].split("_")[0].title()
+            pj = public_feed.public_job(r, c)  # wide public feed for the CV Match page
+            if pj:
+                public.append(pj)
             if not r.get("url") or not keep_title(r["title"]):
                 continue
-            r["source"] = c["ats"].split("_")[0].title()
             j = score(r, c)
             if j:
                 fresh.append(j)
@@ -104,7 +121,7 @@ def main():
     # 3) Sweden (Platsbanken via JobTech)
     seen_urls = set()
     for q in SWEDEN_QUERIES:
-        for r in ats.jobtech(q):
+        for r in jobtech(q):
             if r["url"] in seen_urls or not keep_title(r["title"]):
                 continue
             seen_urls.add(r["url"])
@@ -112,6 +129,14 @@ def main():
             j = score(r, {"name": r["company"], "region": "Sweden", "sponsor": "employer-led"})
             if j:
                 fresh.append(j)
+    se = {"region": "Sweden", "sponsor": "employer-led"}
+    for q in SWEDEN_QUERIES + PUBLIC_SWEDEN_QUERIES:
+        for r in jobtech(q):
+            r["source"] = "Platsbanken (Sweden)"
+            pj = public_feed.public_job(r, dict(se, name=r["company"]))
+            if pj:
+                public.append(pj)
+    public_count = public_feed.save(public)
 
     # 4) merge with yesterday: keep first_seen, mark closed, keep manual entries for 30 days
     by_id, fresh_urls = {}, set()
@@ -162,7 +187,7 @@ def main():
     save_json("terms.json", {"terms": TERMS, "have": sorted(HAVE)})  # keeps the site's match % in step
     companies_doc["companies"] = companies
     save_json("companies.json", companies_doc)
-    print(f"checked {checked} boards, {len(jobs)} roles, {len(new_today)} new, {closed_today} closed")
+    print(f"checked {checked} boards, {len(jobs)} roles, {len(new_today)} new, {closed_today} closed, {public_count} public roles")
     post_digest(new_today, checked, closed_today)
 
 

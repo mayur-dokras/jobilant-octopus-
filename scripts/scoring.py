@@ -14,15 +14,17 @@ DATA = ROOT / "data"
 
 # ---------------------------------------------------------------- titles --
 INCLUDE_TITLE = re.compile(
-    r"\b(ml ?ops|machine learning|ml engineer|ml platform|ml infra|ai engineer|applied ai|"
-    r"llm|genai|gen ai|backend|back-end|back end|python|platform engineer|platform|"
+    r"\b(ml ?ops|llm ?ops|ai ?ops|machine learning|ml engineer|ml platform|ml infra|ai engineer|applied ai|"
+    r"ai software engineer|ai systems|ai platform|ai infrastructure|ai reliability|model deployment|model serving|"
+    r"generative ai|gen ?ai|llms?|agent(ic)?( ai)? engineer|rag engineer|context engineer|prompt engineer|evals? engineer|"
+    r"forward[- ]deployed|backend|back-end|back end|python|platform engineer|platform|"
     r"infrastructure|site reliability|sre|devops|data engineer|data platform|"
     r"software engineer|software developer|developer experience)\b",
     re.I,
 )
 EXCLUDE_TITLE = re.compile(
     r"\b(senior|sr\.?|staff|principal|lead|head|manager|director|vp|chief|architect|"
-    r"intern|internship|graduate|trainee|working student|apprentice|"
+    r"intern|internship|graduate|trainee|trainer|working student|apprentice|red team(er)?|"
     r"front[- ]?end|frontend|ios|android|mobile|designer|design engineer|"
     r"sales|account|recruit|support engineer|solutions engineer|solutions architect|"
     r"customer success|technical writer|researcher|research scientist|"
@@ -37,9 +39,9 @@ def keep_title(title: str) -> bool:
 
 def kind_of(title: str) -> str:
     t = (title or "").lower()
-    if re.search(r"ml ?ops|ml platform|ml infra|platform|infrastructure|site reliability|\bsre\b|devops|developer experience", t):
+    if re.search(r"ml ?ops|llm ?ops|ai ?ops|ml platform|ml infra|model deployment|model serving|platform|infrastructure|site reliability|\bsre\b|devops|developer experience", t):
         return "MLOps"
-    if re.search(r"machine learning|\bml\b|\bai\b|applied ai|llm|genai|gen ai", t):
+    if re.search(r"machine learning|\bml\b|\bai\b|applied ai|llm|genai|gen ai|generative|agent|\brag\b|context engineer|prompt engineer|evals?", t):
         return "AI"
     return "Backend"
 
