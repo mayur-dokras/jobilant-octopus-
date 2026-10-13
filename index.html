@@ -33,6 +33,8 @@
     <button type="button" class="tab" data-tab="feed"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Jobs for you</span><span class="pill" id="b-feed"></span></button><button type="button" class="tab" data-tab="board"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/></svg><span>Pipeline</span><span class="pill" id="b-board"></span></button><button type="button" class="tab" data-tab="companies"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16"/><path d="M15 9h4a1 1 0 0 1 1 1v11"/><path d="M8 8h3M8 12h3M8 16h3M3 21h18"/></svg><span>Companies</span><span class="pill" id="b-co"></span></button><button type="button" class="tab" data-tab="discovered"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Discovered</span><span class="pill" id="b-disc"></span></button>
     <span class="nav-h">Applications</span>
     <button type="button" class="tab" data-tab="rules"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l2 2 4-4"/><rect x="4" y="3" width="16" height="18" rx="2"/></svg><span>CV rules</span></button><button type="button" class="tab" data-tab="details"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>My CV details</span></button>
+    <span class="nav-h">Share</span>
+    <a class="tab" href="match/" target="_blank" rel="noopener" title="Public page for friends: upload a CV, see matching jobs"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7"/><path d="M10 14 21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg><span>CV Match for friends</span></a>
   </nav>
   <div class="side-foot">
     <div class="sync"><i class="dot"></i><span id="refresh"></span></div>
@@ -210,6 +212,10 @@
     <form id="st-form" class="st-edit" onsubmit="return false">
       <p class="hint">Edits are saved for this role on this device. Keep job titles, employers, dates and numbers true; the Readiness score flags any number that changes. Use <b>**double asterisks**</b> to make words bold.</p>
       <label for="st-second">Second title <select id="st-second"></select></label>
+      <div class="st-titles">
+        <div class="addrow"><input id="st-title-new" maxlength="40" placeholder="Add your own title, e.g. LLMOps Engineer" aria-label="New second title"><button type="button" class="btn sm" id="st-title-add">Add</button></div>
+        <div class="chips" id="st-title-list"></div>
+      </div>
       <label for="st-summary">Summary <textarea id="st-summary" rows="7"></textarea></label>
       <label for="st-skills">Technical skills <span class="m">one line per group, "Label: item, item"</span><textarea id="st-skills" rows="9"></textarea></label>
       <div id="st-roles" class="st-roles"></div>
