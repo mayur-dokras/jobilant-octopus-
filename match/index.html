@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Job Octo · CV Match</title>
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="dark light">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="match.css">
+<script>try{var t=localStorage.getItem("jobocto.theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<header class="mtop">
+  <div class="mbrand"><span class="logo" aria-hidden="true">🐙</span><div><b>Job Octo</b><small>CV Match</small></div></div>
+  <span class="grow"></span>
+  <span class="sync"><i class="dot"></i><span id="updated">Loading jobs…</span></span>
+  <button type="button" class="btn ghost sm theme-btn" data-theme-toggle title="Switch light / dark mode" aria-label="Switch light or dark mode"><svg class="ic sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="ic moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
+</header>
+
+<main class="mwrap">
+  <section class="hero">
+    <h1>Find live jobs that match your CV</h1>
+    <p class="sub">Upload your CV, pick the roles you want, and see open positions in India, the UK, Europe, Sweden, the US, New Zealand and Turkey, scored against your skills. Refreshed every morning.</p>
+    <p class="privacy"><b>Private by design.</b> Your CV is read inside this browser and never uploaded anywhere. Nothing is stored except on this device.</p>
+  </section>
+
+  <div class="mgrid">
+    <aside class="mside">
+      <!-- 1. CV -->
+      <section class="panel-box">
+        <h2><span class="step">1</span> Your CV</h2>
+        <label class="drop" id="drop" for="cvFile">
+          <input type="file" id="cvFile" accept="application/pdf,.pdf,.txt" hidden>
+          <b id="dropTitle">Upload your CV (PDF)</b>
+          <span id="dropSub">Click or drop the file here</span>
+        </label>
+        <details class="paste"><summary>Or paste your CV text</summary>
+          <textarea id="cvText" rows="6" placeholder="Paste the text of your CV here"></textarea>
+          <button type="button" class="btn sm" id="useText">Read this text</button>
+        </details>
+        <div id="profile" hidden>
+          <div class="who"><b id="pName"></b><span id="pMeta"></span></div>
+          <label for="pYears">Years of experience <input type="number" id="pYears" min="0" max="40" step="0.5"></label>
+          <div class="lbl">Skills found <span class="m">(click × to remove, or add one)</span></div>
+          <div class="skills" id="pSkills"></div>
+          <div class="addrow"><input id="skillAdd" list="skillList" placeholder="Add a skill"><datalist id="skillList"></datalist><button type="button" class="btn sm" id="skillAddBtn">Add</button></div>
+          <button type="button" class="btn ghost sm" id="clearAll">Clear my CV from this device</button>
+        </div>
+      </section>
+
+      <!-- 2. Roles -->
+      <section class="panel-box">
+        <h2><span class="step">2</span> Roles you want</h2>
+        <div class="chips" id="roleChips"></div>
+        <div class="lbl">Your own roles <span class="m">(up to 3, e.g. "Guidewire Developer")</span></div>
+        <div class="chips" id="customChips"></div>
+        <div class="addrow"><input id="customAdd" maxlength="40" placeholder="Add a role title"><button type="button" class="btn sm" id="customAddBtn">Add</button></div>
+        <p class="msg" id="customMsg"></p>
+      </section>
+
+      <!-- 3. Filters -->
+      <section class="panel-box">
+        <h2><span class="step">3</span> Where and what level</h2>
+        <div class="lbl">Countries</div>
+        <div class="chips" id="regionChips"></div>
+        <div class="lbl">Level</div>
+        <div class="chips" id="levelChips"></div>
+        <label for="minMatch">Minimum match <b id="minMatchVal"></b><input type="range" id="minMatch" min="0" max="90" step="5"></label>
+      </section>
+    </aside>
+
+    <section class="mresults">
+      <div class="kpis" id="kpis"></div>
+      <div class="listhead"><span class="count" id="count"></span><span class="grow"></span>
+        <select id="sort" aria-label="Sort"><option value="match">Best match first</option><option value="new">Newest first</option><option value="visa">Best visa odds first</option></select></div>
+      <div class="mlist" id="list"></div>
+      <button type="button" class="btn block" id="more" hidden>Show more</button>
+    </section>
+  </div>
+  <p class="foot">Job Octo CV Match · job postings are collected from public company job boards and Sweden's Platsbanken. Match % compares the skills in each posting with the skills in your CV; visa odds assume you are applying from India.</p>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="match.js"></script>
+</body>
+</html>
