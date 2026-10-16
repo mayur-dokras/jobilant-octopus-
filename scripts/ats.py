@@ -9,6 +9,7 @@ import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
+import salary
 from scoring import strip_html
 
 UA = "JobHuntHQ/1.0 (personal job tracker; github actions)"
@@ -42,7 +43,7 @@ def get_json(url):
 # ------------------------------------------------------------- readers --
 def greenhouse(token, eu=False):
     host = "boards-api.eu.greenhouse.io" if eu else "boards-api.greenhouse.io"
-    d = get_json(f"https://{host}/v1/boards/{token}/jobs?content=true")
+    d = get_json(f"https://{host}/v1/boards/{token}/jobs?content=true&pay_transparency=true")
     if not d or "jobs" not in d:
         return None
     return [{
@@ -51,6 +52,7 @@ def greenhouse(token, eu=False):
         "url": j.get("absolute_url", ""),
         "description": strip_html(j.get("content", "")),
         "posted": (j.get("first_published") or j.get("updated_at") or "")[:10],
+        "salary": salary.greenhouse(j),
     } for j in d["jobs"]]
 
 
@@ -70,12 +72,13 @@ def lever(token, eu=False):
             "url": j.get("hostedUrl", ""),
             "description": f"{j.get('descriptionPlain', '')} {lists} {j.get('additionalPlain', '')}",
             "posted": time.strftime("%Y-%m-%d", time.gmtime(created / 1000)) if created else "",
+            "salary": salary.lever(j),
         })
     return out
 
 
 def ashby(token):
-    d = get_json(f"https://api.ashbyhq.com/posting-api/job-board/{token}")
+    d = get_json(f"https://api.ashbyhq.com/posting-api/job-board/{token}?includeCompensation=true")
     if not d or "jobs" not in d:
         return None
     out = []
@@ -91,6 +94,7 @@ def ashby(token):
             "url": j.get("jobUrl", ""),
             "description": j.get("descriptionPlain", "") or strip_html(j.get("descriptionHtml", "")),
             "posted": (j.get("publishedAt") or "")[:10],
+            "salary": salary.ashby(j),
         })
     return out
 
@@ -124,6 +128,7 @@ def recruitee(token):
         "url": j.get("careers_url", ""),
         "description": strip_html(j.get("description", "") + " " + j.get("requirements", "")),
         "posted": (j.get("published_at") or "")[:10],
+        "salary": salary.recruitee(j),
     } for j in d["offers"]]
 
 

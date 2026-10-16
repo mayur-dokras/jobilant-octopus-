@@ -200,7 +200,7 @@
     if (!FEED) return;
     const open = FEED.jobs.filter(j => !j.closed);
     if (!S.skills.length) {
-      $("kpis").innerHTML = kpi("Live roles", open.length, "all countries", "var(--accent)") + kpi("Companies", new Set(open.map(j => j.company)).size, "hiring now", "var(--accent-2)");
+      $("kpis").innerHTML = kpi("Live roles", open.length, "all countries", "var(--accent)") + kpi("Companies", new Set(open.map(j => j.company)).size, "hiring now", "var(--text)");
       $("count").textContent = "";
       $("list").innerHTML = `<div class="empty">Upload your CV on the left to see the roles that match you.</div>`;
       $("more").hidden = true; return;

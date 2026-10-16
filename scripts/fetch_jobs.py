@@ -8,12 +8,14 @@ import datetime as dt
 import hashlib
 import json
 import os
+import re
 import sys
 import urllib.request
 
 sys.path.insert(0, os.path.dirname(__file__))
 import ats  # noqa: E402
 import public_feed  # noqa: E402
+import salary  # noqa: E402
 from scoring import (ALLOWED_REGIONS, HAVE, TERMS, keep_title, kind_of, load_json, region_of,  # noqa: E402
                      save_json, skills_match, visa_odds)
 
@@ -42,6 +44,21 @@ def job_id(url, title):
     return hashlib.sha1(f"{url}|{title}".encode()).hexdigest()[:12]
 
 
+BRIEF_MAX = 3500
+REQ_START = re.compile(r"(requirements|what you('ll| will) (need|bring)|you (have|bring)|about you|who you are|qualifications|what we('re| are) looking for|skills|responsibilities|what you('ll| will) do)", re.I)
+
+
+def brief(desc):
+    """The useful part of a posting, capped so the private feed stays small:
+    from the first responsibilities/requirements heading when there is one."""
+    text = re.sub(r"\s+", " ", desc or "").strip()
+    if len(text) <= BRIEF_MAX:
+        return text
+    m = REQ_START.search(text)
+    start = m.start() if m and m.start() < len(text) - 800 else 0
+    return text[start:start + BRIEF_MAX]
+
+
 def score(raw, company):
     title, desc, loc = raw["title"], raw.get("description", ""), raw.get("location", "")
     region = region_of(loc, company.get("region", ""))
@@ -51,7 +68,11 @@ def score(raw, company):
         return None
     match, have, miss, flag = skills_match(title, desc)
     visa, basis = visa_odds(desc, loc, region, company, raw.get("company", ""))
+    pay = raw.get("salary") or salary.from_text(desc)
     return {
+        "salary": pay,
+        # trimmed posting text: the editor scores against it and the Prep panel reads it
+        "description": brief(desc),
         "id": job_id(raw["url"], title),
         "kind": kind_of(title),
         "title": title,

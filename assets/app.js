@@ -2,9 +2,12 @@
    GitHub Actions); your board, hidden roles and notes live in this browser's
    localStorage under one key, with Export / Import for backups. */
 (function () {
+  // colours are CSS tokens so both themes stay in step
   const STAGES = [
-    ["Applied", "#1f6f78"], ["Technical test", "#c27a00"], ["In consideration", "#2f7fc1"], ["Rejected", "#a43a32"],
+    ["Applied", "var(--text)"], ["No reply", "var(--faint)"], ["Technical test", "var(--warn)"], ["In consideration", "var(--info)"], ["Rejected", "var(--bad)"],
   ];
+  const FOLLOW_DAYS = 7, NO_REPLY_DAYS = 14;
+  const REPLIED = new Set(["Technical test", "In consideration", "Rejected"]), INTERVIEW = new Set(["Technical test", "In consideration"]);
   const KIND = { MLOps: "MLOps / platform", Backend: "Backend / Python", AI: "AI / ML engineer" };
   const KEY = "jobhunthq.v1";
   const $ = id => document.getElementById(id);
@@ -45,17 +48,35 @@
   const ring = (m, big) => m == null ? "" : `<div class="ring ${matchCls(m)}${big ? " lg" : ""}" style="--p:${m}" role="img" aria-label="Skills match ${m} percent"><b>${m}%</b></div>`;
   const open = () => DATA.jobs.filter(j => !j.closed && !S.hidden[j.id] && !S.board[j.id]);
 
+  // salary: shown in the posting's own currency; the filter compares the top of the range in rough pounds a year
+  const FX = { GBP: 1, EUR: 0.85, USD: 0.75, SEK: 0.072, NZD: 0.45, TRY: 0.021, CHF: 0.9, DKK: 0.114, NOK: 0.07, PLN: 0.19, INR: 0.0089, CZK: 0.034, AUD: 0.49, CAD: 0.54 };
+  const PER_YEAR = { year: 1, month: 12, day: 220, hour: 1800 }, PER_TXT = { year: "", month: "/mo", day: "/day", hour: "/hr" };
+  const SYM = { GBP: "£", EUR: "€", USD: "$", INR: "₹" };
+  function payTxt(s, long) {
+    if (!s || !s.max) return "";
+    const sym = SYM[s.cur] || s.cur + " ";
+    const k = n => s.cur === "INR" && n >= 1e5 ? (n / 1e5).toFixed(1).replace(/\.0$/, "") + "L" : n >= 10000 ? Math.round(n / 1000) + "k" : n.toLocaleString("en-GB");
+    if (long) {
+      const f = n => sym + n.toLocaleString("en-GB");
+      return (s.min === s.max ? f(s.max) : f(s.min) + " to " + f(s.max)) + ({ year: " a year", month: " a month", day: " a day", hour: " an hour" }[s.per] || "");
+    }
+    return sym + (s.min === s.max ? k(s.max) : k(s.min) + "–" + k(s.max)) + (PER_TXT[s.per] || "");
+  }
+  const payGBP = s => s && FX[s.cur] ? s.max * (PER_YEAR[s.per] || 1) * FX[s.cur] : null;
+  let paidOnly = false;
+
   function renderFeed() {
     const q = $("q").value.toLowerCase(), k = $("f-kind").value, rg = $("f-reg").value;
-    const mm = +$("f-match").value, mv = strong ? 70 : +$("f-visa").value, onlyNew = $("f-new").checked;
+    const mm = +$("f-match").value, mv = strong ? 70 : +$("f-visa").value, onlyNew = $("f-new").checked, minPay = +$("f-pay").value * 1000;
     const all = open();
     const list = all
       .filter(j => (!k || j.kind === k) && (!rg || j.region === rg) && j.match >= mm && (mv < 0 || j.visa < 0 || j.visa >= mv) && (!onlyNew || isNew(j)))
+      .filter(j => (!paidOnly || payGBP(j.salary)) && (!minPay || !j.salary || (payGBP(j.salary) ?? Infinity) >= minPay))
       .filter(j => !q || [j.title, j.company, j.location, (j.matched || []).join(" "), (j.missing || []).join(" ")].join(" ").toLowerCase().includes(q))
       .sort((a, b) => (isNew(b) - isNew(a)) || b.match - a.match || b.visa - a.visa);
     if (!list.some(j => j.id === selected)) selected = list.length ? list[0].id : null;
     $("feedGrid").innerHTML = list.length ? list.map(row).join("") :
-      `<div class="empty">No roles match these filters. Try a lower minimum match or visa odds.</div>`;
+      `<div class="empty">No roles match these filters. Try a lower minimum match, visa odds or salary.</div>`;
     renderDetail(DATA.jobs.find(j => j.id === selected));
     $("feedCount").textContent = `${list.length} of ${all.length} roles`;
     const fresh = all.filter(isNew).length;
@@ -64,7 +85,7 @@
     const applied = Object.values(S.board).filter(it => it.stage !== "Rejected").length;
     $("kpis").innerHTML = [
       ["New since last visit", fresh, "added to the feed", "var(--accent)"],
-      ["Open roles", all.length, `${DATA.companies_checked ?? COMPANIES.length} companies checked`, "var(--accent-2)"],
+      ["Open roles", all.length, `${DATA.companies_checked ?? COMPANIES.length} companies checked`, "var(--text)"],
       ["Strong matches", strongN, "80% match or higher", "var(--good)"],
       ["Strong sponsors", sponsor, "visa odds 70% or higher", "var(--visa)"],
       ["In progress", applied, "applications on the pipeline", "var(--warn)"],
@@ -77,7 +98,7 @@
       ${ring(j.match)}
       <div><div class="t">${esc(j.title)}</div><div class="c">${esc(j.company)} · ${esc(j.location || j.region)}</div>
         <div class="tags">${isNew(j) ? '<span class="tag new">New</span>' : ""}<span class="tag">${KIND[j.kind] || esc(j.kind)}</span><span class="tag">${esc(j.region)}</span>${(j.missing || []).filter(Boolean).length ? `<span class="tag warn">${j.missing.filter(Boolean).length} gap${j.missing.filter(Boolean).length > 1 ? "s" : ""}</span>` : ""}</div></div>
-      <div class="side-r"><span class="tag visa">Visa ${visaTxt(j.visa)}</span><span class="age">${ago(j.first_seen)}</span></div>
+      <div class="side-r"><span class="tag visa">Visa ${visaTxt(j.visa)}</span>${j.salary ? `<span class="tag pay" title="${esc(payTxt(j.salary, true))}">${esc(payTxt(j.salary))}</span>` : ""}<span class="age">${ago(j.first_seen)}</span></div>
     </button>`;
   }
   function renderDetail(j) {
@@ -102,6 +123,8 @@
         <div class="d-sec"><h3>Skills you have</h3><div class="skills">${(j.matched || []).map(x => `<span class="sk">${esc(x)}</span>`).join("") || '<span class="m">None detected</span>'}</div></div>
         ${miss.length ? `<div class="d-sec"><h3>Gaps</h3><div class="skills">${miss.map(x => `<span class="sk miss">${esc(x)}</span>`).join("")}</div></div>` : ""}
         ${j.note ? `<div class="d-sec"><h3>Recruiter note</h3><p>${esc(j.note)}</p></div>` : ""}
+        ${j.salary ? `<div class="d-sec"><h3>Salary</h3><div class="pay-row"><b>${esc(payTxt(j.salary))}</b><span class="m">${esc(payTxt(j.salary, true))}${j.salary.cur !== "GBP" && payGBP(j.salary) ? ` · about £${Math.round(payGBP(j.salary) / 1000)}k a year at the top` : ""} · ${j.salary.src === "board" ? "from the job board" : "read from the posting"}</span></div></div>` : ""}
+        <div class="d-sec"><h3>Interview prep</h3>${Prep.html(j, PROFILE, { feed: true })}</div>
         <div class="d-sec"><h3>Visa from India</h3>
           <div class="visa-row"><span class="m">${v < 0 ? "Not needed or not applicable" : "Estimated sponsorship odds"}</span><b>${visaTxt(v)}</b></div>
           ${v >= 0 ? `<div class="meter"><i style="width:${v}%"></i></div>` : ""}<p class="m">${esc(j.visa_basis || "")}</p></div>
@@ -132,7 +155,8 @@
     $("kindSeg").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     $("f-kind").value = b.dataset.v; renderFeed();
   });
-  ["q", "f-reg", "f-match", "f-visa", "f-new"].forEach(id => $(id).addEventListener("input", renderFeed));
+  ["q", "f-reg", "f-match", "f-visa", "f-new", "f-pay"].forEach(id => $(id).addEventListener("input", renderFeed));
+  $("f-paid").addEventListener("click", () => { paidOnly = !paidOnly; $("f-paid").setAttribute("aria-pressed", String(paidOnly)); renderFeed(); });
   $("unhide").addEventListener("click", () => { const n = Object.keys(S.hidden).length; S.hidden = {}; save(); renderFeed(); toast(n ? `${n} hidden roles back in the list` : "Nothing was hidden"); });
   $("f-strong").addEventListener("click", () => { strong = !strong; $("f-strong").setAttribute("aria-pressed", String(strong)); renderFeed(); });
 
@@ -182,12 +206,45 @@
     ["Europe", /\b(germany|berlin|munich|hamburg|netherlands|amsterdam|rotterdam|ireland|dublin|france|paris|spain|madrid|barcelona|portugal|lisbon|poland|warsaw|krakow|lithuania|vilnius|luxembourg|belgium|brussels|denmark|copenhagen|finland|helsinki|norway|oslo|austria|vienna|switzerland|zurich|italy|milan|czech|prague|estonia|tallinn|europe|emea)\b/i],
   ];
   const regionOf = loc => (REGION_RX.find(([, rx]) => rx.test(loc || "")) || [""])[0];
+  // "Location: Berlin, Germany" style lines inside a pasted posting
+  function jdLocLine(jd) {
+    const m = String(jd || "").match(/\b(?:location|locations|based in|office location|work location|where you'll work)\s*[:\-–]\s*([^\n.;]{2,80})/i);
+    return m ? m[1].trim() : "";
+  }
+  // Region for a pasted JD, in order of trust: the Location box, the job title, the posting's own
+  // location line, then the place the posting names most often ("reading" is left out: it is a word too).
+  function detectRegion(loc, title, jd) {
+    let r = regionOf(loc); if (r) return [r, "the location"];
+    r = regionOf(title); if (r) return [r, "the job title"];
+    const line = jdLocLine(jd); r = regionOf(line); if (r) return [r, "the posting's location line"];
+    if (/\bremote\b/i.test(loc + " " + line) && /\b(remote[^.\n]{0,40}india|india[^.\n]{0,40}remote)\b/i.test(jd)) return ["Remote from India", "the posting"];
+    let best = ["", 0];
+    REGION_RX.forEach(([name, rx]) => {
+      const n = (String(jd || "").match(new RegExp(rx.source.replace("|reading", ""), "gi")) || []).length;
+      if (n > best[1]) best = [name, n];
+    });
+    return best[1] ? [best[0], "places named in the posting"] : ["", ""];
+  }
+  // what the JD page will use: the Region menu when set by hand, otherwise the detected region
+  function jdWhere() {
+    const loc = $("jd-loc").value.trim(), title = $("jd-title").value.trim(), jd = $("jd-text").value;
+    const location = loc || jdLocLine(jd), manual = $("jd-reg").value;
+    const [auto, from] = detectRegion(loc, title, jd);
+    return { location, region: manual || auto, from: manual ? "your choice" : from };
+  }
+  function renderReloc() {
+    const w = jdWhere(), any = $("jd-loc").value.trim() || $("jd-title").value.trim() || $("jd-text").value.trim();
+    if (!any) { $("jd-reloc").innerHTML = ""; return; }
+    const line = CV.relocation({ region: w.region, location: w.location });
+    $("jd-reloc").innerHTML = (w.region ? `<b>${esc(w.region)}</b> <span class="m">from ${esc(w.from)}</span>` : `<b>Region not found</b> <span class="m">add a city or pick the region</span>`) +
+      ` <span class="sep">·</span> CV line: <b>${line ? esc(line) : "none (no move needed)"}</b>`;
+  }
   const cleanJdTitle = t => String(t || "").replace(/\s*[-–—|(].*$/, "").replace(/\b(senior|sr\.?|junior|jr\.?|mid[- ]?level|lead|principal|staff|i{1,3}|iv|[1-3])\b/gi, "").replace(/\s+/g, " ").trim();
   function ownTitles() { try { return JSON.parse(localStorage.getItem("jobocto.titles") || "[]"); } catch (e) { return []; } }
   let jdKind = "", jdTpl = "octo";
   function jdJob() {
     const title = $("jd-title").value.trim(), company = $("jd-company").value.trim() || "Company", jd = $("jd-text").value.trim();
-    const loc = $("jd-loc").value.trim(), region = $("jd-reg").value;
+    const { location: loc, region } = jdWhere();
     const sc = Match.score(title, jd), kind = jdKind || detectKind(title, jd);
     const want = cleanJdTitle(title).toLowerCase();
     const second = [...ownTitles(), ...CV.SECOND_TITLES].find(x => x.toLowerCase() === want);
@@ -196,7 +253,7 @@
       match: sc.match, matched: sc.matched, missing: sc.missing, flag: sc.flag, visa: null, template: jdTpl, second_title: second };
   }
   function renderTplPicker() {
-    const reg = $("jd-reg").value, rec = reg === "US" ? "jake" : "octo";
+    const reg = jdWhere().region, rec = reg === "US" ? "jake" : "octo";
     $("jd-tpls").innerHTML = Object.entries(CV.TEMPLATES).map(([k, T]) => `<button type="button" class="tpl" data-tpl="${k}" aria-pressed="${k === jdTpl}" title="${esc(T.desc)}">
       <span class="tpl-thumb t-${k}" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
       <span class="tpl-name">${esc(T.name)}</span><span class="tpl-meta">${T.regions.map(r => `<em>${r}</em>`).join("")}${k === rec ? '<em class="rec">Best fit</em>' : ""}</span></button>`).join("");
@@ -231,10 +288,9 @@
     $("jd-kind").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); jdKind = b.dataset.v; renderJdLive();
   });
   $("jd-tpls").addEventListener("click", e => { const b = e.target.closest("[data-tpl]"); if (!b) return; jdTpl = b.dataset.tpl; renderTplPicker(); });
-  ["jd-title", "jd-text"].forEach(id => $(id).addEventListener("input", () => { clearTimeout(liveT); liveT = setTimeout(renderJdLive, 250); }));
-  $("jd-loc").addEventListener("input", () => { const r = regionOf($("jd-loc").value); if (r) { $("jd-reg").value = r; renderTplPicker(); } });
-  $("jd-reg").addEventListener("change", renderTplPicker);
-  $("jd-clear").addEventListener("click", () => { $("jdForm").reset(); jdKind = ""; $("jd-kind").querySelectorAll("button").forEach((x, i) => x.setAttribute("aria-pressed", String(i === 0))); $("jd-live").innerHTML = ""; $("jd-msg").textContent = ""; renderTplPicker(); });
+  ["jd-title", "jd-text", "jd-loc"].forEach(id => $(id).addEventListener("input", () => { clearTimeout(liveT); liveT = setTimeout(() => { renderJdLive(); renderReloc(); renderTplPicker(); }, 250); }));
+  $("jd-reg").addEventListener("change", () => { renderReloc(); renderTplPicker(); });
+  $("jd-clear").addEventListener("click", () => { $("jdForm").reset(); jdKind = ""; $("jd-kind").querySelectorAll("button").forEach((x, i) => x.setAttribute("aria-pressed", String(i === 0))); $("jd-live").innerHTML = ""; $("jd-msg").textContent = ""; renderReloc(); renderTplPicker(); });
   $("jdForm").addEventListener("submit", async e => {
     e.preventDefault();
     await Match.load();
@@ -244,6 +300,9 @@
     const j = jdJob();
     S.jd = S.jd || {}; S.tailor = S.tailor || {};
     if (S.tailor[j.id] && S.tailor[j.id].template !== jdTpl) S.tailor[j.id].template = jdTpl;
+    // a new location or region means a new relocation line, unless it was typed by hand
+    const before = S.jd[j.id] && S.jd[j.id].job;
+    if (S.tailor[j.id] && before && (before.region !== j.region || before.location !== j.location) && S.tailor[j.id].reloc === CV.relocation(before)) delete S.tailor[j.id].reloc;
     S.jd[j.id] = Object.assign({ created: today() }, S.jd[j.id] || {}, { job: j });
     // the editor scores against the pasted text
     S.tailor[j.id] = Object.assign(S.tailor[j.id] || {}, { jd: j.description });
@@ -278,9 +337,29 @@
     S.board[j.id] = { stage, added: today(), moved: today(), applied: stage === "Applied" ? today() : "", follow: "", next: "", notes: "", job: j };
     save(); renderFeed(); renderBoard();
   }
+  const daysSince = d => d ? Math.floor((Date.parse(today()) - Date.parse(d)) / 864e5) : 0;
+  // the follow-up clock starts when you applied and restarts each time you follow up
+  const waitStart = it => [it.applied || it.added || "", it.nudged || ""].sort().pop();
+  const waiting = it => daysSince(waitStart(it));
+  const autoDue = it => (it.stage === "Applied" && waiting(it) >= FOLLOW_DAYS);
+  const isDue = it => it.stage !== "Rejected" && ((it.follow && it.follow <= today()) || autoDue(it));
+  // cards saved before these fields existed: work out reply and interview dates from the last move
+  function backfill(it) {
+    if (!it.replied && REPLIED.has(it.stage)) it.replied = it.moved || it.added;
+    if (!it.interview && INTERVIEW.has(it.stage)) it.interview = it.moved || it.added;
+  }
+  // after 14 quiet days an application moves to "No reply" by itself
+  function sweepNoReply() {
+    let n = 0;
+    Object.values(S.board).forEach(it => { backfill(it); if (it.stage === "Applied" && waiting(it) >= NO_REPLY_DAYS) { it.stage = "No reply"; it.moved = today(); it.autoNoReply = today(); n++; } });
+    if (n) save();
+    return n;
+  }
   function renderBoard() {
     const items = Object.entries(S.board);
     $("b-board").textContent = items.length || "";
+    const quiet = sweepNoReply();
+    if (quiet) setTimeout(() => toast(`${quiet} application${quiet > 1 ? "s" : ""} with no answer for ${NO_REPLY_DAYS}+ days moved to No reply`), 400);
     const by = Object.fromEntries(STAGES.map(([s]) => [s, []]));
     items.forEach(([id, it]) => (by[it.stage] || by.Applied).push([id, it]));
     const live = new Set(DATA.jobs.filter(j => !j.closed).map(j => j.id));
@@ -291,19 +370,53 @@
           // show today's visa odds and match when the role is still in the feed
           const fresh = DATA.jobs.find(x => x.id === id);
           const j = fresh ? Object.assign({}, it.job, { visa: fresh.visa, visa_basis: fresh.visa_basis, match: fresh.match }) : it.job, due = it.follow && it.follow <= today() && s !== "Rejected";
+          const wait = waiting(it), nudge = autoDue(it) ? `<span class="badge-follow">Follow up · ${wait}d</span>` : s === "No reply" ? `<span class="badge-quiet">No reply · ${wait}d</span>` : "";
           const closed = DATA.jobs.length && j.url && !live.has(id) && !String(id).startsWith("manual-");
           return `<button type="button" class="bcard" draggable="true" data-id="${esc(id)}">
             ${j.match != null ? `<span class="mm ${matchCls(j.match)}">${j.match}%</span>` : ""}
-            <span class="t">${esc(j.title)}</span><span class="c">${esc(j.company)} · ${esc(j.location || j.region || "")}</span>
+            ${nudge}<span class="t">${esc(j.title)}</span><span class="c">${esc(j.company)} · ${esc(j.location || j.region || "")}</span>
             <span class="c">Visa ${visaTxt(j.visa ?? -1)}${closed ? " · posting closed" : ""}</span>
             <span class="nx">${it.next ? esc(it.next) + " · " : ""}${it.follow ? `<span class="${due ? "due" : ""}">follow up ${esc(it.follow)}</span>` : it.applied ? "applied " + esc(it.applied) : "added " + esc(it.added)}</span>
           </button>`;
         }).join("")}
       </section>`).join("");
     const count = s => (by[s] || []).length, active = items.length - count("Rejected");
-    const dueN = items.filter(([, it]) => it.follow && it.follow <= today() && it.stage !== "Rejected").length;
-    $("boardStats").innerHTML = [["Active applications", active], ["Technical tests", count("Technical test")], ["In consideration", count("In consideration")], ["Follow-ups due", dueN], ["Rejected", count("Rejected")]]
-      .map(([l, n], i) => `<div class="kpi" style="--k:${["var(--accent)", "var(--warn)", "#C084FC", "var(--good)", "var(--bad)"][i]}"><span>${l}</span><b>${n}</b></div>`).join("");
+    const dueN = items.filter(([, it]) => isDue(it)).length;
+    $("boardStats").innerHTML = [["Active applications", active], ["Follow-ups due", dueN], ["No reply", count("No reply")], ["Technical tests", count("Technical test")], ["In consideration", count("In consideration")], ["Rejected", count("Rejected")]]
+      .map(([l, n], i) => `<div class="kpi" style="--k:${["var(--text)", "var(--accent)", "var(--faint)", "var(--warn)", "var(--info)", "var(--bad)"][i]}"><span>${l}</span><b>${n}</b></div>`).join("");
+    renderWeek();
+  }
+
+  // ------------------------------------------------------- weekly stats ---
+  // Weeks start on Monday. Applied = cards dated that week; replies = first answer of any kind
+  // (test, interview or rejection); interviews = first move to Technical test or In consideration.
+  function weekStart(d) { const t = new Date(d + "T00:00:00Z"); t.setUTCDate(t.getUTCDate() - (t.getUTCDay() + 6) % 7); return t.toISOString().slice(0, 10); }
+  function renderWeek() {
+    const items = Object.values(S.board); items.forEach(backfill);
+    const w0 = weekStart(today()), weeks = [];
+    for (let i = 5; i >= 0; i--) { const d = new Date(w0 + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() - 7 * i); weeks.push(d.toISOString().slice(0, 10)); }
+    const inWeek = (date, w) => date && weekStart(date) === w;
+    const rows = weeks.map(w => ({ w, applied: items.filter(it => inWeek(it.applied, w)).length, replies: items.filter(it => inWeek(it.replied, w)).length, interviews: items.filter(it => inWeek(it.interview, w)).length }));
+    const now = rows[rows.length - 1], appliedAll = items.filter(it => it.applied).length, repliedAll = items.filter(it => it.applied && it.replied).length;
+    const rate = appliedAll ? Math.round(100 * repliedAll / appliedAll) : null;
+    const max = Math.max(1, ...rows.map(r => Math.max(r.applied, r.replies)));
+    const label = w => new Date(w + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+    const H = 84;
+    $("weekStats").innerHTML = `<div class="week-head"><h2>This week</h2><span class="m">since Monday ${label(w0)}</span></div>
+      <div class="week-grid">
+        <div class="week-nums">
+          <div><span>Applied</span><b>${now.applied}</b></div>
+          <div><span>Replies</span><b>${now.replies}</b></div>
+          <div><span>Interviews</span><b>${now.interviews}</b></div>
+          <div title="All applications with any answer, divided by all applications"><span>Reply rate</span><b>${rate == null ? "–" : rate + "%"}</b><small>${repliedAll} of ${appliedAll} answered, all time</small></div>
+        </div>
+        <figure class="week-chart" aria-label="Applications and replies over the last 6 weeks">
+          <div class="bars">${rows.map(r => `<div class="bar-col" title="Week of ${label(r.w)}: ${r.applied} applied, ${r.replies} replies, ${r.interviews} interviews">
+            <div class="bar-pair"><i class="b-app" style="height:${Math.round(H * r.applied / max)}px"></i><i class="b-rep" style="height:${Math.round(H * r.replies / max)}px"></i></div>
+            <span class="bar-n">${r.applied}</span><span class="bar-l">${label(r.w)}</span></div>`).join("")}</div>
+          <figcaption><span><i class="b-app"></i>Applied</span><span><i class="b-rep"></i>Replies</span><span class="m">last 6 weeks</span></figcaption>
+        </figure>
+      </div>`;
   }
   // drag and drop
   $("board").addEventListener("dragstart", e => { const c = e.target.closest(".bcard"); if (c) e.dataTransfer.setData("text/plain", c.dataset.id); });
@@ -319,7 +432,15 @@
     const id = e.dataTransfer.getData("text/plain"), it = S.board[id]; if (!it) return;
     move(it, col.dataset.stage); save(); renderBoard(); toast(`Moved to ${col.dataset.stage}`);
   });
-  function move(it, stage) { if (it.stage !== stage) { it.stage = stage; it.moved = today(); if (stage === "Applied" && !it.applied) it.applied = today(); } }
+  function move(it, stage) {
+    if (it.stage === stage) return;
+    it.stage = stage; it.moved = today();
+    if (stage === "Applied" && !it.applied) it.applied = today();
+    if (REPLIED.has(stage) && !it.replied) it.replied = today();
+    if (INTERVIEW.has(stage) && !it.interview) it.interview = today();
+    // moved back to Applied by hand: give it a fresh follow-up clock
+    if (stage === "Applied") it.nudged = today();
+  }
   $("board").addEventListener("click", e => { const c = e.target.closest(".bcard"); if (c) openCard(c.dataset.id); });
 
   // card dialog
@@ -331,6 +452,9 @@
     $("d-stage").value = it.stage; $("d-applied").value = it.applied || ""; $("d-follow").value = it.follow || "";
     $("d-next").value = it.next || ""; $("d-notes").value = it.notes || "";
     const a = $("d-open"); if (it.job.url) { a.href = it.job.url; a.hidden = false; } else a.hidden = true;
+    nudgeText(it);
+    const fresh = DATA.jobs.find(x => x.id === id), pj = fresh && fresh.description && !it.job.description ? Object.assign({}, it.job, { description: fresh.description }) : it.job;
+    $("d-prep").innerHTML = Prep.html(pj, PROFILE, { feed: !pj.description });
     $("cardDlg").showModal();
   }
   $("cardForm").addEventListener("submit", e => {
@@ -340,6 +464,22 @@
       it.applied = $("d-applied").value; it.follow = $("d-follow").value; it.next = $("d-next").value.trim(); it.notes = $("d-notes").value;
       save(); renderBoard(); toast("Saved");
     }
+  });
+  function nudgeText(it) {
+    const show = it.stage === "Applied" || it.stage === "No reply";
+    $("d-nudge-row").hidden = !show;
+    if (!show) return;
+    const w = waiting(it), left = FOLLOW_DAYS - w;
+    $("d-nudge-txt").textContent = it.stage === "No reply" ? `No answer for ${w} days. Following up moves it back to Applied.`
+      : left > 0 ? `${w} day${w === 1 ? "" : "s"} since you ${it.nudged && it.nudged > (it.applied || "") ? "followed up" : "applied"}. Follow-up reminder in ${left} day${left === 1 ? "" : "s"}.`
+      : `${w} days without an answer. A short follow-up email is worth sending.`;
+  }
+  $("d-nudge").addEventListener("click", () => {
+    if (!editing) return;
+    const it = S.board[editing];
+    it.nudged = today();
+    if (it.stage === "No reply") { it.stage = "Applied"; it.moved = today(); delete it.autoNoReply; $("d-stage").value = "Applied"; }
+    save(); renderBoard(); nudgeText(it); toast(`Noted. Next reminder in ${FOLLOW_DAYS} days.`);
   });
   $("d-cv").addEventListener("click", () => { if (editing) makeCV(S.board[editing].job); });
   $("d-studio").addEventListener("click", () => { if (editing) { const j = S.board[editing].job; $("cardDlg").close(); openStudio(j); } });
@@ -473,7 +613,7 @@
     renderTplPicker(); renderJdRecent();
     show(["jd", "feed", "board", "companies", "discovered", "rules", "details"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "feed");
     S.lastVisit = today(); save();
-    Match.load();
+    Match.load().then(() => renderFeed());
     return true;
   }
   $("lockForm").addEventListener("submit", async e => {

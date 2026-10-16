@@ -143,7 +143,8 @@ window.Studio = (function () {
       scoreCard("Readiness", "Recruiter-facing quality: facts intact, summary length, action verbs, measurable results, clean wording.", r.ready) +
       `<section class="score kw"><h3>Keywords from this posting</h3>
         <div class="skills">${r.match.matched.map(k => `<span class="sk">${esc(k)}</span>`).join("")}${r.match.addable.map(k => `<span class="sk add" title="You have this; add it">${esc(k)} +</span>`).join("")}${r.match.gaps.map(k => `<span class="sk miss" title="Real gap; do not add">${esc(k)}</span>`).join("")}</div>
-        <p class="m">Green: on your CV. Blue +: you have it but this CV does not show it. Red: a real gap; mention it in the cover letter instead.</p></section>`;
+        <p class="m">Green: on your CV. Blue +: you have it but this CV does not show it. Red: a real gap; mention it in the cover letter instead.</p></section>` +
+      (window.Prep ? `<section class="score"><h3>Interview prep</h3>${Prep.html(Object.assign({}, ctx.job, { description: $("st-jd").value }), ctx.base)}</section>` : "");
   }
 
   function readForm() {
@@ -151,7 +152,7 @@ window.Studio = (function () {
       second: $("st-second").value, summary: $("st-summary").value.trim(), skills: $("st-skills").value,
       bullets: ctx.base.experience.map((e, i) => $("st-b" + i).value.split("\n").map(x => x.trim()).filter(Boolean)),
       projects: $("st-projects").value.split("\n").map(x => x.trim()).filter(Boolean), jd: $("st-jd").value,
-      template: ctx.template,
+      template: ctx.template, reloc: $("st-reloc").value,
     };
   }
   function fillTemplates() {
@@ -169,6 +170,7 @@ window.Studio = (function () {
     fillTitles(t.second);
     fillTemplates();
     $("st-summary").value = t.summary; $("st-skills").value = t.skills; $("st-projects").value = t.projects.join("\n");
+    $("st-reloc").value = typeof t.reloc === "string" ? t.reloc : CV.relocation(ctx.job);
     $("st-roles").innerHTML = ctx.base.experience.map((e, i) => `<label for="st-b${i}">${esc(e.title)} <span class="m">· ${esc(e.org.split(",")[0])} · ${esc(e.dates)}</span>
       <textarea id="st-b${i}" rows="${Math.max(3, (t.bullets[i] || []).length * 2 + 1)}">${esc((t.bullets[i] || []).join("\n"))}</textarea></label>`).join("");
     $("st-jd").value = t.jd || jdDefault(ctx.job);

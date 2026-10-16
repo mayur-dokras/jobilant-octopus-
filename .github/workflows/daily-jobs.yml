@@ -3,7 +3,12 @@ name: Daily job feed
 on:
   schedule:
     - cron: "30 2 * * *"  # 02:30 UTC = 08:00 IST every day (India has no daylight saving)
-  workflow_dispatch: {}    # "Run workflow" button for a manual refresh
+  workflow_dispatch:       # "Run workflow" button for a manual refresh
+    inputs:
+      test_email:
+        description: "Also send a test email with your 3 best open roles"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -33,6 +38,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JOBHQ_PASSCODE: ${{ secrets.JOBHQ_PASSCODE }}
         run: python scripts/fetch_jobs.py
+      - name: Email the strongest new matches
+        env:
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_MIN_MATCH: ${{ vars.ALERT_MIN_MATCH }}
+        run: python scripts/email_alert.py ${{ inputs.test_email && '--test' || '' }}
       - name: Lock data again
         env:
           JOBHQ_PASSCODE: ${{ secrets.JOBHQ_PASSCODE }}

@@ -8,7 +8,7 @@
 <meta name="color-scheme" content="dark light">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
-<link rel="stylesheet" href="assets/app.css?v=20261016">
+<link rel="stylesheet" href="assets/app.css?v=20261017">
 <script>try{var t=localStorage.getItem("jobocto.theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body class="locked">
@@ -62,8 +62,9 @@
         </div>
         <div class="two">
           <label for="jd-loc">Location <input id="jd-loc" placeholder="e.g. Pune, Berlin or London"></label>
-          <label for="jd-reg">Region <select id="jd-reg"><option>India</option><option>UK</option><option>Europe</option><option>Sweden</option><option>US</option><option>New Zealand</option><option>Turkey</option><option>Remote from India</option></select></label>
+          <label for="jd-reg">Region <select id="jd-reg"><option value="">Auto-detect</option><option>India</option><option>UK</option><option>Europe</option><option>Sweden</option><option>US</option><option>New Zealand</option><option>Turkey</option><option>Remote from India</option></select></label>
         </div>
+        <p class="reloc-hint" id="jd-reloc" aria-live="polite"></p>
         <label for="jd-text">Job description <span class="m">paste the full posting for exact scores</span><textarea id="jd-text" rows="11" placeholder="Paste the job description here"></textarea></label>
         <div class="jd-live" id="jd-live" aria-live="polite"></div>
         <div class="lbl-row"><b>Role type</b><span class="m">Auto reads the title and the skills asked</span></div>
@@ -97,6 +98,8 @@
       <select id="f-reg" aria-label="Region"><option value="">All regions</option><option>UK</option><option>Europe</option><option>Sweden</option><option>Turkey</option><option>New Zealand</option><option>US</option><option>Remote from India</option></select>
       <select id="f-match" aria-label="Minimum match"><option value="0">Any match</option><option value="60" selected>Match 60%+</option><option value="70">Match 70%+</option><option value="80">Match 80%+</option></select>
       <select id="f-visa" aria-label="Minimum visa odds"><option value="-1">Any visa odds</option><option value="40">Visa 40%+</option><option value="55" selected>Visa 55%+</option></select>
+      <select id="f-pay" aria-label="Minimum salary"><option value="0">Any salary</option><option value="40">£40k+</option><option value="50">£50k+</option><option value="60">£60k+</option><option value="80">£80k+</option><option value="100">£100k+</option></select>
+      <button type="button" class="chipbtn" id="f-paid" aria-pressed="false" title="Hide roles that do not show a salary">Salary listed</button>
       <button type="button" class="chipbtn" id="f-strong" aria-pressed="false">Strong sponsors</button>
       <input type="checkbox" id="f-new" hidden>
     </div>
@@ -114,6 +117,7 @@
       <button type="button" class="btn primary" id="addRoleBtn">Add role</button>
     </header>
     <div class="kpis" id="boardStats"></div>
+    <section class="week" id="weekStats" aria-label="Weekly stats"></section>
     <div class="board-scroll"><div class="board" id="board"></div></div>
   </section>
 
@@ -200,7 +204,9 @@
       <label for="d-follow">Follow up on <input type="date" id="d-follow"></label>
     </div>
     <label for="d-next">Next step <input type="text" id="d-next" placeholder="e.g. Take-home due Fri"></label>
+    <div class="nudge" id="d-nudge-row"><span id="d-nudge-txt" class="m"></span><button type="button" class="btn sm" id="d-nudge">Followed up today</button></div>
     <label for="d-notes">Notes <textarea id="d-notes" rows="4"></textarea></label>
+    <details class="dlg-prep"><summary>Interview prep from the posting</summary><div id="d-prep"></div></details>
     <div class="dlg-actions">
       <a id="d-open" class="btn ghost" target="_blank" rel="noopener">Open posting ↗</a>
       <button type="button" class="btn ghost" id="d-studio">Tailor &amp; preview</button>
@@ -247,6 +253,7 @@
       <div class="st-tplbox"><div class="lbl-row"><b>Template</b><span class="m">click to switch</span></div><div class="tpl-row compact" id="st-tpls"></div><p class="m tpl-desc" id="st-tpl-desc"></p></div>
       <p class="hint">Edits are saved for this role on this device. Keep job titles, employers, dates and numbers true; the Readiness score flags any number that changes. Use <b>**double asterisks**</b> to make words bold.</p>
       <label for="st-second">Second title <select id="st-second"></select></label>
+      <label for="st-reloc">Relocation line <span class="m">printed next to Pune, India; set from the job's location, clear it to leave it out</span><input id="st-reloc" maxlength="70" placeholder="e.g. Open to relocation to Berlin"></label>
       <div class="st-titles">
         <div class="addrow"><input id="st-title-new" maxlength="40" placeholder="Add your own title, e.g. LLMOps Engineer" aria-label="New second title"><button type="button" class="btn sm" id="st-title-add">Add</button></div>
         <div class="chips" id="st-title-list"></div>
@@ -266,10 +273,11 @@
 
 <script src="assets/vendor/pdfmake.min.js"></script>
 <script src="assets/vendor/carlito_vfs.js"></script>
-<script src="assets/vault.js?v=20261016"></script>
-<script src="assets/match.js?v=20261016"></script>
-<script src="assets/cv.js?v=20261016"></script>
-<script src="assets/studio.js?v=20261016"></script>
-<script src="assets/app.js?v=20261016"></script>
+<script src="assets/vault.js?v=20261017"></script>
+<script src="assets/match.js?v=20261017"></script>
+<script src="assets/cv.js?v=20261017"></script>
+<script src="assets/prep.js?v=20261017"></script>
+<script src="assets/studio.js?v=20261017"></script>
+<script src="assets/app.js?v=20261017"></script>
 </body>
 </html>

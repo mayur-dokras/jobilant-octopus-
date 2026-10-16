@@ -167,14 +167,27 @@ window.CV = (function () {
     return list.map((b, i) => ({ b, i, s: (b.tags || []).filter(t => terms.some(x => x.includes(t) || t.includes(x))).length + hits(b.text, terms) }))
       .sort((x, y) => y.s - x.s || x.i - y.i).map(x => x.b.text);
   }
+  // Where the CV and cover letter say Mayur will move to. Same rules for feed roles and pasted JDs:
+  // UK roles say "the UK"; elsewhere the city of the posting, else the country or "within the EU".
+  // India and remote-from-India roles need no line. A hand-typed job.relocation always wins.
+  const NOT_PLACE = /remote|hybrid|on-?site|office|days?\b|worldwide|anywhere|global|via |emea|europe|flexible|multiple|locations?|^\d/i;
+  function cityOf(location) {
+    return (location || "").split(/[·,|/()•;]|\s[-–]\s/).map(x => x.trim()).find(x => x && x.length > 1 && !NOT_PLACE.test(x)) || "";
+  }
+  function relocPlace(job) {
+    if (job.region === "Remote from India" || job.region === "India") return "";
+    const city = cityOf(job.location);
+    if (job.region === "UK") return "the UK";
+    if (job.region === "US") return city && !/^(us|usa|united states( of america)?)$/i.test(city) ? city : "the US";
+    if (job.region === "Europe" || job.region === "Sweden") return city || (job.region === "Sweden" ? "Sweden" : "within the EU");
+    if (job.region === "New Zealand" || job.region === "Turkey") return city || job.region;
+    return city;
+  }
   function relocation(job) {
     if (typeof job.relocation === "string") return job.relocation;
     if (job.region === "Remote from India" || job.region === "India") return "";
-    if (job.region === "UK") return "Open to relocation to the UK";
-    const city = (job.location || "").split(/[·,|/]/).map(x => x.trim()).find(x => x && !/remote|hybrid|on-site|office/i.test(x));
-    if (job.region === "Europe" || job.region === "Sweden") return city ? `Open to relocation to ${city}` : "Open to relocation within the EU";
-    if (job.region === "New Zealand" || job.region === "Turkey") return city ? `Open to relocation to ${city}` : `Open to relocation to ${job.region}`;
-    return "Open to relocation";
+    const p = relocPlace(job);
+    return p === "within the EU" ? "Open to relocation within the EU" : p ? `Open to relocation to ${p}` : "Open to relocation";
   }
 
   // Measurements taken from Mayur's own CV (Carlito, A4):
@@ -560,8 +573,9 @@ window.CV = (function () {
     const missing = (job.missing || []).filter(m => m && m.length <= 22 && !/\d|check|\bjd\b|posting|see /i.test(m)).slice(0, 2);
     const closest = { backend: "building Python services on PostgreSQL and deploying them with Docker and Kubernetes", mlops: "model deployment and pipeline automation with MLflow, Airflow and Kubernetes", ai: "the AI engineering platform I am building with LLMs, RAG and LangChain" }[key];
     const gap = missing.length ? ` I have not yet used ${listAnd(missing)} in production. My closest experience is ${closest}, and I would put my first weeks into learning ${missing.length > 1 ? "them" : "it"} in your codebase and tooling.` : "";
-    const reloc = job.region === "Remote from India" || job.region === "India" ? "" : job.region === "UK" ? " and am ready to relocate to the UK" :
-      (placeOf(job) && !/europe|sweden/i.test(placeOf(job)) ? ` and am ready to relocate to ${placeOf(job)}` : " and am ready to relocate within the EU");
+    // follows the CV's relocation line (including a hand-edited one), so the two never disagree
+    const line = relocation(job), place = line.replace(/^Open to relocation\s*(to\s*)?/i, "");
+    const reloc = !line ? "" : !/^Open to relocation/i.test(line) ? "" : place.startsWith("within") ? ` and am ready to relocate ${place}` : place ? ` and am ready to relocate to ${place}` : " and am open to relocation";
     const close = `I write tests alongside the code and document what I build so the rest of the team can run it without me, which is how I handed my tools over at Capgemini. I studied for an MSc in Software Engineering at the University of Southampton from 2024 to 2026${reloc}. I would welcome a conversation about how I could contribute to the ${job.company} team.`;
     const lead = key === "mlops" ? mlops : key === "ai" ? ai : cap;
     return [p1, lead, malvox + gap, close];
@@ -621,7 +635,8 @@ window.CV = (function () {
     });
     p.experience = p.experience.map((e, i) => Object.assign({}, e, { bullets: (t.bullets[i] || []).filter(Boolean).map(text => ({ text })) }));
     p.projects = t.projects.filter(Boolean).map(text => ({ text }));
-    return [p, Object.assign({}, job, { summary: t.summary, second_title: t.second, fixed: true })];
+    const extra = typeof t.reloc === "string" ? { relocation: t.reloc.trim() } : {};
+    return [p, Object.assign({}, job, { summary: t.summary, second_title: t.second, fixed: true }, extra)];
   }
   function plainText(p, j) {
     const c = p.contact;
@@ -636,6 +651,6 @@ window.CV = (function () {
     pdfMake.createPdf(def).download(`Mayur_Dokras_CV_${safe}.pdf`);
   }
 
-  return { TEMPLATES, ensureFonts, splitOrg, tailored, applyTailor, plainText, downloadDef, SECOND_TITLES: ["GenAI Engineer", "MLOps Engineer", "AI Engineer", "Applied AI Engineer", "LLMOps Engineer", "Platform Engineer", "DevOps Engineer", "Site Reliability Engineer", "Python Developer", "Software Development Engineer", "Data Platform Engineer", "Cloud Engineer", "API Engineer"],
+  return { TEMPLATES, ensureFonts, splitOrg, tailored, applyTailor, plainText, downloadDef, relocation, cityOf, SECOND_TITLES: ["GenAI Engineer", "MLOps Engineer", "AI Engineer", "Applied AI Engineer", "LLMOps Engineer", "Platform Engineer", "DevOps Engineer", "Site Reliability Engineer", "Python Developer", "Software Development Engineer", "Data Platform Engineer", "Cloud Engineer", "API Engineer"],
     download, downloadLetter, letterDoc, letterParas, doc, build, secondTitle, composeSummary, upgrade, DEFAULT_BANK };
 })();

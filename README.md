@@ -88,6 +88,19 @@ Allow about 15 minutes. Do these steps once, in this order.
 2. In your GitHub notification settings, keep **Email** switched on.
 3. Optional: install the GitHub mobile app for phone alerts.
 
+### 9. Morning email for 90%+ matches (optional, free)
+
+The daily run can email you only the strongest new roles, from your own Gmail. Nothing is sent on days without one.
+
+1. Turn on 2-Step Verification for your Google account: myaccount.google.com → **Security**.
+2. Open myaccount.google.com/apppasswords, type a name such as `Job Octo` and select **Create**. Copy the 16-character password.
+3. In the repository: **Settings → Secrets and variables → Actions → New repository secret**. Add:
+   - `GMAIL_ADDRESS`: your Gmail address
+   - `GMAIL_APP_PASSWORD`: the 16-character app password
+   - `ALERT_EMAIL_TO` (optional): a different address to receive the alert
+4. Optional: under the **Variables** tab add `ALERT_MIN_MATCH` (for example `85`) to change the 90% threshold.
+5. Test it: **Actions → Daily job feed → Run workflow**, tick **Also send a test email**, then **Run workflow**. A test email with your 3 best open roles arrives within a few minutes.
+
 ## Schedule
 
 | Workflow | When | Result |
@@ -103,7 +116,11 @@ GitHub may start scheduled runs a few minutes late.
 - **New for you:** filter by type, region, match and visa odds. Defaults: match 60% and visa 55% or higher.
 - **Resume from JD:** paste the posting, choose a template (or keep Octo Classic), select **Build my best resume**, then edit on the left while the PDF updates in the middle and the scores and gaps update on the right.
 - **Download tailored CV / Cover letter:** read each PDF once before sending, and add a line about the company to the letter.
-- **Board:** drag a card to a new column, or open it to record dates and notes.
+- **Salary:** cards show the pay range when the job board or posting gives one, in its own currency. **Any salary** filters by the top of the range (roughly converted to pounds a year); roles without a salary stay listed unless **Salary listed** is on.
+- **Interview prep:** every role's details, the editor's score panel and each Pipeline card show what the posting stresses most, the line of your CV that proves each point, the gaps to prepare a story for and the likely interview topics.
+- **Relocation line:** set automatically from the job's location (also on Resume from JD, where the region is worked out from the Location box, the title or the posting). You can edit or clear it in the editor.
+- **Pipeline:** drag a card to a new column, or open it to record dates and notes. Seven days after you apply, a red **Follow up** badge appears; after 14 days without an answer the card moves to **No reply**. **Followed up today** in the card restarts the clock.
+- **This week:** applications, replies, interviews and your reply rate, with the last 6 weeks as a chart.
 - **Export backup:** download your board now and then. Use **Import** on another device.
 - **My CV details:** edit the text the CV button uses. Changes stay on that device.
 - **Lock:** forgets the passcode on the current device.
@@ -119,6 +136,8 @@ GitHub may start scheduled runs a few minutes late.
 | No update for a day | Open **Actions**. If scheduled runs were paused after a quiet period, select **Enable**. |
 | Board empty on a new device | Boards are stored per browser. Use **Export backup** and **Import**. |
 | Site still looks old after an upload | GitHub Pages caches files for up to 10 minutes. Wait, then reload once (Ctrl+Shift+R or Cmd+Shift+R). |
+| No morning email | Check the run log under **Email the strongest new matches**. "Gmail refused the login" means the app password is wrong or 2-Step Verification is off. Days without a new 90%+ match send nothing. |
+| No salaries showing | Salaries are saved from the next daily run on. Many postings, most Indian ones included, do not publish pay. |
 | A friend sees few or odd matches on CV Match | Ask them to select **Clear my CV from this device**, then upload again. The page also explains which filter hid the roles and offers one-click fixes. |
 
 ## Changing the passcode
