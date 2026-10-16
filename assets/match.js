@@ -18,7 +18,7 @@ window.Match = (function () {
     let pct = found.length < 3 ? 60 : Math.round(100 * matched.length / found.length);
     let flag = found.length < 3 ? "JD thin: match estimated" : "";
     if (found.length >= 3 && found.length < 5) { pct = Math.min(pct, 75); flag = "Short JD: match capped at 75%"; }
-    const yrs = [...(text || "").matchAll(/(\d{1,2})\s*\+?\s*(?:-\s*\d{1,2}\s*)?(?:years|yrs)/gi)].map(m => +m[1]).filter(n => n > 0 && n <= 15);
+    const yrs = [...(text || "").matchAll(/(\d{1,2})\s*\+?\s*(?:(?:-|to|–)\s*\d{1,2}\s*)?\+?\s*(?:years|yrs)/gi)].map(m => +m[1]).filter(n => n > 0 && n <= 15);
     if (yrs.length && Math.max(...yrs) > yearsHave) {
       const need = Math.max(...yrs);
       pct -= Math.min(15, 5 * (need - yearsHave));

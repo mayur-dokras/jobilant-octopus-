@@ -8,7 +8,7 @@
 <meta name="color-scheme" content="dark light">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
-<link rel="stylesheet" href="assets/app.css">
+<link rel="stylesheet" href="assets/app.css?v=20261016">
 <script>try{var t=localStorage.getItem("jobocto.theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body class="locked">
@@ -30,7 +30,7 @@
   <div class="brand"><div class="logo" aria-hidden="true">🐙</div><div><b>Job Octo</b><small>Mayur Dokras</small></div></div>
   <nav class="nav" aria-label="Sections">
     <span class="nav-h">Workspace</span>
-    <button type="button" class="tab" data-tab="feed"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Jobs for you</span><span class="pill" id="b-feed"></span></button><button type="button" class="tab" data-tab="board"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/></svg><span>Pipeline</span><span class="pill" id="b-board"></span></button><button type="button" class="tab" data-tab="companies"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16"/><path d="M15 9h4a1 1 0 0 1 1 1v11"/><path d="M8 8h3M8 12h3M8 16h3M3 21h18"/></svg><span>Companies</span><span class="pill" id="b-co"></span></button><button type="button" class="tab" data-tab="discovered"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Discovered</span><span class="pill" id="b-disc"></span></button>
+    <button type="button" class="tab tab-hero" data-tab="jd"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M19 15l.8 1.9 1.9.8-1.9.8L19 20.4l-.8-1.9-1.9-.8 1.9-.8z"/></svg><span>Resume from JD</span><span class="pill new-pill">New</span></button><button type="button" class="tab" data-tab="feed"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Jobs for you</span><span class="pill" id="b-feed"></span></button><button type="button" class="tab" data-tab="board"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/></svg><span>Pipeline</span><span class="pill" id="b-board"></span></button><button type="button" class="tab" data-tab="companies"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16"/><path d="M15 9h4a1 1 0 0 1 1 1v11"/><path d="M8 8h3M8 12h3M8 16h3M3 21h18"/></svg><span>Companies</span><span class="pill" id="b-co"></span></button><button type="button" class="tab" data-tab="discovered"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Discovered</span><span class="pill" id="b-disc"></span></button>
     <span class="nav-h">Applications</span>
     <button type="button" class="tab" data-tab="rules"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l2 2 4-4"/><rect x="4" y="3" width="16" height="18" rx="2"/></svg><span>CV rules</span></button><button type="button" class="tab" data-tab="details"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>My CV details</span></button>
     <span class="nav-h">Share</span>
@@ -49,6 +49,39 @@
 </aside>
 
 <main class="main">
+  <!-- RESUME FROM A JOB DESCRIPTION -->
+  <section id="tab-jd" class="panel" hidden>
+    <header class="ph">
+      <div><span class="eyebrow">Resume studio</span><h1>Resume from a job description</h1><p class="sub">Paste any posting. Job Octo picks the title, summary, skills order and bullets from your real experience, scores the result, lists every gap, and lets you edit while the PDF updates beside you.</p></div>
+    </header>
+    <div class="jd-grid">
+      <form id="jdForm" class="jd-card" autocomplete="off" novalidate>
+        <div class="two">
+          <label for="jd-title">Job title <input id="jd-title" placeholder="e.g. GenAI Engineer"></label>
+          <label for="jd-company">Company <input id="jd-company" placeholder="e.g. Capgemini"></label>
+        </div>
+        <div class="two">
+          <label for="jd-loc">Location <input id="jd-loc" placeholder="e.g. Pune, Berlin or London"></label>
+          <label for="jd-reg">Region <select id="jd-reg"><option>India</option><option>UK</option><option>Europe</option><option>Sweden</option><option>US</option><option>New Zealand</option><option>Turkey</option><option>Remote from India</option></select></label>
+        </div>
+        <label for="jd-text">Job description <span class="m">paste the full posting for exact scores</span><textarea id="jd-text" rows="11" placeholder="Paste the job description here"></textarea></label>
+        <div class="jd-live" id="jd-live" aria-live="polite"></div>
+        <div class="lbl-row"><b>Role type</b><span class="m">Auto reads the title and the skills asked</span></div>
+        <div class="seg" id="jd-kind" role="group" aria-label="Role type"><button type="button" data-v="" aria-pressed="true">Auto</button><button type="button" data-v="Backend" aria-pressed="false">Backend</button><button type="button" data-v="MLOps" aria-pressed="false">MLOps</button><button type="button" data-v="AI" aria-pressed="false">GenAI / AI</button></div>
+        <div class="lbl-row"><b>Template</b><span class="m">all single column and ATS-safe; switch any time in the editor</span></div>
+        <div class="tpl-row" id="jd-tpls"></div>
+        <p class="m tpl-desc" id="jd-tpl-desc"></p>
+        <p class="msg" id="jd-msg" role="status"></p>
+        <div class="jd-actions"><button type="button" class="btn ghost" id="jd-clear">Clear</button><span class="spacer"></span><button type="submit" class="btn primary lg" id="jd-build">Build my best resume</button></div>
+      </form>
+      <aside class="jd-side">
+        <section class="jd-card"><h2>Recent builds</h2><div id="jd-recent" class="jd-recent"></div></section>
+        <section class="jd-card"><h2>Which template where</h2><ul class="tpl-guide" id="jd-guide"></ul>
+          <p class="m src">Based on public guidance: <a href="https://airesume.guru/blog/harvard-vs-jakes-resume-template" target="_blank" rel="noopener">Harvard vs Jake's</a> · <a href="https://atsverification.com/blog/uk-cv-format-2026/" target="_blank" rel="noopener">UK CV format</a> · <a href="https://www.europelanguagejobs.com/blog/europass-CV" target="_blank" rel="noopener">Europass in the private sector</a></p></section>
+      </aside>
+    </div>
+  </section>
+
   <!-- JOBS -->
   <section id="tab-feed" class="panel">
     <header class="ph">
@@ -105,11 +138,12 @@
         <li>Job titles, word for word: <b>Backend Engineer, Part-time</b> · <b>Associate II - Software Engineer</b> · <b>Freelance Mobile Application Developer</b>.</li>
         <li>Employers, dates, degrees, metrics and certification names. They are facts about you, not copy to optimise.</li>
         <li>Never add a skill you haven't used because a posting asks for it. Name the gap in the cover letter instead.</li>
-        <li>All 5 projects and all 9 certifications stay on every CV. The AI engineering platform always says <b>in progress</b>.</li>
+        <li>Projects: AItoScreen, the AI engineering platform, SotonBuddy, Alignerr freelance work, Link2Feed and image retrieval. A one-page CV leaves out the least relevant ones only when they do not fit. AItoScreen and the AI engineering platform always say <b>in progress</b>.</li>
+        <li>All 10 certifications stay on every CV, newest first.</li>
       </ul></article>
       <article><h2>Header and subtitle</h2><ul>
-        <li>Line 1: <b>MAYUR DOKRAS</b>. Line 2: <b>Backend Software Engineer | [title from the posting] | 4+ Years Production Experience</b>.</li>
-        <li>Second titles you can use: MLOps Engineer, Platform Engineer, DevOps Engineer, Site Reliability Engineer, Python Developer, Software Development Engineer, Data Platform Engineer, Cloud Engineer, API Engineer.</li>
+        <li>Line 1: <b>MAYUR DOKRAS</b>. Line 2 for MLOps and AI roles: <b>MLOps Engineer | GenAI Engineer | 4+ Years Production Experience</b>; for backend roles: <b>Backend Software Engineer | [title from the posting] | 4+ Years Production Experience</b>.</li>
+        <li>Second titles you can use: GenAI Engineer, MLOps Engineer, AI Engineer, Applied AI Engineer, LLMOps Engineer, Platform Engineer, DevOps Engineer, Site Reliability Engineer, Python Developer, Software Development Engineer, Data Platform Engineer, Cloud Engineer, API Engineer.</li>
         <li>Never use Senior, Lead, Principal, Staff, Architect or Mid-Level, or titles you can't back up (Data Scientist, ML Research Engineer).</li>
         <li>Location: <b>Pune, India</b> plus "Open to relocation to [country of the role]". Never visa, sponsorship, nationality, date of birth or full address on the CV.</li>
       </ul></article>
@@ -129,10 +163,10 @@
         <li>Grouped lines in the "Label: items" format. The group that matches the role type goes first (MLOps and Platform for MLOps roles).</li>
         <li>Inside each line, the posting's tools come first.</li>
         <li>Snowflake = workshop certificates only; GCP = one certificate. Keep them listed, never build a bullet around them.</li>
-        <li>Not on your CV until you've used them: PyTorch, Spark, Kubeflow, SageMaker, ArgoCD, Django, Celery, Rust, C#.</li>
+        <li>Not on your CV until you've used them: LangGraph, Spark, Kubeflow, SageMaker, ArgoCD, Django, Celery, Rust, C#.</li>
       </ul></article>
       <article><h2>Writing and format</h2><ul>
-        <li>A4, one page, single column, no tables, text boxes, images or header/footer content. Standard section names.</li>
+        <li>A4, single column, no tables, text boxes, images or header/footer content. Standard section names. One page for Octo Classic, Jake's and Harvard; up to two pages for the UK CV and Europass style.</li>
         <li>No em or en dashes, curly quotes or ellipsis characters; plain hyphens. No Oxford comma in lists.</li>
         <li>Avoid: spearheaded, leveraged, utilised, delve, robust, seamless, cutting-edge, dynamic, passionate, synergy.</li>
         <li>Document author set to Mayur Dokras. Read the PDF once before sending.</li>
@@ -210,6 +244,7 @@
   </header>
   <div class="st-body">
     <form id="st-form" class="st-edit" onsubmit="return false">
+      <div class="st-tplbox"><div class="lbl-row"><b>Template</b><span class="m">click to switch</span></div><div class="tpl-row compact" id="st-tpls"></div><p class="m tpl-desc" id="st-tpl-desc"></p></div>
       <p class="hint">Edits are saved for this role on this device. Keep job titles, employers, dates and numbers true; the Readiness score flags any number that changes. Use <b>**double asterisks**</b> to make words bold.</p>
       <label for="st-second">Second title <select id="st-second"></select></label>
       <div class="st-titles">
@@ -231,10 +266,10 @@
 
 <script src="assets/vendor/pdfmake.min.js"></script>
 <script src="assets/vendor/carlito_vfs.js"></script>
-<script src="assets/vault.js"></script>
-<script src="assets/match.js"></script>
-<script src="assets/cv.js"></script>
-<script src="assets/studio.js"></script>
-<script src="assets/app.js"></script>
+<script src="assets/vault.js?v=20261016"></script>
+<script src="assets/match.js?v=20261016"></script>
+<script src="assets/cv.js?v=20261016"></script>
+<script src="assets/studio.js?v=20261016"></script>
+<script src="assets/app.js?v=20261016"></script>
 </body>
 </html>
