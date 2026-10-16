@@ -66,6 +66,10 @@ TERMS = {
     "Prometheus": r"\bprometheus\b", "Grafana": r"\bgrafana\b", "ELK": r"\belk\b|elasticsearch|kibana",
     "Datadog": r"\bdatadog\b", "OpenTelemetry": r"opentelemetry|\botel\b", "Observability": r"observability",
     "OAuth2": r"\boauth ?2?\b", "Pytest": r"\bpytest\b", "Git": r"\bgit\b",
+    "Hugging Face": r"hugging ?face|transformers library", "Fine-Tuning": r"fine[- ]?tun", "LoRA": r"\blora\b|\bqlora\b|\bpeft\b",
+    "Vector Databases": r"vector (db|databases?|stores?|search)|pinecone|weaviate|qdrant|milvus|pgvector|\bchroma(db)?\b",
+    "AI Agents": r"\bai agents?\b|\bagentic\b|multi-agent|tool[- ]calling|function[- ]calling", "Prompt Engineering": r"prompt engineering",
+    "LangGraph": r"langgraph",
     # gaps to watch
     "PyTorch": r"\bpytorch\b|\btorch\b", "Spark": r"\bspark\b|pyspark", "Kubeflow": r"\bkubeflow\b",
     "SageMaker": r"sagemaker", "ArgoCD": r"\bargo ?cd\b|\bargo\b", "Seldon": r"\bseldon\b", "Feast": r"\bfeast\b",
@@ -81,10 +85,11 @@ HAVE = {
     "MongoDB", "Redis", "AWS", "Azure", "GCP", "Docker", "Kubernetes", "Helm", "Terraform", "Jenkins",
     "GitHub Actions", "CI/CD", "Linux", "MLflow", "Airflow", "DVC", "TensorFlow", "NumPy", "LLMs", "RAG",
     "LangChain", "OpenAI API", "Prometheus", "Grafana", "ELK", "Datadog", "OpenTelemetry", "Observability",
-    "OAuth2", "Pytest", "Git",
+    "OAuth2", "Pytest", "Git", "PyTorch", "Hugging Face", "Fine-Tuning", "LoRA", "Vector Databases", "AI Agents",
+    "Prompt Engineering",
 }
 _COMPILED = {k: re.compile(v, re.I) for k, v in TERMS.items()}
-YEARS = re.compile(r"(\d{1,2})\s*\+?\s*(?:-\s*\d{1,2}\s*)?(?:years|yrs)", re.I)
+YEARS = re.compile(r"(\d{1,2})\s*\+?\s*(?:(?:-|to|–)\s*\d{1,2}\s*)?\+?\s*(?:years|yrs)", re.I)
 SENIOR_TEXT = re.compile(r"\bsenior (engineer|level)|staff level|10\+ years", re.I)
 
 
