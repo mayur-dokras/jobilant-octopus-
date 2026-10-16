@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-16T13:39:00Z",
+ "generated_at": "2026-10-16T16:37:20Z",
  "regions": [
   "India",
   "UK",
@@ -1134,27 +1134,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "abdc74427027",
-   "title": "Implementation Engineer",
-   "company": "Adyen",
-   "location": "New York",
-   "region": "US",
-   "roles": [
-    "Software Engineer"
-   ],
-   "level": "Mid",
-   "terms": [
-    "REST APIs"
-   ],
-   "years": 4,
-   "visa": 5,
-   "visa_basis": "US: H-1B lottery from India; target EU/UK roles instead",
-   "url": "https://job-boards.greenhouse.io/adyen/jobs/7532705",
-   "posted": "2026-01-22",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "762dee31aa4a",
    "title": "Implementation Engineer",
    "company": "Adyen",
@@ -1193,6 +1172,27 @@
    "visa_basis": "US posting mentions sponsorship, but H-1B is a lottery from India",
    "url": "https://job-boards.greenhouse.io/adyen/jobs/7714607",
    "posted": "2026-04-23",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "abdc74427027",
+   "title": "Implementation Engineer",
+   "company": "Adyen",
+   "location": "New York",
+   "region": "US",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "REST APIs"
+   ],
+   "years": 4,
+   "visa": 5,
+   "visa_basis": "US: H-1B lottery from India; target EU/UK roles instead",
+   "url": "https://job-boards.greenhouse.io/adyen/jobs/7532705",
+   "posted": "2026-01-22",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -1702,34 +1702,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "670c2ee5c9b4",
-   "title": "Senior Software Engineer (Java)",
-   "company": "Adyen",
-   "location": "Madrid",
-   "region": "Europe",
-   "roles": [
-    "Software Engineer",
-    "Backend Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "REST APIs",
-    "Java",
-    "SQL",
-    "PostgreSQL",
-    "ELK",
-    "Maven",
-    "Elasticsearch"
-   ],
-   "years": 6,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/adyen/jobs/6924441",
-   "posted": "2025-07-07",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "46637a48c2c6",
    "title": "Senior Software Engineer (Java) - Banking Accounts",
    "company": "Adyen",
@@ -1949,29 +1921,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "50e70e69909c",
-   "title": "Staff Engineer - Financial Products",
-   "company": "Adyen",
-   "location": "San Francisco",
-   "region": "US",
-   "roles": [
-    "Backend Engineer",
-    "Software Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "Java",
-    "Ruby"
-   ],
-   "years": 10,
-   "visa": 20,
-   "visa_basis": "US posting mentions sponsorship, but H-1B is a lottery from India",
-   "url": "https://job-boards.greenhouse.io/adyen/jobs/7585595",
-   "posted": "2026-02-03",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "375add026d7b",
    "title": "Staff Engineer - Financial Products",
    "company": "Adyen",
@@ -1991,6 +1940,29 @@
    "visa_basis": "US posting mentions sponsorship, but H-1B is a lottery from India",
    "url": "https://job-boards.greenhouse.io/adyen/jobs/6897762",
    "posted": "2025-08-05",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "50e70e69909c",
+   "title": "Staff Engineer - Financial Products",
+   "company": "Adyen",
+   "location": "San Francisco",
+   "region": "US",
+   "roles": [
+    "Backend Engineer",
+    "Software Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Java",
+    "Ruby"
+   ],
+   "years": 10,
+   "visa": 20,
+   "visa_basis": "US posting mentions sponsorship, but H-1B is a lottery from India",
+   "url": "https://job-boards.greenhouse.io/adyen/jobs/7585595",
+   "posted": "2026-02-03",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -3125,57 +3097,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "b8065b7b571b",
-   "title": "AI Architect",
-   "company": "Capco",
-   "location": "Czech Republic; Czech Republic - Brno; Czech Republic - Prague",
-   "region": "Europe",
-   "roles": [
-    "AI / GenAI Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "REST APIs",
-    "Azure",
-    "AI Agents",
-    "Databricks",
-    "Power BI"
-   ],
-   "years": null,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8207152",
-   "posted": "2026-09-16",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
-   "id": "f85505901da4",
-   "title": "AI Architect",
-   "company": "Capco",
-   "location": "Germany - Berlin; Germany - Frankfurt am Main",
-   "region": "Europe",
-   "roles": [
-    "AI / GenAI Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "Python",
-    "REST APIs",
-    "RAG",
-    "Vector Databases",
-    "AI Agents",
-    "LangGraph"
-   ],
-   "years": null,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/7682127",
-   "posted": "2026-03-05",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "d1f327277051",
    "title": "AI Architect",
    "company": "Capco",
@@ -3221,6 +3142,57 @@
    "visa": 60,
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/capco/jobs/8207150",
+   "posted": "2026-09-16",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "f85505901da4",
+   "title": "AI Architect",
+   "company": "Capco",
+   "location": "Germany - Berlin; Germany - Frankfurt am Main",
+   "region": "Europe",
+   "roles": [
+    "AI / GenAI Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Python",
+    "REST APIs",
+    "RAG",
+    "Vector Databases",
+    "AI Agents",
+    "LangGraph"
+   ],
+   "years": null,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/7682127",
+   "posted": "2026-03-05",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "b8065b7b571b",
+   "title": "AI Architect",
+   "company": "Capco",
+   "location": "Czech Republic; Czech Republic - Brno; Czech Republic - Prague",
+   "region": "Europe",
+   "roles": [
+    "AI / GenAI Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "REST APIs",
+    "Azure",
+    "AI Agents",
+    "Databricks",
+    "Power BI"
+   ],
+   "years": null,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8207152",
    "posted": "2026-09-16",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -3405,36 +3377,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "95eebe0b0b55",
-   "title": "AI Technical Architect",
-   "company": "Capco",
-   "location": "US - New York",
-   "region": "US",
-   "roles": [
-    "AI / GenAI Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "Python",
-    "AWS",
-    "Azure",
-    "GCP",
-    "Docker",
-    "Kubernetes",
-    "RAG",
-    "Vector Databases",
-    "AI Agents",
-    "Prompt Engineering"
-   ],
-   "years": 10,
-   "visa": 5,
-   "visa_basis": "US: H-1B lottery from India; target EU/UK roles instead",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8036203",
-   "posted": "2026-06-29",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "7fb459a644b6",
    "title": "AI Technical Architect",
    "company": "Capco",
@@ -3460,6 +3402,36 @@
    "visa": 5,
    "visa_basis": "US: H-1B lottery from India; target EU/UK roles instead",
    "url": "https://job-boards.greenhouse.io/capco/jobs/8036204",
+   "posted": "2026-06-29",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "95eebe0b0b55",
+   "title": "AI Technical Architect",
+   "company": "Capco",
+   "location": "US - New York",
+   "region": "US",
+   "roles": [
+    "AI / GenAI Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Python",
+    "AWS",
+    "Azure",
+    "GCP",
+    "Docker",
+    "Kubernetes",
+    "RAG",
+    "Vector Databases",
+    "AI Agents",
+    "Prompt Engineering"
+   ],
+   "years": 10,
+   "visa": 5,
+   "visa_basis": "US: H-1B lottery from India; target EU/UK roles instead",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8036203",
    "posted": "2026-06-29",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -4109,23 +4081,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "f96e8e1a17a3",
-   "title": "Business Analyst - Retail Energy",
-   "company": "Capco",
-   "location": "US - New York",
-   "region": "US",
-   "roles": [],
-   "level": "Mid",
-   "terms": [],
-   "years": 4,
-   "visa": 5,
-   "visa_basis": "US: H-1B lottery from India; target EU/UK roles instead",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8059556",
-   "posted": "2026-07-17",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "7d46414bea29",
    "title": "Business Analyst - Retail Energy",
    "company": "Capco",
@@ -4156,6 +4111,23 @@
    "visa_basis": "US: H-1B lottery from India; target EU/UK roles instead",
    "url": "https://job-boards.greenhouse.io/capco/jobs/8185815",
    "posted": "2026-10-05",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "f96e8e1a17a3",
+   "title": "Business Analyst - Retail Energy",
+   "company": "Capco",
+   "location": "US - New York",
+   "region": "US",
+   "roles": [],
+   "level": "Mid",
+   "terms": [],
+   "years": 4,
+   "visa": 5,
+   "visa_basis": "US: H-1B lottery from India; target EU/UK roles instead",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8059556",
+   "posted": "2026-07-17",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -4488,27 +4460,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "2a359ea34670",
-   "title": "Data Analyst with German language",
-   "company": "Capco",
-   "location": "Slovakia - Bratislava",
-   "region": "Europe",
-   "roles": [
-    "Data Scientist / Analyst"
-   ],
-   "level": "Mid",
-   "terms": [
-    "Agile"
-   ],
-   "years": null,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/4646357",
-   "posted": "2022-10-20",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "a7737fcfb517",
    "title": "Data Analyst with German language",
    "company": "Capco",
@@ -4530,10 +4481,10 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "8d021bb23d0b",
+   "id": "2a359ea34670",
    "title": "Data Analyst with German language",
    "company": "Capco",
-   "location": "Slovakia - Kosice",
+   "location": "Slovakia - Bratislava",
    "region": "Europe",
    "roles": [
     "Data Scientist / Analyst"
@@ -4545,7 +4496,7 @@
    "years": null,
    "visa": 60,
    "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/4646358",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/4646357",
    "posted": "2022-10-20",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -4568,6 +4519,27 @@
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/capco/jobs/6299628",
    "posted": "2024-10-03",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "8d021bb23d0b",
+   "title": "Data Analyst with German language",
+   "company": "Capco",
+   "location": "Slovakia - Kosice",
+   "region": "Europe",
+   "roles": [
+    "Data Scientist / Analyst"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Agile"
+   ],
+   "years": null,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/4646358",
+   "posted": "2022-10-20",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -4904,26 +4876,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "fc8483a37f88",
-   "title": "Functional Analyst Digital Assets",
-   "company": "Capco",
-   "location": "Belgium - Brussels",
-   "region": "Europe",
-   "roles": [],
-   "level": "Mid",
-   "terms": [
-    "REST APIs",
-    "Agile"
-   ],
-   "years": 5,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8050404",
-   "posted": "2026-07-08",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "8de105097d83",
    "title": "Functional Analyst Digital Assets",
    "company": "Capco",
@@ -4940,6 +4892,26 @@
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/capco/jobs/8081072",
    "posted": "2026-07-23",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "fc8483a37f88",
+   "title": "Functional Analyst Digital Assets",
+   "company": "Capco",
+   "location": "Belgium - Brussels",
+   "region": "Europe",
+   "roles": [],
+   "level": "Mid",
+   "terms": [
+    "REST APIs",
+    "Agile"
+   ],
+   "years": 5,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8050404",
+   "posted": "2026-07-08",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -5007,38 +4979,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "59c722be7e9c",
-   "title": "GCP Data Engineer-LBG",
-   "company": "Capco",
-   "location": "India - Bengaluru",
-   "region": "India",
-   "roles": [
-    "Data Engineer"
-   ],
-   "level": "Mid",
-   "terms": [
-    "REST APIs",
-    "Microservices",
-    "Java",
-    "Spring Boot",
-    "Kafka",
-    "AWS",
-    "Azure",
-    "GCP",
-    "Docker",
-    "Kubernetes",
-    "Jenkins",
-    "CI/CD"
-   ],
-   "years": 7,
-   "visa": -1,
-   "visa_basis": "India: no visa needed",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8194632",
-   "posted": "2026-09-18",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "b65275ef2b5d",
    "title": "GCP Data Engineer-LBG",
    "company": "Capco",
@@ -5066,6 +5006,38 @@
    "visa": -1,
    "visa_basis": "India: no visa needed",
    "url": "https://job-boards.greenhouse.io/capco/jobs/8194631",
+   "posted": "2026-09-18",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "59c722be7e9c",
+   "title": "GCP Data Engineer-LBG",
+   "company": "Capco",
+   "location": "India - Bengaluru",
+   "region": "India",
+   "roles": [
+    "Data Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "REST APIs",
+    "Microservices",
+    "Java",
+    "Spring Boot",
+    "Kafka",
+    "AWS",
+    "Azure",
+    "GCP",
+    "Docker",
+    "Kubernetes",
+    "Jenkins",
+    "CI/CD"
+   ],
+   "years": 7,
+   "visa": -1,
+   "visa_basis": "India: no visa needed",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8194632",
    "posted": "2026-09-18",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -5472,37 +5444,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "1d6235b1a818",
-   "title": "Java Developer",
-   "company": "Capco",
-   "location": "India - Pune",
-   "region": "India",
-   "roles": [
-    "Backend Engineer"
-   ],
-   "level": "Mid",
-   "terms": [
-    "Microservices",
-    "Java",
-    "Spring Boot",
-    "SQL",
-    "Kafka",
-    "MySQL",
-    "Redis",
-    "AWS",
-    "Docker",
-    "Kubernetes",
-    "SQS"
-   ],
-   "years": null,
-   "visa": -1,
-   "visa_basis": "India: no visa needed",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8172870",
-   "posted": "2026-09-02",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "2b1e76fd15fa",
    "title": "Java Developer",
    "company": "Capco",
@@ -5570,6 +5511,37 @@
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/capco/jobs/5886720",
    "posted": "2024-04-08",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "1d6235b1a818",
+   "title": "Java Developer",
+   "company": "Capco",
+   "location": "India - Pune",
+   "region": "India",
+   "roles": [
+    "Backend Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Microservices",
+    "Java",
+    "Spring Boot",
+    "SQL",
+    "Kafka",
+    "MySQL",
+    "Redis",
+    "AWS",
+    "Docker",
+    "Kubernetes",
+    "SQS"
+   ],
+   "years": null,
+   "visa": -1,
+   "visa_basis": "India: no visa needed",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8172870",
+   "posted": "2026-09-02",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -5667,38 +5639,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "a6e646fcde55",
-   "title": "Java Full Stack Developer ",
-   "company": "Capco",
-   "location": "India - Bengaluru",
-   "region": "India",
-   "roles": [
-    "Full Stack Engineer"
-   ],
-   "level": "Mid",
-   "terms": [
-    "REST APIs",
-    "Microservices",
-    "Java",
-    "Spring Boot",
-    "SQL",
-    "MongoDB",
-    "AWS",
-    "Docker",
-    "Kubernetes",
-    "CI/CD",
-    "Git",
-    "Agile"
-   ],
-   "years": 7,
-   "visa": -1,
-   "visa_basis": "India: no visa needed",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8158830",
-   "posted": "2026-08-26",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "a2e992fb29c9",
    "title": "Java Full Stack Developer ",
    "company": "Capco",
@@ -5741,6 +5681,38 @@
    "visa_basis": "India: no visa needed",
    "url": "https://job-boards.greenhouse.io/capco/jobs/7725365",
    "posted": "2026-03-17",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "a6e646fcde55",
+   "title": "Java Full Stack Developer ",
+   "company": "Capco",
+   "location": "India - Bengaluru",
+   "region": "India",
+   "roles": [
+    "Full Stack Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "REST APIs",
+    "Microservices",
+    "Java",
+    "Spring Boot",
+    "SQL",
+    "MongoDB",
+    "AWS",
+    "Docker",
+    "Kubernetes",
+    "CI/CD",
+    "Git",
+    "Agile"
+   ],
+   "years": 7,
+   "visa": -1,
+   "visa_basis": "India: no visa needed",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8158830",
+   "posted": "2026-08-26",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -6201,35 +6173,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "c04eb0c483f6",
-   "title": "Principal Backend Developer (Java)",
-   "company": "Capco",
-   "location": "UK - Edinburgh",
-   "region": "UK",
-   "roles": [
-    "Backend Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "Microservices",
-    "Java",
-    "Spring Boot",
-    "SQL",
-    "Kafka",
-    "AWS",
-    "CI/CD",
-    "OAuth2",
-    "CloudFormation"
-   ],
-   "years": null,
-   "visa": 65,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/7681742",
-   "posted": "2026-03-05",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "efca3d6ff4a1",
    "title": "Principal Backend Developer (Java)",
    "company": "Capco",
@@ -6254,6 +6197,35 @@
    "visa": 65,
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/capco/jobs/7681743",
+   "posted": "2026-03-05",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "c04eb0c483f6",
+   "title": "Principal Backend Developer (Java)",
+   "company": "Capco",
+   "location": "UK - Edinburgh",
+   "region": "UK",
+   "roles": [
+    "Backend Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Microservices",
+    "Java",
+    "Spring Boot",
+    "SQL",
+    "Kafka",
+    "AWS",
+    "CI/CD",
+    "OAuth2",
+    "CloudFormation"
+   ],
+   "years": null,
+   "visa": 65,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/7681742",
    "posted": "2026-03-05",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -6893,10 +6865,10 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "d7ce0eb51caa",
+   "id": "a2af8eebfd18",
    "title": "Senior Backend Engineer - Java",
    "company": "Capco",
-   "location": "UK - Glasgow ",
+   "location": "UK - Edinburgh",
    "region": "UK",
    "roles": [
     "Backend Engineer"
@@ -6916,8 +6888,8 @@
    "years": null,
    "visa": 65,
    "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/7679923",
-   "posted": "2026-03-04",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/7675218",
+   "posted": "2026-03-03",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -6952,10 +6924,10 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "a2af8eebfd18",
+   "id": "d7ce0eb51caa",
    "title": "Senior Backend Engineer - Java",
    "company": "Capco",
-   "location": "UK - Edinburgh",
+   "location": "UK - Glasgow ",
    "region": "UK",
    "roles": [
     "Backend Engineer"
@@ -6975,8 +6947,8 @@
    "years": null,
    "visa": 65,
    "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/7675218",
-   "posted": "2026-03-03",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/7679923",
+   "posted": "2026-03-04",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -7172,6 +7144,23 @@
    "first_seen": "2026-10-14"
   },
   {
+   "id": "bbb91af10934",
+   "title": "Senior Data Architect",
+   "company": "Capco",
+   "location": "India - Bengaluru",
+   "region": "India",
+   "roles": [],
+   "level": "Senior / Lead",
+   "terms": [],
+   "years": 15,
+   "visa": -1,
+   "visa_basis": "India: no visa needed",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8260704",
+   "posted": "2026-10-08",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
    "id": "a24b6c0b4415",
    "title": "Senior Data Architect",
    "company": "Capco",
@@ -7191,23 +7180,6 @@
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/capco/jobs/7570817",
    "posted": "2026-01-28",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
-   "id": "bbb91af10934",
-   "title": "Senior Data Architect",
-   "company": "Capco",
-   "location": "India - Bengaluru",
-   "region": "India",
-   "roles": [],
-   "level": "Senior / Lead",
-   "terms": [],
-   "years": 15,
-   "visa": -1,
-   "visa_basis": "India: no visa needed",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8260704",
-   "posted": "2026-10-08",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -7326,6 +7298,25 @@
    "first_seen": "2026-10-14"
   },
   {
+   "id": "e6ccb8eb89ae",
+   "title": "Senior Data Scientist",
+   "company": "Capco",
+   "location": "India - Pune",
+   "region": "India",
+   "roles": [
+    "Data Scientist / Analyst"
+   ],
+   "level": "Senior / Lead",
+   "terms": [],
+   "years": 6,
+   "visa": -1,
+   "visa_basis": "India: no visa needed",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8079135",
+   "posted": "2026-07-22",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
    "id": "53cb6e6d3b2b",
    "title": "Senior Data Scientist",
    "company": "Capco",
@@ -7350,25 +7341,6 @@
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/capco/jobs/7549466",
    "posted": "2026-01-20",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
-   "id": "e6ccb8eb89ae",
-   "title": "Senior Data Scientist",
-   "company": "Capco",
-   "location": "India - Pune",
-   "region": "India",
-   "roles": [
-    "Data Scientist / Analyst"
-   ],
-   "level": "Senior / Lead",
-   "terms": [],
-   "years": 6,
-   "visa": -1,
-   "visa_basis": "India: no visa needed",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8079135",
-   "posted": "2026-07-22",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -7404,35 +7376,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "666004dbc61a",
-   "title": "Senior DevOps Consultant – Jenkins & Test Automation",
-   "company": "Capco",
-   "location": "Slovakia - Kosice",
-   "region": "Europe",
-   "roles": [
-    "DevOps / Platform / SRE",
-    "QA / Test Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "Python",
-    "Bash",
-    "Jenkins",
-    "CI/CD",
-    "Pytest",
-    "Git",
-    "Playwright",
-    "Selenium"
-   ],
-   "years": null,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8267076",
-   "posted": "2026-10-09",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "3db8ef09db4a",
    "title": "Senior DevOps Consultant – Jenkins & Test Automation",
    "company": "Capco",
@@ -7462,10 +7405,10 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "632fe07717bc",
+   "id": "666004dbc61a",
    "title": "Senior DevOps Consultant – Jenkins & Test Automation",
    "company": "Capco",
-   "location": "Slovakia",
+   "location": "Slovakia - Kosice",
    "region": "Europe",
    "roles": [
     "DevOps / Platform / SRE",
@@ -7485,7 +7428,7 @@
    "years": null,
    "visa": 60,
    "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8267080",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8267076",
    "posted": "2026-10-09",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -7515,6 +7458,35 @@
    "visa": 60,
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/capco/jobs/8267035",
+   "posted": "2026-10-09",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "632fe07717bc",
+   "title": "Senior DevOps Consultant – Jenkins & Test Automation",
+   "company": "Capco",
+   "location": "Slovakia",
+   "region": "Europe",
+   "roles": [
+    "DevOps / Platform / SRE",
+    "QA / Test Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Python",
+    "Bash",
+    "Jenkins",
+    "CI/CD",
+    "Pytest",
+    "Git",
+    "Playwright",
+    "Selenium"
+   ],
+   "years": null,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8267080",
    "posted": "2026-10-09",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -7799,25 +7771,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "3c7d66409df1",
-   "title": "Software Engineer - Avaloq ",
-   "company": "Capco",
-   "location": "Poland - Warsaw",
-   "region": "Europe",
-   "roles": [
-    "Software Engineer"
-   ],
-   "level": "Mid",
-   "terms": [],
-   "years": null,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8232610",
-   "posted": "2026-09-25",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "4e8e1749b247",
    "title": "Software Engineer - Avaloq ",
    "company": "Capco",
@@ -7837,10 +7790,29 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "13bd83e3d51f",
+   "id": "3c7d66409df1",
+   "title": "Software Engineer - Avaloq ",
+   "company": "Capco",
+   "location": "Poland - Warsaw",
+   "region": "Europe",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Mid",
+   "terms": [],
+   "years": null,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8232610",
+   "posted": "2026-09-25",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "61c22fd49ab2",
    "title": "Solution Architect – Financial Services",
    "company": "Capco",
-   "location": "Slovakia",
+   "location": "Slovakia - Bratislava",
    "region": "Europe",
    "roles": [
     "Backend Engineer"
@@ -7855,7 +7827,7 @@
    "years": null,
    "visa": 60,
    "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8195883",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8195791",
    "posted": "2026-09-11",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -7909,10 +7881,10 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "61c22fd49ab2",
+   "id": "13bd83e3d51f",
    "title": "Solution Architect – Financial Services",
    "company": "Capco",
-   "location": "Slovakia - Bratislava",
+   "location": "Slovakia",
    "region": "Europe",
    "roles": [
     "Backend Engineer"
@@ -7927,30 +7899,8 @@
    "years": null,
    "visa": 60,
    "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8195791",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8195883",
    "posted": "2026-09-11",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
-   "id": "f1f91187ad55",
-   "title": "Solution Architect (m/w/d) – Financial Services",
-   "company": "Capco",
-   "location": "Germany - Frankfurt am Main",
-   "region": "Europe",
-   "roles": [
-    "Backend Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "REST APIs",
-    "Microservices"
-   ],
-   "years": null,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8169280",
-   "posted": "2026-09-01",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -7972,50 +7922,6 @@
    "visa": 60,
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/capco/jobs/8169283",
-   "posted": "2026-09-01",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
-   "id": "75a1e8a01285",
-   "title": "Solution Architect (m/w/d) – Financial Services",
-   "company": "Capco",
-   "location": "Germany",
-   "region": "Europe",
-   "roles": [
-    "Backend Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "REST APIs",
-    "Microservices"
-   ],
-   "years": null,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/7921626",
-   "posted": "2026-05-13",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
-   "id": "8549e7755a18",
-   "title": "Solution Architect (m/w/d) – Financial Services",
-   "company": "Capco",
-   "location": "Germany - Dusseldorf",
-   "region": "Europe",
-   "roles": [
-    "Backend Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "REST APIs",
-    "Microservices"
-   ],
-   "years": null,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8169282",
    "posted": "2026-09-01",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -8043,31 +7949,68 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "91bfc8be2e33",
-   "title": "Sr. AI Engineer",
+   "id": "75a1e8a01285",
+   "title": "Solution Architect (m/w/d) – Financial Services",
    "company": "Capco",
-   "location": "US - Charlotte",
-   "region": "US",
+   "location": "Germany",
+   "region": "Europe",
    "roles": [
-    "AI / GenAI Engineer"
+    "Backend Engineer"
    ],
    "level": "Senior / Lead",
    "terms": [
-    "Python",
     "REST APIs",
-    "AWS",
-    "Azure",
-    "GCP",
-    "LLMs",
-    "RAG",
-    "Vector Databases",
-    "Agile"
+    "Microservices"
    ],
-   "years": 5,
-   "visa": 5,
-   "visa_basis": "US: H-1B lottery from India; target EU/UK roles instead",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8054422",
-   "posted": "2026-07-09",
+   "years": null,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/7921626",
+   "posted": "2026-05-13",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "f1f91187ad55",
+   "title": "Solution Architect (m/w/d) – Financial Services",
+   "company": "Capco",
+   "location": "Germany - Frankfurt am Main",
+   "region": "Europe",
+   "roles": [
+    "Backend Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "REST APIs",
+    "Microservices"
+   ],
+   "years": null,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8169280",
+   "posted": "2026-09-01",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "8549e7755a18",
+   "title": "Solution Architect (m/w/d) – Financial Services",
+   "company": "Capco",
+   "location": "Germany - Dusseldorf",
+   "region": "Europe",
+   "roles": [
+    "Backend Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "REST APIs",
+    "Microservices"
+   ],
+   "years": null,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8169282",
+   "posted": "2026-09-01",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -8096,6 +8039,35 @@
    "visa": 5,
    "visa_basis": "US: H-1B lottery from India; target EU/UK roles instead",
    "url": "https://job-boards.greenhouse.io/capco/jobs/8054421",
+   "posted": "2026-07-09",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "91bfc8be2e33",
+   "title": "Sr. AI Engineer",
+   "company": "Capco",
+   "location": "US - Charlotte",
+   "region": "US",
+   "roles": [
+    "AI / GenAI Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Python",
+    "REST APIs",
+    "AWS",
+    "Azure",
+    "GCP",
+    "LLMs",
+    "RAG",
+    "Vector Databases",
+    "Agile"
+   ],
+   "years": 5,
+   "visa": 5,
+   "visa_basis": "US: H-1B lottery from India; target EU/UK roles instead",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8054422",
    "posted": "2026-07-09",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -8330,26 +8302,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "f5149ee60d18",
-   "title": "Trade & Transaction Reporting Business Analyst / Project Manager",
-   "company": "Capco",
-   "location": "UK - London",
-   "region": "UK",
-   "roles": [],
-   "level": "Senior / Lead",
-   "terms": [
-    "Agile",
-    "Jira"
-   ],
-   "years": null,
-   "visa": 65,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/capco/jobs/8172872",
-   "posted": "2026-09-02",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "486cd32fd436",
    "title": "Trade & Transaction Reporting Business Analyst / Project Manager",
    "company": "Capco",
@@ -8365,6 +8317,26 @@
    "visa": 65,
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/capco/jobs/8172915",
+   "posted": "2026-09-02",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "f5149ee60d18",
+   "title": "Trade & Transaction Reporting Business Analyst / Project Manager",
+   "company": "Capco",
+   "location": "UK - London",
+   "region": "UK",
+   "roles": [],
+   "level": "Senior / Lead",
+   "terms": [
+    "Agile",
+    "Jira"
+   ],
+   "years": null,
+   "visa": 65,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/capco/jobs/8172872",
    "posted": "2026-09-02",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -11100,29 +11072,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "3953ac8f2193",
-   "title": "Developer Relations Engineer",
-   "company": "Clera",
-   "location": "San Francisco",
-   "region": "US",
-   "roles": [
-    "Software Engineer"
-   ],
-   "level": "Mid",
-   "terms": [
-    "Python",
-    "REST APIs",
-    "LLMs"
-   ],
-   "years": 2,
-   "visa": 20,
-   "visa_basis": "US posting mentions sponsorship, but H-1B is a lottery from India",
-   "url": "https://jobs.ashbyhq.com/Clera/695cd6f6-67eb-4685-b329-cf96b7d3e1d0",
-   "posted": "2026-10-10",
-   "source": "Ashby",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "946d7f554c85",
    "title": "Senior Platform Engineer",
    "company": "Clera",
@@ -12589,36 +12538,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "a596e59275c9",
-   "title": "Golang Backend Engineer, Financial Product Fraud",
-   "company": "Deliveroo",
-   "location": "London, United Kingdom - Deliveroo",
-   "region": "UK",
-   "roles": [
-    "Backend Engineer"
-   ],
-   "level": "Mid",
-   "terms": [
-    "Python",
-    "Java",
-    "Go",
-    "SQL",
-    "Kafka",
-    "AWS",
-    "GCP",
-    "Node.js",
-    "Ruby",
-    "Kotlin"
-   ],
-   "years": 3,
-   "visa": 65,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/deliveroo/jobs/8269001",
-   "posted": "2026-10-13",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "68a53d6aced1",
    "title": "Golang Backend Engineer, Financial Product Fraud",
    "company": "Deliveroo",
@@ -12645,6 +12564,36 @@
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/deliveroo/jobs/8206659",
    "posted": "2026-09-29",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "a596e59275c9",
+   "title": "Golang Backend Engineer, Financial Product Fraud",
+   "company": "Deliveroo",
+   "location": "London, United Kingdom - Deliveroo",
+   "region": "UK",
+   "roles": [
+    "Backend Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Python",
+    "Java",
+    "Go",
+    "SQL",
+    "Kafka",
+    "AWS",
+    "GCP",
+    "Node.js",
+    "Ruby",
+    "Kotlin"
+   ],
+   "years": 3,
+   "visa": 65,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/deliveroo/jobs/8269001",
+   "posted": "2026-10-13",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -12687,32 +12636,6 @@
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/deliveroo/jobs/8276181",
    "posted": "2026-10-13",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
-   "id": "845e89b66f5f",
-   "title": "Senior Analytics Engineer",
-   "company": "Deliveroo",
-   "location": "London, United Kingdom - Deliveroo",
-   "region": "UK",
-   "roles": [
-    "Data Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "Python",
-    "REST APIs",
-    "SQL",
-    "ETL",
-    "Snowflake",
-    "BigQuery"
-   ],
-   "years": 6,
-   "visa": 65,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/deliveroo/jobs/8202508",
-   "posted": "2026-09-25",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -13820,25 +13743,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "ed883d3bd65f",
-   "title": "Business Developer",
-   "company": "Ebury",
-   "location": "Madrid",
-   "region": "Europe",
-   "roles": [
-    "Software Engineer"
-   ],
-   "level": "Mid",
-   "terms": [],
-   "years": null,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.eu.greenhouse.io/ebury/jobs/4996111101",
-   "posted": "2026-10-02",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "44e464c52aa6",
    "title": "Business Developer",
    "company": "Ebury",
@@ -13854,6 +13758,25 @@
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.eu.greenhouse.io/ebury/jobs/4986784101",
    "posted": "2026-09-25",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "ed883d3bd65f",
+   "title": "Business Developer",
+   "company": "Ebury",
+   "location": "Madrid",
+   "region": "Europe",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Mid",
+   "terms": [],
+   "years": null,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.eu.greenhouse.io/ebury/jobs/4996111101",
+   "posted": "2026-10-02",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -13934,32 +13857,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "5f399657bfd2",
-   "title": "Data Analyst - Fincrime Reporting",
-   "company": "Ebury",
-   "location": "Málaga",
-   "region": "UK",
-   "roles": [
-    "Data Scientist / Analyst"
-   ],
-   "level": "Mid",
-   "terms": [
-    "Python",
-    "SQL",
-    "GCP",
-    "Git",
-    "BigQuery",
-    "dbt"
-   ],
-   "years": 2,
-   "visa": 65,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.eu.greenhouse.io/ebury/jobs/4918365101",
-   "posted": "2026-07-03",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "7e1d23f92c91",
    "title": "Data Analyst - Fincrime Reporting",
    "company": "Ebury",
@@ -13982,6 +13879,32 @@
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.eu.greenhouse.io/ebury/jobs/5000355101",
    "posted": "2026-10-08",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "5f399657bfd2",
+   "title": "Data Analyst - Fincrime Reporting",
+   "company": "Ebury",
+   "location": "Málaga",
+   "region": "UK",
+   "roles": [
+    "Data Scientist / Analyst"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Python",
+    "SQL",
+    "GCP",
+    "Git",
+    "BigQuery",
+    "dbt"
+   ],
+   "years": 2,
+   "visa": 65,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.eu.greenhouse.io/ebury/jobs/4918365101",
+   "posted": "2026-07-03",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -14666,41 +14589,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "5dd3855e8ce9",
-   "title": "Senior Software Engineer (Money Flows)",
-   "company": "Ebury",
-   "location": "Madrid",
-   "region": "Europe",
-   "roles": [
-    "Software Engineer",
-    "DevOps / Platform / SRE",
-    "Backend Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "Python",
-    "FastAPI",
-    "REST APIs",
-    "Kafka",
-    "PostgreSQL",
-    "AWS",
-    "Kubernetes",
-    "Terraform",
-    "Jenkins",
-    "Prometheus",
-    "ELK",
-    "Observability",
-    "Django"
-   ],
-   "years": null,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.eu.greenhouse.io/ebury/jobs/4947568101",
-   "posted": "2026-08-06",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "f097b63b9521",
    "title": "Senior Software Engineer (Money Flows)",
    "company": "Ebury",
@@ -14732,6 +14620,41 @@
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.eu.greenhouse.io/ebury/jobs/4977263101",
    "posted": "2026-09-17",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "5dd3855e8ce9",
+   "title": "Senior Software Engineer (Money Flows)",
+   "company": "Ebury",
+   "location": "Madrid",
+   "region": "Europe",
+   "roles": [
+    "Software Engineer",
+    "DevOps / Platform / SRE",
+    "Backend Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Python",
+    "FastAPI",
+    "REST APIs",
+    "Kafka",
+    "PostgreSQL",
+    "AWS",
+    "Kubernetes",
+    "Terraform",
+    "Jenkins",
+    "Prometheus",
+    "ELK",
+    "Observability",
+    "Django"
+   ],
+   "years": null,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.eu.greenhouse.io/ebury/jobs/4947568101",
+   "posted": "2026-08-06",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -16162,31 +16085,6 @@
    "visa_basis": "Remote role tied to UK residence",
    "url": "https://jobs.ashbyhq.com/faculty/dab2e626-4bdc-4aa1-931d-52c742c92852",
    "posted": "2026-09-21",
-   "source": "Ashby",
-   "first_seen": "2026-10-14"
-  },
-  {
-   "id": "b0eb927169aa",
-   "title": "Data Scientist ",
-   "company": "Faculty",
-   "location": "Remote · Remote (UK)",
-   "region": "UK",
-   "roles": [
-    "Data Scientist / Analyst"
-   ],
-   "level": "Mid",
-   "terms": [
-    "Python",
-    "TensorFlow",
-    "NumPy",
-    "PyTorch",
-    "pandas"
-   ],
-   "years": null,
-   "visa": 10,
-   "visa_basis": "Remote role tied to UK residence",
-   "url": "https://jobs.ashbyhq.com/faculty/fd216949-66f6-4258-9e52-f2067503b75f",
-   "posted": "2026-05-20",
    "source": "Ashby",
    "first_seen": "2026-10-14"
   },
@@ -18882,29 +18780,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "db0ef0565df0",
-   "title": "Manager, Solutions Engineering | NorBen | Remote",
-   "company": "Grafana Labs",
-   "location": "Netherlands (Remote)",
-   "region": "Europe",
-   "roles": [
-    "Software Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "Grafana",
-    "Observability",
-    "Salesforce"
-   ],
-   "years": 5,
-   "visa": 10,
-   "visa_basis": "Remote role tied to Europe residence",
-   "url": "https://job-boards.greenhouse.io/grafanalabs/jobs/6121600004",
-   "posted": "2026-07-22",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "f6df9824edb0",
    "title": "Manager, Solutions Engineering | NorBen | Remote",
    "company": "Grafana Labs",
@@ -18923,6 +18798,29 @@
    "visa": 55,
    "visa_basis": "Employer-led permit country; no wording in posting",
    "url": "https://job-boards.greenhouse.io/grafanalabs/jobs/6122353004",
+   "posted": "2026-07-22",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "db0ef0565df0",
+   "title": "Manager, Solutions Engineering | NorBen | Remote",
+   "company": "Grafana Labs",
+   "location": "Netherlands (Remote)",
+   "region": "Europe",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Grafana",
+    "Observability",
+    "Salesforce"
+   ],
+   "years": 5,
+   "visa": 10,
+   "visa_basis": "Remote role tied to Europe residence",
+   "url": "https://job-boards.greenhouse.io/grafanalabs/jobs/6121600004",
    "posted": "2026-07-22",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -20441,7 +20339,6 @@
    ],
    "level": "Senior / Lead",
    "terms": [
-    "REST APIs",
     "Go",
     "CI/CD",
     "LLMs",
@@ -20500,35 +20397,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "ef2de9ea6b88",
-   "title": "Platform Engineer",
-   "company": "Kaluza",
-   "location": "Bristol, England, United Kingdom; London, England, United Kingdom",
-   "region": "UK",
-   "roles": [
-    "DevOps / Platform / SRE"
-   ],
-   "level": "Mid",
-   "terms": [
-    "REST APIs",
-    "AWS",
-    "Azure",
-    "GCP",
-    "Kubernetes",
-    "Helm",
-    "Terraform",
-    "CI/CD",
-    "Observability"
-   ],
-   "years": null,
-   "visa": 85,
-   "visa_basis": "Posting mentions visa sponsorship or relocation help",
-   "url": "https://www.kaluza.com/job?gh_jid=4965344101",
-   "posted": "2026-09-09",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "14e90999b392",
    "title": "Platform Engineer",
    "company": "Kaluza",
@@ -20558,25 +20426,31 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "476bd91cd330",
-   "title": "Principal Engineer",
+   "id": "ef2de9ea6b88",
+   "title": "Platform Engineer",
    "company": "Kaluza",
-   "location": "Bristol, England, United Kingdom; Edinburgh, Scotland, United Kingdom; London, England, United Kingdom",
+   "location": "Bristol, England, United Kingdom; London, England, United Kingdom",
    "region": "UK",
    "roles": [
-    "Software Engineer"
+    "DevOps / Platform / SRE"
    ],
-   "level": "Senior / Lead",
+   "level": "Mid",
    "terms": [
     "REST APIs",
     "AWS",
-    "CI/CD"
+    "Azure",
+    "GCP",
+    "Kubernetes",
+    "Helm",
+    "Terraform",
+    "CI/CD",
+    "Observability"
    ],
    "years": null,
    "visa": 85,
    "visa_basis": "Posting mentions visa sponsorship or relocation help",
-   "url": "https://www.kaluza.com/job?gh_jid=5004451101",
-   "posted": "2026-10-13",
+   "url": "https://www.kaluza.com/job?gh_jid=4965344101",
+   "posted": "2026-09-09",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -23936,25 +23810,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "717e40baf645",
-   "title": "Engineering Manager",
-   "company": "Monzo Bank",
-   "location": "Barcelona",
-   "region": "Europe",
-   "roles": [
-    "Software Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [],
-   "years": 10,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/monzo/jobs/6945371",
-   "posted": "2025-07-31",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "6c09e200d9c0",
    "title": "Engineering Manager",
    "company": "Monzo Bank",
@@ -23970,6 +23825,25 @@
    "visa_basis": "Remote role tied to UK residence",
    "url": "https://job-boards.greenhouse.io/monzo/jobs/5018066",
    "posted": "2023-04-28",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "717e40baf645",
+   "title": "Engineering Manager",
+   "company": "Monzo Bank",
+   "location": "Barcelona",
+   "region": "Europe",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [],
+   "years": 10,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/monzo/jobs/6945371",
+   "posted": "2025-07-31",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -31860,54 +31734,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "4ddd4a4987c3",
-   "title": "Software Engineer, AI Enablement ",
-   "company": "Tailscale",
-   "location": "Remote (United States)",
-   "region": "US",
-   "roles": [
-    "Software Engineer",
-    "AI / GenAI Engineer"
-   ],
-   "level": "Mid",
-   "terms": [
-    "Python",
-    "LLMs",
-    "Rust"
-   ],
-   "years": 5,
-   "visa": 10,
-   "visa_basis": "Remote role tied to US residence",
-   "url": "https://job-boards.greenhouse.io/tailscale/jobs/4710755005",
-   "posted": "2026-07-24",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
-   "id": "1cafda9f41d5",
-   "title": "Software Engineer, AI Enablement ",
-   "company": "Tailscale",
-   "location": "Remote (United Kingdom)",
-   "region": "UK",
-   "roles": [
-    "Software Engineer",
-    "AI / GenAI Engineer"
-   ],
-   "level": "Mid",
-   "terms": [
-    "Python",
-    "LLMs",
-    "Rust"
-   ],
-   "years": 5,
-   "visa": 10,
-   "visa_basis": "Remote role tied to UK residence",
-   "url": "https://job-boards.greenhouse.io/tailscale/jobs/4718557005",
-   "posted": "2026-07-24",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "ba3a221848a4",
    "title": "Software Engineer, Networking (Dataplane)",
    "company": "Tailscale",
@@ -33211,11 +33037,11 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "a3e90388b9a5",
+   "id": "f5eb128eaa4f",
    "title": "Director of Engineering, KYX",
    "company": "Tide",
-   "location": "India, Hyderabad",
-   "region": "India",
+   "location": "United Kingdom",
+   "region": "UK",
    "roles": [
     "Software Engineer"
    ],
@@ -33224,10 +33050,10 @@
     "AI Agents"
    ],
    "years": null,
-   "visa": -1,
-   "visa_basis": "India: no visa needed",
-   "url": "https://job-boards.greenhouse.io/tide/jobs/8014190003",
-   "posted": "2026-10-06",
+   "visa": 65,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/tide/jobs/8012699003",
+   "posted": "2026-10-05",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -33274,11 +33100,11 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "f5eb128eaa4f",
+   "id": "a3e90388b9a5",
    "title": "Director of Engineering, KYX",
    "company": "Tide",
-   "location": "United Kingdom",
-   "region": "UK",
+   "location": "India, Hyderabad",
+   "region": "India",
    "roles": [
     "Software Engineer"
    ],
@@ -33287,10 +33113,10 @@
     "AI Agents"
    ],
    "years": null,
-   "visa": 65,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/tide/jobs/8012699003",
-   "posted": "2026-10-05",
+   "visa": -1,
+   "visa_basis": "India: no visa needed",
+   "url": "https://job-boards.greenhouse.io/tide/jobs/8014190003",
+   "posted": "2026-10-06",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -33390,42 +33216,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "d538fd07a05f",
-   "title": "Engineering Manager - Accounts Platform",
-   "company": "Tide",
-   "location": "Lithuania",
-   "region": "Europe",
-   "roles": [
-    "DevOps / Platform / SRE",
-    "Backend Engineer",
-    "Software Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "Python",
-    "Microservices",
-    "async",
-    "Java",
-    "Spring Boot",
-    "PostgreSQL",
-    "AWS",
-    "Docker",
-    "Kubernetes",
-    "Terraform",
-    "CI/CD",
-    "Observability",
-    "AI Agents",
-    "ArgoCD"
-   ],
-   "years": null,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/tide/jobs/7780973003",
-   "posted": "2026-06-23",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "0ba74a11e142",
    "title": "Engineering Manager - Accounts Platform",
    "company": "Tide",
@@ -33462,48 +33252,38 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "a78edbfe3116",
-   "title": "Engineering Manager, Financial Services",
+   "id": "d538fd07a05f",
+   "title": "Engineering Manager - Accounts Platform",
    "company": "Tide",
-   "location": "India, Bengaluru",
-   "region": "India",
+   "location": "Lithuania",
+   "region": "Europe",
    "roles": [
-    "Data Engineer",
     "DevOps / Platform / SRE",
-    "Mobile Engineer",
     "Backend Engineer",
     "Software Engineer"
    ],
    "level": "Senior / Lead",
    "terms": [
     "Python",
-    "FastAPI",
-    "REST APIs",
     "Microservices",
+    "async",
     "Java",
     "Spring Boot",
-    "Kafka",
     "PostgreSQL",
     "AWS",
     "Docker",
     "Kubernetes",
     "Terraform",
     "CI/CD",
-    "Datadog",
     "Observability",
-    "ArgoCD",
-    "BigQuery",
-    "Angular",
-    "Swift",
-    "Kotlin",
-    "Flutter",
-    "SQS"
+    "AI Agents",
+    "ArgoCD"
    ],
    "years": null,
-   "visa": -1,
-   "visa_basis": "India: no visa needed",
-   "url": "https://job-boards.greenhouse.io/tide/jobs/7997915003",
-   "posted": "2026-09-17",
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/tide/jobs/7780973003",
+   "posted": "2026-06-23",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -33600,37 +33380,48 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "e4e6a7f42e0e",
-   "title": "Engineering Manager - Manage Money",
+   "id": "a78edbfe3116",
+   "title": "Engineering Manager, Financial Services",
    "company": "Tide",
-   "location": "Bulgaria",
-   "region": "Europe",
+   "location": "India, Bengaluru",
+   "region": "India",
    "roles": [
+    "Data Engineer",
+    "DevOps / Platform / SRE",
     "Mobile Engineer",
     "Backend Engineer",
     "Software Engineer"
    ],
    "level": "Senior / Lead",
    "terms": [
+    "Python",
+    "FastAPI",
+    "REST APIs",
     "Microservices",
-    "async",
     "Java",
     "Spring Boot",
+    "Kafka",
     "PostgreSQL",
     "AWS",
+    "Docker",
+    "Kubernetes",
+    "Terraform",
     "CI/CD",
     "Datadog",
     "Observability",
-    "AI Agents",
+    "ArgoCD",
+    "BigQuery",
     "Angular",
+    "Swift",
+    "Kotlin",
     "Flutter",
     "SQS"
    ],
    "years": null,
-   "visa": 60,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/tide/jobs/7984277003",
-   "posted": "2026-09-02",
+   "visa": -1,
+   "visa_basis": "India: no visa needed",
+   "url": "https://job-boards.greenhouse.io/tide/jobs/7997915003",
+   "posted": "2026-09-17",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -33666,6 +33457,41 @@
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/tide/jobs/7692059003",
    "posted": "2026-04-10",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "e4e6a7f42e0e",
+   "title": "Engineering Manager - Manage Money",
+   "company": "Tide",
+   "location": "Bulgaria",
+   "region": "Europe",
+   "roles": [
+    "Mobile Engineer",
+    "Backend Engineer",
+    "Software Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Microservices",
+    "async",
+    "Java",
+    "Spring Boot",
+    "PostgreSQL",
+    "AWS",
+    "CI/CD",
+    "Datadog",
+    "Observability",
+    "AI Agents",
+    "Angular",
+    "Flutter",
+    "SQS"
+   ],
+   "years": null,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/tide/jobs/7984277003",
+   "posted": "2026-09-02",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -33749,27 +33575,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "cc01054042a9",
-   "title": "Senior Product Analyst",
-   "company": "Tide",
-   "location": "India, Hyderabad",
-   "region": "India",
-   "roles": [],
-   "level": "Senior / Lead",
-   "terms": [
-    "Python",
-    "SQL",
-    "Tableau"
-   ],
-   "years": 6,
-   "visa": -1,
-   "visa_basis": "India: no visa needed",
-   "url": "https://job-boards.greenhouse.io/tide/jobs/8000356003",
-   "posted": "2026-09-21",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "0042b5ce35cc",
    "title": "Senior Product Analyst",
    "company": "Tide",
@@ -33786,6 +33591,27 @@
    "visa": -1,
    "visa_basis": "India: no visa needed",
    "url": "https://job-boards.greenhouse.io/tide/jobs/8000355003",
+   "posted": "2026-09-21",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "cc01054042a9",
+   "title": "Senior Product Analyst",
+   "company": "Tide",
+   "location": "India, Hyderabad",
+   "region": "India",
+   "roles": [],
+   "level": "Senior / Lead",
+   "terms": [
+    "Python",
+    "SQL",
+    "Tableau"
+   ],
+   "years": 6,
+   "visa": -1,
+   "visa_basis": "India: no visa needed",
+   "url": "https://job-boards.greenhouse.io/tide/jobs/8000356003",
    "posted": "2026-09-21",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -33808,6 +33634,53 @@
    "visa_basis": "India: no visa needed",
    "url": "https://job-boards.greenhouse.io/tide/jobs/8006416003",
    "posted": "2026-09-28",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "2f5056193c2a",
+   "title": "Senior Staff Software Engineer, Agentic Platform",
+   "company": "Tide",
+   "location": "United Kingdom",
+   "region": "UK",
+   "roles": [
+    "Software Engineer",
+    "AI / GenAI Engineer",
+    "Data Engineer",
+    "DevOps / Platform / SRE",
+    "Mobile Engineer",
+    "Backend Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Python",
+    "REST APIs",
+    "Microservices",
+    "Java",
+    "Spring Boot",
+    "Kafka",
+    "Snowflake",
+    "PostgreSQL",
+    "MySQL",
+    "AWS",
+    "Docker",
+    "Kubernetes",
+    "Terraform",
+    "CI/CD",
+    "LLMs",
+    "Datadog",
+    "Observability",
+    "AI Agents",
+    "Flask",
+    "Angular",
+    "Flutter",
+    "SQS"
+   ],
+   "years": null,
+   "visa": 65,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/tide/jobs/7702547003",
+   "posted": "2026-04-16",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -33854,6 +33727,53 @@
    "visa": 60,
    "visa_basis": "Known sponsor; no wording in this posting",
    "url": "https://job-boards.greenhouse.io/tide/jobs/7702553003",
+   "posted": "2026-04-16",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14"
+  },
+  {
+   "id": "e7fa9dcd016d",
+   "title": "Senior Staff Software Engineer, Agentic Platform",
+   "company": "Tide",
+   "location": "Lithuania",
+   "region": "Europe",
+   "roles": [
+    "Software Engineer",
+    "AI / GenAI Engineer",
+    "Data Engineer",
+    "DevOps / Platform / SRE",
+    "Mobile Engineer",
+    "Backend Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Python",
+    "REST APIs",
+    "Microservices",
+    "Java",
+    "Spring Boot",
+    "Kafka",
+    "Snowflake",
+    "PostgreSQL",
+    "MySQL",
+    "AWS",
+    "Docker",
+    "Kubernetes",
+    "Terraform",
+    "CI/CD",
+    "LLMs",
+    "Datadog",
+    "Observability",
+    "AI Agents",
+    "Flask",
+    "Angular",
+    "Flutter",
+    "SQS"
+   ],
+   "years": null,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/tide/jobs/7702555003",
    "posted": "2026-04-16",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -33906,96 +33826,29 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "e7fa9dcd016d",
-   "title": "Senior Staff Software Engineer, Agentic Platform",
+   "id": "bf1a9117c23a",
+   "title": "Staff Mobile Engineer",
    "company": "Tide",
-   "location": "Lithuania",
+   "location": "Bulgaria",
    "region": "Europe",
    "roles": [
-    "Software Engineer",
-    "AI / GenAI Engineer",
-    "Data Engineer",
-    "DevOps / Platform / SRE",
-    "Mobile Engineer",
-    "Backend Engineer"
+    "Mobile Engineer"
    ],
    "level": "Senior / Lead",
    "terms": [
-    "Python",
-    "REST APIs",
-    "Microservices",
-    "Java",
-    "Spring Boot",
-    "Kafka",
-    "Snowflake",
-    "PostgreSQL",
-    "MySQL",
-    "AWS",
-    "Docker",
-    "Kubernetes",
-    "Terraform",
+    "React",
+    "GitHub Actions",
     "CI/CD",
-    "LLMs",
     "Datadog",
-    "Observability",
-    "AI Agents",
-    "Flask",
-    "Angular",
     "Flutter",
-    "SQS"
+    "React Native",
+    "Agile"
    ],
    "years": null,
    "visa": 60,
    "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/tide/jobs/7702555003",
-   "posted": "2026-04-16",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
-   "id": "2f5056193c2a",
-   "title": "Senior Staff Software Engineer, Agentic Platform",
-   "company": "Tide",
-   "location": "United Kingdom",
-   "region": "UK",
-   "roles": [
-    "Software Engineer",
-    "AI / GenAI Engineer",
-    "Data Engineer",
-    "DevOps / Platform / SRE",
-    "Mobile Engineer",
-    "Backend Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "Python",
-    "REST APIs",
-    "Microservices",
-    "Java",
-    "Spring Boot",
-    "Kafka",
-    "Snowflake",
-    "PostgreSQL",
-    "MySQL",
-    "AWS",
-    "Docker",
-    "Kubernetes",
-    "Terraform",
-    "CI/CD",
-    "LLMs",
-    "Datadog",
-    "Observability",
-    "AI Agents",
-    "Flask",
-    "Angular",
-    "Flutter",
-    "SQS"
-   ],
-   "years": null,
-   "visa": 65,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/tide/jobs/7702547003",
-   "posted": "2026-04-16",
+   "url": "https://job-boards.greenhouse.io/tide/jobs/7996938003",
+   "posted": "2026-10-06",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -34027,29 +33880,45 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "bf1a9117c23a",
-   "title": "Staff Mobile Engineer",
+   "id": "eca488fdca02",
+   "title": "Staff Software Engineer, Agentic Platform",
    "company": "Tide",
-   "location": "Bulgaria",
-   "region": "Europe",
+   "location": "United Kingdom",
+   "region": "UK",
    "roles": [
-    "Mobile Engineer"
+    "Software Engineer",
+    "Data Engineer",
+    "Mobile Engineer",
+    "Backend Engineer"
    ],
    "level": "Senior / Lead",
    "terms": [
-    "React",
-    "GitHub Actions",
+    "Python",
+    "REST APIs",
+    "Microservices",
+    "Java",
+    "Spring Boot",
+    "Kafka",
+    "Snowflake",
+    "PostgreSQL",
+    "MySQL",
+    "AWS",
+    "Docker",
+    "Kubernetes",
+    "Terraform",
     "CI/CD",
     "Datadog",
+    "AI Agents",
+    "Flask",
+    "Angular",
     "Flutter",
-    "React Native",
-    "Agile"
+    "SQS"
    ],
    "years": null,
-   "visa": 60,
+   "visa": 65,
    "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/tide/jobs/7996938003",
-   "posted": "2026-10-06",
+   "url": "https://job-boards.greenhouse.io/tide/jobs/7701767003",
+   "posted": "2026-04-15",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
   },
@@ -34140,49 +34009,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "eca488fdca02",
-   "title": "Staff Software Engineer, Agentic Platform",
-   "company": "Tide",
-   "location": "United Kingdom",
-   "region": "UK",
-   "roles": [
-    "Software Engineer",
-    "Data Engineer",
-    "Mobile Engineer",
-    "Backend Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "Python",
-    "REST APIs",
-    "Microservices",
-    "Java",
-    "Spring Boot",
-    "Kafka",
-    "Snowflake",
-    "PostgreSQL",
-    "MySQL",
-    "AWS",
-    "Docker",
-    "Kubernetes",
-    "Terraform",
-    "CI/CD",
-    "Datadog",
-    "AI Agents",
-    "Flask",
-    "Angular",
-    "Flutter",
-    "SQS"
-   ],
-   "years": null,
-   "visa": 65,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/tide/jobs/7701767003",
-   "posted": "2026-04-15",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "c7a788a2653b",
    "title": "Staff Software Engineer, Agentic Platform",
    "company": "Tide",
@@ -34226,11 +34052,11 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "5cbc877765c5",
+   "id": "7407bf00e20f",
    "title": "VP Engineering, Ongoing Monitoring",
    "company": "Tide",
-   "location": "United Kingdom",
-   "region": "UK",
+   "location": "India, Hyderabad",
+   "region": "India",
    "roles": [
     "Software Engineer"
    ],
@@ -34239,9 +34065,9 @@
     "AI Agents"
    ],
    "years": null,
-   "visa": 65,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/tide/jobs/7993879003",
+   "visa": -1,
+   "visa_basis": "India: no visa needed",
+   "url": "https://job-boards.greenhouse.io/tide/jobs/7993896003",
    "posted": "2026-09-14",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -34268,11 +34094,11 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "7407bf00e20f",
+   "id": "5cbc877765c5",
    "title": "VP Engineering, Ongoing Monitoring",
    "company": "Tide",
-   "location": "India, Hyderabad",
-   "region": "India",
+   "location": "United Kingdom",
+   "region": "UK",
    "roles": [
     "Software Engineer"
    ],
@@ -34281,9 +34107,9 @@
     "AI Agents"
    ],
    "years": null,
-   "visa": -1,
-   "visa_basis": "India: no visa needed",
-   "url": "https://job-boards.greenhouse.io/tide/jobs/7993896003",
+   "visa": 65,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/tide/jobs/7993879003",
    "posted": "2026-09-14",
    "source": "Greenhouse",
    "first_seen": "2026-10-14"
@@ -42280,53 +42106,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "eef9ee3da518",
-   "title": "Junior Baseband Software Developer",
-   "company": "Ericsson AB",
-   "location": "Stockholm, Sweden",
-   "region": "Sweden",
-   "roles": [
-    "Software Engineer"
-   ],
-   "level": "Junior",
-   "terms": [
-    "Python",
-    "CI/CD",
-    "C++",
-    "C"
-   ],
-   "years": null,
-   "visa": 55,
-   "visa_basis": "Employer-led permit country; no wording in posting",
-   "url": "https://arbetsformedlingen.se/platsbanken/annonser/31580471",
-   "posted": "2026-10-10",
-   "source": "Platsbanken (Sweden)",
-   "first_seen": "2026-10-14"
-  },
-  {
-   "id": "cdff598f7a55",
-   "title": "Join Our Team as a SW Engineer",
-   "company": "FPT Sverige AB",
-   "location": "Göteborg, Sweden",
-   "region": "Sweden",
-   "roles": [
-    "Software Engineer"
-   ],
-   "level": "Mid",
-   "terms": [
-    "Python",
-    "C++",
-    "C"
-   ],
-   "years": 3,
-   "visa": 55,
-   "visa_basis": "Employer-led permit country; no wording in posting",
-   "url": "https://arbetsformedlingen.se/platsbanken/annonser/31576552",
-   "posted": "2026-10-09",
-   "source": "Platsbanken (Sweden)",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "2d192257637f",
    "title": "AI Engineer",
    "company": "Swedbank AB",
@@ -47328,25 +47107,6 @@
    "first_seen": "2026-10-14"
   },
   {
-   "id": "f30182970c0c",
-   "title": "Technical Tester to a Major Bank",
-   "company": "Academic Work Sweden AB",
-   "location": "Sundbyberg, Sweden",
-   "region": "Sweden",
-   "roles": [],
-   "level": "Mid",
-   "terms": [
-    "Agile"
-   ],
-   "years": 1,
-   "visa": 55,
-   "visa_basis": "Employer-led permit country; no wording in posting",
-   "url": "https://arbetsformedlingen.se/platsbanken/annonser/31536432",
-   "posted": "2026-09-30",
-   "source": "Platsbanken (Sweden)",
-   "first_seen": "2026-10-14"
-  },
-  {
    "id": "6b0978398ce1",
    "title": "Senior Android Developer",
    "company": "RebTel Networks AB",
@@ -48087,39 +47847,6 @@
    "first_seen": "2026-10-15"
   },
   {
-   "id": "535b8932556f",
-   "title": "Staff Software Engineer - Full Stack",
-   "company": "Deliveroo",
-   "location": "London, United Kingdom - Deliveroo",
-   "region": "UK",
-   "roles": [
-    "Software Engineer",
-    "Full Stack Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "Python",
-    "REST APIs",
-    "Go",
-    "React",
-    "PostgreSQL",
-    "Redis",
-    "ELK",
-    "Rust",
-    "Scala",
-    "Ruby",
-    "DynamoDB",
-    "Elasticsearch"
-   ],
-   "years": null,
-   "visa": 65,
-   "visa_basis": "Known sponsor; no wording in this posting",
-   "url": "https://job-boards.greenhouse.io/deliveroo/jobs/8281030",
-   "posted": "2026-10-14",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-15"
-  },
-  {
    "id": "cf57c68409bf",
    "title": "Staff Software Engineer - New Verticals",
    "company": "Deliveroo",
@@ -48474,34 +48201,6 @@
    "visa": 10,
    "visa_basis": "Remote role tied to US residence",
    "url": "https://job-boards.greenhouse.io/grafanalabs/jobs/6223924004",
-   "posted": "2026-10-14",
-   "source": "Greenhouse",
-   "first_seen": "2026-10-15"
-  },
-  {
-   "id": "d1474520849b",
-   "title": "Senior Partner Solutions Engineer | East Coast | Remote ",
-   "company": "Grafana Labs",
-   "location": "United States (Remote)",
-   "region": "US",
-   "roles": [
-    "DevOps / Platform / SRE",
-    "Software Engineer"
-   ],
-   "level": "Senior / Lead",
-   "terms": [
-    "AWS",
-    "GCP",
-    "Kubernetes",
-    "Prometheus",
-    "Grafana",
-    "Observability",
-    "Salesforce"
-   ],
-   "years": 6,
-   "visa": 10,
-   "visa_basis": "Remote role tied to US residence",
-   "url": "https://job-boards.greenhouse.io/grafanalabs/jobs/6222975004",
    "posted": "2026-10-14",
    "source": "Greenhouse",
    "first_seen": "2026-10-15"
@@ -49741,6 +49440,35 @@
    "first_seen": "2026-10-16"
   },
   {
+   "id": "034a3a840458",
+   "title": "Data Engineer",
+   "company": "Adyen",
+   "location": "Amsterdam",
+   "region": "Europe",
+   "roles": [
+    "Data Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Python",
+    "SQL",
+    "ETL",
+    "Kafka",
+    "Airflow",
+    "Pytest",
+    "Git",
+    "Spark",
+    "Hadoop"
+   ],
+   "years": 3,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/adyen/jobs/6720006",
+   "posted": "2025-06-27",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-16"
+  },
+  {
    "id": "9f4754a3b4e9",
    "title": "Member of Technical Staff",
    "company": "Adyen",
@@ -50415,6 +50143,29 @@
    "first_seen": "2026-10-16"
   },
   {
+   "id": "46dfba25f21a",
+   "title": "Robotics Engineer, Autonomous Systems (Mid-Level)",
+   "company": "Clera",
+   "location": "Gurugram",
+   "region": "India",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Python",
+    "Linux",
+    "C++"
+   ],
+   "years": 2,
+   "visa": -1,
+   "visa_basis": "India: no visa needed",
+   "url": "https://jobs.ashbyhq.com/Clera/a51e330a-43af-410d-977a-7dc701e9a71f",
+   "posted": "2026-10-16",
+   "source": "Ashby",
+   "first_seen": "2026-10-16"
+  },
+  {
    "id": "b486ae1dd4e0",
    "title": "Founding Engineer",
    "company": "Clera",
@@ -50848,6 +50599,49 @@
    "first_seen": "2026-10-16"
   },
   {
+   "id": "695a8a52ffdc",
+   "title": "Engineer, Accounting Data and Infrastructure Systems",
+   "company": "Deliveroo",
+   "location": "London, England",
+   "region": "UK",
+   "roles": [
+    "DevOps / Platform / SRE"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Snowflake",
+    "dbt"
+   ],
+   "years": 3,
+   "visa": 65,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/deliveroo/jobs/8206469",
+   "posted": "2026-09-18",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-16"
+  },
+  {
+   "id": "85e393cd3e2b",
+   "title": "Engineering Manager – Server-Driven UI (Codeless)",
+   "company": "Deliveroo",
+   "location": "Deliveroo",
+   "region": "UK",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "React"
+   ],
+   "years": 3,
+   "visa": 65,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/deliveroo/jobs/8205977",
+   "posted": "2026-10-16",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-16"
+  },
+  {
    "id": "95ac6054eda9",
    "title": "Senior Enterprise Security Engineer",
    "company": "Deliveroo",
@@ -51149,6 +50943,81 @@
    "first_seen": "2026-10-16"
   },
   {
+   "id": "15512f669749",
+   "title": "Senior Solutions Engineer, Partner | US | Remote ",
+   "company": "Grafana Labs",
+   "location": "United States (Remote)",
+   "region": "US",
+   "roles": [
+    "DevOps / Platform / SRE",
+    "Software Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "AWS",
+    "GCP",
+    "Kubernetes",
+    "Prometheus",
+    "Grafana",
+    "Observability",
+    "Salesforce"
+   ],
+   "years": 6,
+   "visa": 10,
+   "visa_basis": "Remote role tied to US residence",
+   "url": "https://job-boards.greenhouse.io/grafanalabs/jobs/6222975004",
+   "posted": "2026-10-14",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-16"
+  },
+  {
+   "id": "497c4f9122ab",
+   "title": "AppSec Staff Engineer",
+   "company": "Kaluza",
+   "location": "Bristol, England, United Kingdom",
+   "region": "UK",
+   "roles": [
+    "Security Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "AWS",
+    "GCP",
+    "Terraform",
+    "CI/CD"
+   ],
+   "years": null,
+   "visa": 85,
+   "visa_basis": "Posting mentions visa sponsorship or relocation help",
+   "url": "https://www.kaluza.com/job?gh_jid=5004375101",
+   "posted": "2026-10-16",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-16"
+  },
+  {
+   "id": "079e7ab3d16c",
+   "title": "Principal Software Engineer",
+   "company": "Kaluza",
+   "location": "Bristol, England, United Kingdom; Edinburgh, Scotland, United Kingdom; London, England, United Kingdom",
+   "region": "UK",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "REST APIs",
+    "AWS",
+    "CI/CD"
+   ],
+   "years": null,
+   "visa": 85,
+   "visa_basis": "Posting mentions visa sponsorship or relocation help",
+   "url": "https://www.kaluza.com/job?gh_jid=5004451101",
+   "posted": "2026-10-13",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-16"
+  },
+  {
    "id": "e848f3f575eb",
    "title": "Data Analyst (Strategic Projects)",
    "company": "Lendable",
@@ -51191,6 +51060,33 @@
    "url": "https://jobs.ashbyhq.com/lendable/e55c7d29-d493-49f7-8ade-d1a83c574355",
    "posted": "2026-10-15",
    "source": "Ashby",
+   "first_seen": "2026-10-16"
+  },
+  {
+   "id": "ba316a54ec97",
+   "title": "Principal Software Engineer",
+   "company": "Matillion",
+   "location": "Hyderabad",
+   "region": "India",
+   "roles": [
+    "Software Engineer",
+    "Backend Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Java",
+    "Spring Boot",
+    "AWS",
+    "Azure",
+    "GCP",
+    "AI Agents"
+   ],
+   "years": 15,
+   "visa": -1,
+   "visa_basis": "India: no visa needed",
+   "url": "https://jobs.lever.co/matillion/7c5254f3-9d54-4e70-a67d-7ca33bb7fac5",
+   "posted": "2026-10-16",
+   "source": "Lever",
    "first_seen": "2026-10-16"
   },
   {
@@ -51359,6 +51255,34 @@
    "visa_basis": "Remote worldwide: work from India, no visa involved",
    "url": "https://jobs.ashbyhq.com/supabase/cb04ae3a-3a47-4e21-928f-c2456b7b214e",
    "posted": "2026-07-14",
+   "source": "Ashby",
+   "first_seen": "2026-10-16"
+  },
+  {
+   "id": "fffaed76b203",
+   "title": "SDK Engineer - Python",
+   "company": "Supabase",
+   "location": "Remote · Remote, Global",
+   "region": "Remote from India",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Python",
+    "REST APIs",
+    "async",
+    "PostgreSQL",
+    "OAuth2",
+    "Vector Databases",
+    "AI Agents",
+    "Lambda"
+   ],
+   "years": null,
+   "visa": -1,
+   "visa_basis": "Remote worldwide: work from India, no visa involved",
+   "url": "https://jobs.ashbyhq.com/supabase/b65287c7-2071-4bc6-8717-58c090e2a372",
+   "posted": "2026-10-16",
    "source": "Ashby",
    "first_seen": "2026-10-16"
   },
@@ -51586,6 +51510,48 @@
    "url": "https://jobs.ashbyhq.com/wayflyer/37f76daf-0f83-4ec8-be9f-3ddd833458e3",
    "posted": "2026-09-17",
    "source": "Ashby",
+   "first_seen": "2026-10-16"
+  },
+  {
+   "id": "713a3d2c998e",
+   "title": "Senior Software Engineer",
+   "company": "Yugabyte",
+   "location": "Bengaluru",
+   "region": "India",
+   "roles": [
+    "Software Engineer",
+    "AI / GenAI Engineer",
+    "Frontend Engineer",
+    "Backend Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Python",
+    "REST APIs",
+    "Java",
+    "Go",
+    "TypeScript",
+    "JavaScript",
+    "React",
+    "PostgreSQL",
+    "Docker",
+    "Kubernetes",
+    "Linux",
+    "LLMs",
+    "RAG",
+    "Observability",
+    "AI Agents",
+    "Rust",
+    "HTML",
+    "CSS",
+    "C++"
+   ],
+   "years": null,
+   "visa": -1,
+   "visa_basis": "India: no visa needed",
+   "url": "https://job-boards.greenhouse.io/yugabyte/jobs/4717014006",
+   "posted": "2026-10-16",
+   "source": "Greenhouse",
    "first_seen": "2026-10-16"
   },
   {
@@ -51898,6 +51864,29 @@
    "first_seen": "2026-10-16"
   },
   {
+   "id": "02d1249a8c41",
+   "title": "FPGA Validation Engineer",
+   "company": "Ericsson AB",
+   "location": "Stockholm, Sweden",
+   "region": "Sweden",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Python",
+    "Bash",
+    "Linux"
+   ],
+   "years": 5,
+   "visa": 55,
+   "visa_basis": "Employer-led permit country; no wording in posting",
+   "url": "https://arbetsformedlingen.se/platsbanken/annonser/31609340",
+   "posted": "2026-10-16",
+   "source": "Platsbanken (Sweden)",
+   "first_seen": "2026-10-16"
+  },
+  {
    "id": "ba9bcc82bfe7",
    "title": "Associate Software Engineer",
    "company": "Capgemini Engineering Sverige AB",
@@ -52094,6 +52083,27 @@
    "first_seen": "2026-10-16"
   },
   {
+   "id": "e07be8063781",
+   "title": "Geodata Engineer",
+   "company": "Boliden Mineral AB",
+   "location": "Skellefteå, Sweden",
+   "region": "Sweden",
+   "roles": [
+    "Data Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "SQL"
+   ],
+   "years": null,
+   "visa": 55,
+   "visa_basis": "Employer-led permit country; no wording in posting",
+   "url": "https://arbetsformedlingen.se/platsbanken/annonser/31595900",
+   "posted": "2026-10-14",
+   "source": "Platsbanken (Sweden)",
+   "first_seen": "2026-10-16"
+  },
+  {
    "id": "7b36ccebb19c",
    "title": "Embedded Software Engineer",
    "company": "Micropower Sweden AB",
@@ -52115,32 +52125,62 @@
    "first_seen": "2026-10-16"
   },
   {
-   "id": "ffea8d62a33b",
-   "title": "Senior Software Engineer - Flight Operations - Frontend",
-   "company": "Avinode Aktiebolag",
-   "location": "Stockholm, Sweden",
+   "id": "3f419ee11500",
+   "title": "Software Engineer at Bosch Thermotechnology AB",
+   "company": "Bosch Thermoteknik AB",
+   "location": "Tranås, Sweden",
    "region": "Sweden",
    "roles": [
     "Software Engineer",
-    "Frontend Engineer"
+    "Backend Engineer"
    ],
-   "level": "Senior / Lead",
+   "level": "Mid",
    "terms": [
-    "JavaScript",
-    "React",
-    "SQL",
-    "PostgreSQL",
-    "MySQL",
-    "Node.js",
-    ".NET",
-    "Oracle",
-    "C#"
+    "Python",
+    "Go",
+    "Bash",
+    "MongoDB",
+    "Terraform",
+    "Jenkins",
+    "CI/CD",
+    "Linux",
+    "Grafana",
+    "Git",
+    "Maven",
+    "Agile",
+    "Jira"
    ],
-   "years": 7,
+   "years": null,
    "visa": 55,
    "visa_basis": "Employer-led permit country; no wording in posting",
-   "url": "https://arbetsformedlingen.se/platsbanken/annonser/31535755",
-   "posted": "2026-09-30",
+   "url": "https://arbetsformedlingen.se/platsbanken/annonser/31608854",
+   "posted": "2026-10-16",
+   "source": "Platsbanken (Sweden)",
+   "first_seen": "2026-10-16"
+  },
+  {
+   "id": "2f99ed6db91c",
+   "title": "Software Engineer  HVAC Configuration & Calculation Systems (m/f/d)",
+   "company": "Bosch Thermoteknik AB",
+   "location": "Tranås, Sweden",
+   "region": "Sweden",
+   "roles": [
+    "Software Engineer",
+    "Backend Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "React",
+    "Azure",
+    ".NET",
+    "Agile",
+    "C#"
+   ],
+   "years": null,
+   "visa": 55,
+   "visa_basis": "Employer-led permit country; no wording in posting",
+   "url": "https://arbetsformedlingen.se/platsbanken/annonser/31608860",
+   "posted": "2026-10-16",
    "source": "Platsbanken (Sweden)",
    "first_seen": "2026-10-16"
   },
@@ -52205,6 +52245,265 @@
    "posted": "2026-10-16",
    "source": "Platsbanken (Sweden)",
    "first_seen": "2026-10-16"
+  },
+  {
+   "id": "670c2ee5c9b4",
+   "title": "Senior Software Engineer (Java)",
+   "company": "Adyen",
+   "location": "Madrid",
+   "region": "Europe",
+   "roles": [
+    "Software Engineer",
+    "Backend Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "REST APIs",
+    "Java",
+    "SQL",
+    "PostgreSQL",
+    "ELK",
+    "Maven",
+    "Elasticsearch"
+   ],
+   "years": 6,
+   "visa": 60,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/adyen/jobs/6924441",
+   "posted": "2025-07-07",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14",
+   "closed_on": "2026-10-16",
+   "closed": true
+  },
+  {
+   "id": "3953ac8f2193",
+   "title": "Developer Relations Engineer",
+   "company": "Clera",
+   "location": "San Francisco",
+   "region": "US",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Python",
+    "REST APIs",
+    "LLMs"
+   ],
+   "years": 2,
+   "visa": 20,
+   "visa_basis": "US posting mentions sponsorship, but H-1B is a lottery from India",
+   "url": "https://jobs.ashbyhq.com/Clera/695cd6f6-67eb-4685-b329-cf96b7d3e1d0",
+   "posted": "2026-10-10",
+   "source": "Ashby",
+   "first_seen": "2026-10-14",
+   "closed_on": "2026-10-16",
+   "closed": true
+  },
+  {
+   "id": "845e89b66f5f",
+   "title": "Senior Analytics Engineer",
+   "company": "Deliveroo",
+   "location": "London, United Kingdom - Deliveroo",
+   "region": "UK",
+   "roles": [
+    "Data Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Python",
+    "REST APIs",
+    "SQL",
+    "ETL",
+    "Snowflake",
+    "BigQuery"
+   ],
+   "years": 6,
+   "visa": 65,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/deliveroo/jobs/8202508",
+   "posted": "2026-09-25",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14",
+   "closed_on": "2026-10-16",
+   "closed": true
+  },
+  {
+   "id": "b0eb927169aa",
+   "title": "Data Scientist ",
+   "company": "Faculty",
+   "location": "Remote · Remote (UK)",
+   "region": "UK",
+   "roles": [
+    "Data Scientist / Analyst"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Python",
+    "TensorFlow",
+    "NumPy",
+    "PyTorch",
+    "pandas"
+   ],
+   "years": null,
+   "visa": 10,
+   "visa_basis": "Remote role tied to UK residence",
+   "url": "https://jobs.ashbyhq.com/faculty/fd216949-66f6-4258-9e52-f2067503b75f",
+   "posted": "2026-05-20",
+   "source": "Ashby",
+   "first_seen": "2026-10-14",
+   "closed_on": "2026-10-16",
+   "closed": true
+  },
+  {
+   "id": "476bd91cd330",
+   "title": "Principal Engineer",
+   "company": "Kaluza",
+   "location": "Bristol, England, United Kingdom; Edinburgh, Scotland, United Kingdom; London, England, United Kingdom",
+   "region": "UK",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "REST APIs",
+    "AWS",
+    "CI/CD"
+   ],
+   "years": null,
+   "visa": 85,
+   "visa_basis": "Posting mentions visa sponsorship or relocation help",
+   "url": "https://www.kaluza.com/job?gh_jid=5004451101",
+   "posted": "2026-10-13",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14",
+   "closed_on": "2026-10-16",
+   "closed": true
+  },
+  {
+   "id": "4ddd4a4987c3",
+   "title": "Software Engineer, AI Enablement ",
+   "company": "Tailscale",
+   "location": "Remote (United States)",
+   "region": "US",
+   "roles": [
+    "Software Engineer",
+    "AI / GenAI Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Python",
+    "LLMs",
+    "Rust"
+   ],
+   "years": 5,
+   "visa": 10,
+   "visa_basis": "Remote role tied to US residence",
+   "url": "https://job-boards.greenhouse.io/tailscale/jobs/4710755005",
+   "posted": "2026-07-24",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14",
+   "closed_on": "2026-10-16",
+   "closed": true
+  },
+  {
+   "id": "1cafda9f41d5",
+   "title": "Software Engineer, AI Enablement ",
+   "company": "Tailscale",
+   "location": "Remote (United Kingdom)",
+   "region": "UK",
+   "roles": [
+    "Software Engineer",
+    "AI / GenAI Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Python",
+    "LLMs",
+    "Rust"
+   ],
+   "years": 5,
+   "visa": 10,
+   "visa_basis": "Remote role tied to UK residence",
+   "url": "https://job-boards.greenhouse.io/tailscale/jobs/4718557005",
+   "posted": "2026-07-24",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-14",
+   "closed_on": "2026-10-16",
+   "closed": true
+  },
+  {
+   "id": "eef9ee3da518",
+   "title": "Junior Baseband Software Developer",
+   "company": "Ericsson AB",
+   "location": "Stockholm, Sweden",
+   "region": "Sweden",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Junior",
+   "terms": [
+    "Python",
+    "CI/CD",
+    "C++",
+    "C"
+   ],
+   "years": null,
+   "visa": 55,
+   "visa_basis": "Employer-led permit country; no wording in posting",
+   "url": "https://arbetsformedlingen.se/platsbanken/annonser/31580471",
+   "posted": "2026-10-10",
+   "source": "Platsbanken (Sweden)",
+   "first_seen": "2026-10-14",
+   "closed_on": "2026-10-16",
+   "closed": true
+  },
+  {
+   "id": "cdff598f7a55",
+   "title": "Join Our Team as a SW Engineer",
+   "company": "FPT Sverige AB",
+   "location": "Göteborg, Sweden",
+   "region": "Sweden",
+   "roles": [
+    "Software Engineer"
+   ],
+   "level": "Mid",
+   "terms": [
+    "Python",
+    "C++",
+    "C"
+   ],
+   "years": 3,
+   "visa": 55,
+   "visa_basis": "Employer-led permit country; no wording in posting",
+   "url": "https://arbetsformedlingen.se/platsbanken/annonser/31576552",
+   "posted": "2026-10-09",
+   "source": "Platsbanken (Sweden)",
+   "first_seen": "2026-10-14",
+   "closed_on": "2026-10-16",
+   "closed": true
+  },
+  {
+   "id": "f30182970c0c",
+   "title": "Technical Tester to a Major Bank",
+   "company": "Academic Work Sweden AB",
+   "location": "Sundbyberg, Sweden",
+   "region": "Sweden",
+   "roles": [],
+   "level": "Mid",
+   "terms": [
+    "Agile"
+   ],
+   "years": 1,
+   "visa": 55,
+   "visa_basis": "Employer-led permit country; no wording in posting",
+   "url": "https://arbetsformedlingen.se/platsbanken/annonser/31536432",
+   "posted": "2026-09-30",
+   "source": "Platsbanken (Sweden)",
+   "first_seen": "2026-10-14",
+   "closed_on": "2026-10-16",
+   "closed": true
   },
   {
    "id": "b04fcf3ed167",
@@ -56805,6 +57104,71 @@
    "closed": true
   },
   {
+   "id": "535b8932556f",
+   "title": "Staff Software Engineer - Full Stack",
+   "company": "Deliveroo",
+   "location": "London, United Kingdom - Deliveroo",
+   "region": "UK",
+   "roles": [
+    "Software Engineer",
+    "Full Stack Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "Python",
+    "REST APIs",
+    "Go",
+    "React",
+    "PostgreSQL",
+    "Redis",
+    "ELK",
+    "Rust",
+    "Scala",
+    "Ruby",
+    "DynamoDB",
+    "Elasticsearch"
+   ],
+   "years": null,
+   "visa": 65,
+   "visa_basis": "Known sponsor; no wording in this posting",
+   "url": "https://job-boards.greenhouse.io/deliveroo/jobs/8281030",
+   "posted": "2026-10-14",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-15",
+   "closed_on": "2026-10-16",
+   "closed": true
+  },
+  {
+   "id": "d1474520849b",
+   "title": "Senior Partner Solutions Engineer | East Coast | Remote ",
+   "company": "Grafana Labs",
+   "location": "United States (Remote)",
+   "region": "US",
+   "roles": [
+    "DevOps / Platform / SRE",
+    "Software Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "AWS",
+    "GCP",
+    "Kubernetes",
+    "Prometheus",
+    "Grafana",
+    "Observability",
+    "Salesforce"
+   ],
+   "years": 6,
+   "visa": 10,
+   "visa_basis": "Remote role tied to US residence",
+   "url": "https://job-boards.greenhouse.io/grafanalabs/jobs/6222975004",
+   "posted": "2026-10-14",
+   "source": "Greenhouse",
+   "first_seen": "2026-10-15",
+   "closed_on": "2026-10-16",
+   "closed": true
+  },
+  {
    "id": "c677254b5715",
    "title": "Full-Stack Engineer (Backend Leaning) - CoreMusic",
    "company": "ElevenLabs",
@@ -56889,6 +57253,38 @@
    "posted": "2026-10-14",
    "source": "Greenhouse",
    "first_seen": "2026-10-15",
+   "closed_on": "2026-10-16",
+   "closed": true
+  },
+  {
+   "id": "ffea8d62a33b",
+   "title": "Senior Software Engineer - Flight Operations - Frontend",
+   "company": "Avinode Aktiebolag",
+   "location": "Stockholm, Sweden",
+   "region": "Sweden",
+   "roles": [
+    "Software Engineer",
+    "Frontend Engineer"
+   ],
+   "level": "Senior / Lead",
+   "terms": [
+    "JavaScript",
+    "React",
+    "SQL",
+    "PostgreSQL",
+    "MySQL",
+    "Node.js",
+    ".NET",
+    "Oracle",
+    "C#"
+   ],
+   "years": 7,
+   "visa": 55,
+   "visa_basis": "Employer-led permit country; no wording in posting",
+   "url": "https://arbetsformedlingen.se/platsbanken/annonser/31535755",
+   "posted": "2026-09-30",
+   "source": "Platsbanken (Sweden)",
+   "first_seen": "2026-10-16",
    "closed_on": "2026-10-16",
    "closed": true
   },
