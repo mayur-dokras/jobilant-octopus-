@@ -142,7 +142,8 @@
       toast("Building your CV…");
       const t = (S.tailor || {})[j.id];
       if (t && t.summary) {
-        const [p, jj] = CV.applyTailor(PROFILE, j, t), r = await CV.build(p, jj);
+        const [p, jj] = CV.applyTailor(PROFILE, j, t); jj.template = t.template || j.template;
+        const r = await CV.build(p, jj);
         CV.downloadDef(r.def, j.company); toast("CV ready, with your saved edits for this role."); return;
       }
       const r = await CV.download(PROFILE, j);
@@ -153,10 +154,115 @@
   function openStudio(j) {
     if (!PROFILE) { toast("CV profile not loaded"); return; }
     S.tailor = S.tailor || {};
-    Studio.open(j, PROFILE, { get: () => S.tailor[j.id], set: v => { if (v) S.tailor[j.id] = v; else delete S.tailor[j.id]; save(); } }, makeLetter)
-      .catch(err => toast("Could not open the editor: " + err.message));
+    const store = { get: () => S.tailor[j.id], set: v => { if (v) S.tailor[j.id] = v; else delete S.tailor[j.id]; save(); } };
+    // builds started from a pasted JD keep their latest scores for the "Recent builds" list
+    if (S.jd && S.jd[j.id]) store.scores = sc => { if (S.jd[j.id]) { S.jd[j.id].scores = sc; S.jd[j.id].job.template = sc.template; save(); renderJdRecent(); } };
+    return Studio.open(j, PROFILE, store, makeLetter).catch(err => toast("Could not open the editor: " + err.message));
   }
   Studio.init();
+
+  // ------------------------------------------------- resume from a JD ---
+  // Paste a posting; the role type, second title and the content order come from the posting.
+  const AI_T = /\b(llms?|large language model|rag|retrieval[- ]augmented|langchain|langgraph|openai|hugging ?face|fine[- ]?tun\w*|prompt engineering|gen ?ai|generative|ai agents?|agentic|multi-agent|vector (db|database|store)|embeddings?)\b/gi;
+  const OPS_T = /\b(ml ?ops|llm ?ops|mlflow|kubeflow|sagemaker|vertex ai|model (deployment|serving|registry|monitoring)|feature store|airflow|kserve|seldon|bentoml|ml pipelines?)\b/gi;
+  function detectKind(title, jd) {
+    const k = Match.kind(title), ai = new Set((jd.match(AI_T) || []).map(x => x.toLowerCase())).size, ops = new Set((jd.match(OPS_T) || []).map(x => x.toLowerCase())).size;
+    if (k !== "Backend") return k;
+    if (ops >= 3 && ops >= ai) return "MLOps";
+    if (ai >= 3) return "AI";
+    return "Backend";
+  }
+  const REGION_RX = [
+    ["India", /\b(india|pune|mumbai|bengaluru|bangalore|hyderabad|chennai|delhi|gurgaon|gurugram|noida|kolkata|ahmedabad|kochi|nagpur)\b/i],
+    ["UK", /\b(uk|united kingdom|england|scotland|wales|london|manchester|edinburgh|bristol|cambridge|oxford|southampton|leeds|birmingham|glasgow|belfast|reading)\b/i],
+    ["Sweden", /\b(sweden|stockholm|gothenburg|g[oö]teborg|malm[oö]|uppsala|lund)\b/i],
+    ["US", /\b(usa|united states|new york|nyc|san francisco|seattle|austin|boston|chicago|los angeles|remote,? us|california|texas)\b/i],
+    ["New Zealand", /\b(new zealand|auckland|wellington|christchurch)\b/i],
+    ["Turkey", /\b(turkey|t[uü]rkiye|istanbul|ankara|izmir)\b/i],
+    ["Europe", /\b(germany|berlin|munich|hamburg|netherlands|amsterdam|rotterdam|ireland|dublin|france|paris|spain|madrid|barcelona|portugal|lisbon|poland|warsaw|krakow|lithuania|vilnius|luxembourg|belgium|brussels|denmark|copenhagen|finland|helsinki|norway|oslo|austria|vienna|switzerland|zurich|italy|milan|czech|prague|estonia|tallinn|europe|emea)\b/i],
+  ];
+  const regionOf = loc => (REGION_RX.find(([, rx]) => rx.test(loc || "")) || [""])[0];
+  const cleanJdTitle = t => String(t || "").replace(/\s*[-–—|(].*$/, "").replace(/\b(senior|sr\.?|junior|jr\.?|mid[- ]?level|lead|principal|staff|i{1,3}|iv|[1-3])\b/gi, "").replace(/\s+/g, " ").trim();
+  function ownTitles() { try { return JSON.parse(localStorage.getItem("jobocto.titles") || "[]"); } catch (e) { return []; } }
+  let jdKind = "", jdTpl = "octo";
+  function jdJob() {
+    const title = $("jd-title").value.trim(), company = $("jd-company").value.trim() || "Company", jd = $("jd-text").value.trim();
+    const loc = $("jd-loc").value.trim(), region = $("jd-reg").value;
+    const sc = Match.score(title, jd), kind = jdKind || detectKind(title, jd);
+    const want = cleanJdTitle(title).toLowerCase();
+    const second = [...ownTitles(), ...CV.SECOND_TITLES].find(x => x.toLowerCase() === want);
+    let h = 0; for (const ch of title + "|" + company + "|" + jd.slice(0, 400)) h = (h * 31 + ch.charCodeAt(0)) | 0;
+    return { id: "jd-" + (h >>> 0).toString(36), title, company, location: loc, region, kind, description: jd, url: "", source: "Pasted job description",
+      match: sc.match, matched: sc.matched, missing: sc.missing, flag: sc.flag, visa: null, template: jdTpl, second_title: second };
+  }
+  function renderTplPicker() {
+    const reg = $("jd-reg").value, rec = reg === "US" ? "jake" : "octo";
+    $("jd-tpls").innerHTML = Object.entries(CV.TEMPLATES).map(([k, T]) => `<button type="button" class="tpl" data-tpl="${k}" aria-pressed="${k === jdTpl}" title="${esc(T.desc)}">
+      <span class="tpl-thumb t-${k}" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span class="tpl-name">${esc(T.name)}</span><span class="tpl-meta">${T.regions.map(r => `<em>${r}</em>`).join("")}${k === rec ? '<em class="rec">Best fit</em>' : ""}</span></button>`).join("");
+    const T = CV.TEMPLATES[jdTpl];
+    $("jd-tpl-desc").textContent = `${T.name} · ${T.pages === 1 ? "one page" : "up to two pages"}. ${T.desc}`;
+    $("jd-guide").innerHTML = Object.entries(CV.TEMPLATES).map(([k, T]) => `<li><b>${esc(T.name)}</b> <span class="tag">${esc(T.badge)}</span><br><span class="m">${T.regions.join(", ")} · ${T.pages === 1 ? "1 page" : "up to 2 pages"}. ${esc(T.desc)}</span></li>`).join("");
+  }
+  let liveT = null;
+  function renderJdLive() {
+    const title = $("jd-title").value.trim(), jd = $("jd-text").value.trim();
+    if (!jd) { $("jd-live").innerHTML = ""; return; }
+    const sc = Match.score(title, jd), kind = jdKind || detectKind(title, jd), found = Match.found(title + " " + jd);
+    const yrs = Math.max(0, ...[...jd.matchAll(/(\d{1,2})\s*\+?\s*(?:(?:-|to|–)\s*\d{1,2}\s*)?\+?\s*(?:years|yrs)/gi)].map(m => +m[1]).filter(n => n <= 15));
+    $("jd-live").innerHTML = `<div class="live-top"><span class="ring ${sc.match >= 75 ? "m-hi" : sc.match >= 60 ? "m-mid" : "m-lo"}" style="--p:${sc.match}"><b>${sc.match}%</b></span>
+      <div><b>Quick read</b><span class="m">${KIND[kind]} · ${found.length} skills named · ${found.filter(k => !Match.has(k)).length} not on your CV${yrs ? ` · asks ${yrs}+ years` : ""}${sc.flag ? " · " + esc(sc.flag) : ""}</span></div></div>
+      <div class="skills">${found.filter(k => Match.has(k)).map(k => `<span class="sk">${esc(k)}</span>`).join("")}${found.filter(k => !Match.has(k)).map(k => `<span class="sk miss" title="Not on your CV">${esc(k)}</span>`).join("")}</div>`;
+  }
+  function renderJdRecent() {
+    const items = Object.values(S.jd || {}).sort((a, b) => (b.created || "").localeCompare(a.created || ""));
+    $("jd-recent").innerHTML = items.length ? items.map(it => {
+      const sc = it.scores || {}, j = it.job, T = CV.TEMPLATES[j.template] || CV.TEMPLATES.octo;
+      const pill = (l, n) => n == null ? "" : `<span class="mini ${n >= 80 ? "hi" : n >= 60 ? "mid" : "lo"}"><b>${n}</b>${l}</span>`;
+      return `<article class="jd-item" data-id="${esc(j.id)}">
+        <div class="jd-item-top"><div><b>${esc(j.title)}</b><span class="m">${esc(j.company)}${j.location ? " · " + esc(j.location) : ""} · ${esc(T.name)}</span></div><span class="age">${esc(it.created || "")}</span></div>
+        <div class="minis">${pill("ATS", sc.ats)}${pill("JD match", sc.match)}${pill("Ready", sc.ready)}${sc.gaps != null ? `<span class="mini gap"><b>${sc.gaps}</b>gaps</span>` : ""}</div>
+        <div class="jd-item-acts"><button type="button" class="btn sm primary" data-jd="open">Open editor</button><button type="button" class="btn sm" data-jd="letter">Cover letter</button><button type="button" class="btn sm" data-jd="apply"${S.board[j.id] ? " disabled" : ""}>${S.board[j.id] ? "In pipeline" : "Add to Applied"}</button><button type="button" class="btn sm ghost" data-jd="del" aria-label="Delete this build">Delete</button></div>
+      </article>`;
+    }).join("") : `<div class="empty sm">Your builds appear here with their scores, so you can reopen, apply or write the cover letter later.</div>`;
+  }
+  $("jd-kind").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    $("jd-kind").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); jdKind = b.dataset.v; renderJdLive();
+  });
+  $("jd-tpls").addEventListener("click", e => { const b = e.target.closest("[data-tpl]"); if (!b) return; jdTpl = b.dataset.tpl; renderTplPicker(); });
+  ["jd-title", "jd-text"].forEach(id => $(id).addEventListener("input", () => { clearTimeout(liveT); liveT = setTimeout(renderJdLive, 250); }));
+  $("jd-loc").addEventListener("input", () => { const r = regionOf($("jd-loc").value); if (r) { $("jd-reg").value = r; renderTplPicker(); } });
+  $("jd-reg").addEventListener("change", renderTplPicker);
+  $("jd-clear").addEventListener("click", () => { $("jdForm").reset(); jdKind = ""; $("jd-kind").querySelectorAll("button").forEach((x, i) => x.setAttribute("aria-pressed", String(i === 0))); $("jd-live").innerHTML = ""; $("jd-msg").textContent = ""; renderTplPicker(); });
+  $("jdForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    await Match.load();
+    if (!$("jd-title").value.trim()) { $("jd-msg").textContent = "Add the job title from the posting."; $("jd-title").focus(); return; }
+    if ($("jd-text").value.trim().length < 80) { $("jd-msg").textContent = "Paste the job description (at least a few lines) so the scores mean something."; $("jd-text").focus(); return; }
+    $("jd-msg").textContent = "";
+    const j = jdJob();
+    S.jd = S.jd || {}; S.tailor = S.tailor || {};
+    if (S.tailor[j.id] && S.tailor[j.id].template !== jdTpl) S.tailor[j.id].template = jdTpl;
+    S.jd[j.id] = Object.assign({ created: today() }, S.jd[j.id] || {}, { job: j });
+    // the editor scores against the pasted text
+    S.tailor[j.id] = Object.assign(S.tailor[j.id] || {}, { jd: j.description });
+    save(); renderJdRecent();
+    const btn = $("jd-build"); btn.disabled = true; btn.textContent = "Building…";
+    try { await openStudio(j); } finally { btn.disabled = false; btn.textContent = "Build my best resume"; }
+  });
+  $("jd-recent").addEventListener("click", e => {
+    const b = e.target.closest("button[data-jd]"); if (!b) return;
+    const id = b.closest(".jd-item").dataset.id, it = (S.jd || {})[id]; if (!it) return;
+    const act = b.dataset.jd;
+    if (act === "open") openStudio(it.job);
+    if (act === "letter") makeLetter(it.job);
+    if (act === "apply") { addToBoard(it.job, "Applied"); renderJdRecent(); toast("Added to Applied, dated today"); }
+    if (act === "del") {
+      if (b.dataset.confirm !== "1") { b.dataset.confirm = "1"; b.textContent = "Sure?"; return; }
+      delete S.jd[id]; if (S.tailor) delete S.tailor[id]; save(); renderJdRecent(); toast("Build deleted");
+    }
+  });
 
   async function makeLetter(j) {
     if (!PROFILE) { toast("CV profile not loaded"); return; }
@@ -364,7 +470,8 @@
     $("refresh").textContent = DATA.seeded_by_hand ? "Starter list. Waiting for the first daily run."
       : when ? `Updated ${when.toLocaleDateString(undefined, { day: "numeric", month: "short" })} ${when.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} · ${DATA.companies_checked ?? "?"} boards checked` : "Waiting for the first daily run";
     renderAll(); fillDetails();
-    show(["feed", "board", "companies", "discovered", "rules", "details"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "feed");
+    renderTplPicker(); renderJdRecent();
+    show(["jd", "feed", "board", "companies", "discovered", "rules", "details"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "feed");
     S.lastVisit = today(); save();
     Match.load();
     return true;

@@ -33,18 +33,20 @@ window.Studio = (function () {
     const sub = [p.first_title, j.first_title, j.second_title].join(" ").toLowerCase();
     const titleHit = titleWords.length ? titleWords.filter(w => sub.includes(w)).length / titleWords.length : 1;
     const top = [...weighted].sort((a, b) => b.w - a.w).slice(0, 6), topInSum = top.length ? top.filter(x => x.inSum).length / top.length : 1;
-    const words = cv.split(/\s+/).length;
+    const words = cv.split(/\s+/).length, maxPages = meta.maxPages || 1, wordMax = maxPages > 1 ? 1150 : 850;
     const expB = p.experience.flatMap(e => e.bullets.map(b => b.text)), allB = expB.concat(p.projects.map(b => b.text));
     const quant = expB.filter(b => /\d/.test(b)).length / (expB.length || 1);
     const verbs = expB.filter(b => VERBS.test(b.trim())).length / (expB.length || 1);
     const banned = BANNED.filter(w => cvL.includes(w));
     const badChars = BAD_CHARS.test(cv);
     // facts must survive editing: every number in the original bullets still appears, nothing new invented
-    const origNums = original.experience.flatMap(e => e.bullets.map(b => typeof b === "string" ? b : b.text)).join(" ");
+    // numbers are checked against the automatic version for this job (relevance trimming may leave bullets out)
+    const auto = ctx.auto || { bullets: original.experience.map(e => e.bullets.map(b => typeof b === "string" ? b : b.text)), projects: [] };
+    const origNums = auto.bullets.flat().join(" ");
     const origAll = origNums + " " + original.projects.map(b => typeof b === "string" ? b : b.text).join(" ") + " 4+ " + JSON.stringify(original.summaries || {});
     const newNums = [...new Set((expB.join(" ") + " " + summary + " " + allB.join(" ")).match(/\d+(?:[.,]\d+)?/g) || [])].filter(n => !origAll.includes(n));
     const lostNums = (origNums.match(/\d+(?:[.,]\d+)?%?/g) || []).filter(n => !cv.includes(n.replace("%", "")));
-    const yrsAsked = Math.max(0, ...[...jd.matchAll(/(\d{1,2})\s*\+?\s*(?:-\s*\d{1,2}\s*)?(?:years|yrs)/gi)].map(m => +m[1]).filter(n => n <= 15));
+    const yrsAsked = Math.max(0, ...[...jd.matchAll(/(\d{1,2})\s*\+?\s*(?:(?:-|to|–)\s*\d{1,2}\s*)?\+?\s*(?:years|yrs)/gi)].map(m => +m[1]).filter(n => n <= 15));
     const sumWords = summary.split(/\s+/).length;
 
     const S = (label, pts, max, tip) => ({ label, pts: Math.round(pts * 10) / 10, max, tip: pts < max - 0.01 ? tip : "" });
@@ -67,7 +69,7 @@ window.Studio = (function () {
       S("Contact details parseable (email, phone, location, LinkedIn)", [p.contact.email, p.contact.phone, p.contact.location, (p.contact.links || [])[0]].filter(Boolean).length * 2.5, 10, "Keep email, phone, city and LinkedIn as plain text in the body, not in a page header."),
       S("Single column, text PDF, standard font, no tables or images", 10, 10, ""),
       S("Consistent date format", p.experience.every(e => /^[A-Z][a-z]{2} \d{4} - ([A-Z][a-z]{2} \d{4}|Present)$/.test(e.dates)) ? 5 : 2, 5, "Use one date format everywhere: \"Nov 2021 - Nov 2024\"."),
-      S("One page, 450 to 850 words", (meta.pages === 1 ? 5 : 0) + (words >= 450 && words <= 850 ? 5 : 2.5), 10, meta.pages > 1 ? "The CV runs onto a second page. Shorten a bullet or the summary." : `The CV has ${words} words. Aim for 450 to 850.`),
+      S(maxPages > 1 ? `Up to 2 pages, 450 to ${wordMax} words` : "One page, 450 to 850 words", (meta.pages <= maxPages ? 5 : 0) + (words >= 450 && words <= wordMax ? 5 : 2.5), 10, meta.pages > maxPages ? `The CV runs past ${maxPages === 1 ? "one page" : "two pages"}. Shorten a bullet or the summary.` : `The CV has ${words} words. Aim for 450 to ${wordMax}.`),
     ];
     const ready = [
       S("Facts unchanged (numbers, titles, employers, dates)", (newNums.length || lostNums.length) ? 0 : 20, 20,
@@ -83,6 +85,7 @@ window.Studio = (function () {
     ];
     const total = arr => Math.round(arr.reduce((n, x) => n + x.pts, 0) / arr.reduce((n, x) => n + x.max, 0) * 100);
     return {
+      yrsAsked, titleHit, jobTitle: ctx.job.title, sub: [j.first_title || p.first_title, j.second_title].filter(Boolean).join(" | "),
       match: { n: Math.max(0, total(match) - matchPenalty), parts: match, notes: matchNotes, matched: weighted.filter(x => x.on).map(x => x.k), gaps: missingGap.map(x => x.k), addable: missingHave.map(x => x.k) },
       ats: { n: total(ats), parts: ats, notes: [] },
       ready: { n: total(ready), parts: ready, notes: [] },
@@ -105,8 +108,36 @@ window.Studio = (function () {
       <details><summary>How this is calculated</summary><table class="calc">${s.parts.map(x => `<tr><td>${esc(x.label)}</td><td>${x.pts}/${x.max}</td></tr>`).join("")}</table></details>
     </section>`;
   }
+  // Requirements in the posting that a CV cannot prove or that need a decision before applying.
+  const LANG = "german|french|dutch|swedish|spanish|italian|polish|turkish|japanese|mandarin|portuguese|danish|norwegian|finnish|czech|hebrew|arabic|korean";
+  const CHECKS = [
+    [new RegExp(`\\b(${LANG})\\b[^.;]{0,50}\\b(fluen|native|required|proficien|c1|c2|b2|business[- ]level|essential|must)`, "i"), m => `Language: the posting asks for ${m[1][0].toUpperCase() + m[1].slice(1)}. Apply only if you can work in it.`],
+    [new RegExp(`\\b(fluen\\w*|native|proficien\\w*|business[- ]level)\\b[^.;]{0,30}\\b(${LANG})\\b`, "i"), m => `Language: the posting asks for ${m[2][0].toUpperCase() + m[2].slice(1)}. Apply only if you can work in it.`],
+    [/\b(phd|doctorate|doctoral)\b/i, () => "Education: a PhD is mentioned. Check whether it is required or only preferred."],
+    [/\b(security clearance|sc clearance|dv clearance|eligible for clearance|clearance required)\b/i, () => "Security clearance is mentioned. It usually needs citizenship or long UK residence."],
+    [/(not|unable to|cannot|can't|do not|won't|will not)\s+(be able to\s+)?(offer|provide|sponsor|support)[^.]{0,40}(visa|sponsor)|no visa sponsorship|without (the need for )?sponsorship|must (already )?have (the )?(full )?right to work/i, () => "Sponsorship: the posting says it will not sponsor a visa."],
+    [/\b(team lead|people management|line[- ]manag\w*|manage a team of)\b/i, () => "People management is expected. Show mentoring and ownership, but do not claim a lead title."],
+    [/\b(aws|azure|gcp|google cloud|kubernetes|cka|ckad|terraform)\b[^.]{0,25}\bcertifi(ed|cation)/i, m => { const c = /^(cka|ckad|aws|gcp)$/i.test(m[1]) ? m[1].toUpperCase() : m[1][0].toUpperCase() + m[1].slice(1); return `Certification: the posting mentions ${/^[aeiou]/i.test(c) ? "an" : "a"} ${c} certification you do not list.`; }],
+    [/\bon-?call\b/i, () => "On-call rota mentioned. Your 40+ production defects and MTTR work is the evidence to point to."],
+    [/\b(\d)\s*days?\s*(a|per)\s*week\s*(in|on-?site|at)\b|\bfully on-?site\b|\bon-?site only\b/i, () => "Office attendance: the role is fully or partly on-site."],
+  ];
+  function gapsCard(r) {
+    const jd = ($("st-jd").value || "");
+    const rows = [];
+    r.match.gaps.forEach(k => rows.push(["gap", `${k}`, "Not on your CV. Do not add it; name it honestly in the cover letter."]));
+    r.match.addable.forEach(k => rows.push(["fix", k, "You have this skill but this CV does not show it.", k]));
+    if (r.yrsAsked > 4) rows.push(["check", `${r.yrsAsked}+ years asked`, "You have 4+. Apply if the posting treats years as a guide, and lead with numbers."]);
+    if (r.titleHit < 1) rows.push(["check", "Title", `The posting says "${r.jobTitle}"; your subtitle says "${r.sub}". Pick the closest second title you can defend.`]);
+    const seen = new Set();
+    CHECKS.forEach(([rx, say]) => { const m = jd.match(rx); if (m) { const t = say(m); if (!seen.has(t)) { seen.add(t); rows.push(["check", t.split(":")[0].replace(/ is .*| mentioned.*/, ""), t.includes(":") ? t.slice(t.indexOf(":") + 1).trim() : t]); } } });
+    const n = { gap: r.match.gaps.length, fix: r.match.addable.length, check: rows.filter(x => x[0] === "check").length };
+    return `<section class="score gaps"><h3>Gaps between your CV and this JD</h3>
+      <div class="gap-sum"><span class="g-gap">${n.gap} skill gap${n.gap === 1 ? "" : "s"}</span><span class="g-fix">${n.fix} quick fix${n.fix === 1 ? "" : "es"}</span><span class="g-check">${n.check} to check</span></div>
+      ${rows.length ? `<ul class="gap-list">${rows.map(([t, k, msg, add]) => `<li class="g-${t}"><b>${esc(k)}</b><span>${esc(msg)}</span>${add ? `<button type="button" class="btn sm" data-add-skill="${esc(add)}">Add to skills</button>` : ""}</li>`).join("")}</ul>` : `<p class="m">No gaps found. Paste the full posting for a complete check.</p>`}
+    </section>`;
+  }
   function renderScores(r) {
-    $("st-scores").innerHTML =
+    $("st-scores").innerHTML = gapsCard(r) +
       scoreCard("ATS score", "How well an applicant tracking system can read this CV and match it to the posting.", r.ats) +
       scoreCard("JD match", "Share of the posting's hard skills your CV shows, weighted by importance, plus title fit.", r.match) +
       scoreCard("Readiness", "Recruiter-facing quality: facts intact, summary length, action verbs, measurable results, clean wording.", r.ready) +
@@ -120,10 +151,23 @@ window.Studio = (function () {
       second: $("st-second").value, summary: $("st-summary").value.trim(), skills: $("st-skills").value,
       bullets: ctx.base.experience.map((e, i) => $("st-b" + i).value.split("\n").map(x => x.trim()).filter(Boolean)),
       projects: $("st-projects").value.split("\n").map(x => x.trim()).filter(Boolean), jd: $("st-jd").value,
+      template: ctx.template,
     };
   }
+  function fillTemplates() {
+    const rec = recommend(ctx.job);
+    $("st-tpls").innerHTML = Object.entries(CV.TEMPLATES).map(([k, T]) => `<button type="button" class="tpl" data-tpl="${k}" aria-pressed="${k === ctx.template}" title="${esc(T.desc)}">
+      <span class="tpl-thumb t-${k}" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span class="tpl-name">${esc(T.name)}</span>
+      <span class="tpl-meta">${T.regions.map(r => `<em>${r}</em>`).join("")}${k === rec ? '<em class="rec">Best fit</em>' : ""}</span></button>`).join("");
+    const T = CV.TEMPLATES[ctx.template];
+    $("st-tpl-desc").textContent = `${T.name} · ${T.pages === 1 ? "one page" : "up to two pages"}. ${T.desc}`;
+  }
+  // US tech postings read best in Jake's layout; everywhere else Mayur's own style.
+  function recommend(job) { return job.region === "US" ? "jake" : "octo"; }
   function fillForm(t) {
     fillTitles(t.second);
+    fillTemplates();
     $("st-summary").value = t.summary; $("st-skills").value = t.skills; $("st-projects").value = t.projects.join("\n");
     $("st-roles").innerHTML = ctx.base.experience.map((e, i) => `<label for="st-b${i}">${esc(e.title)} <span class="m">· ${esc(e.org.split(",")[0])} · ${esc(e.dates)}</span>
       <textarea id="st-b${i}" rows="${Math.max(3, (t.bullets[i] || []).length * 2 + 1)}">${esc((t.bullets[i] || []).join("\n"))}</textarea></label>`).join("");
@@ -165,14 +209,18 @@ window.Studio = (function () {
     $("st-status").textContent = "Updating preview…";
     const t = readForm();
     ctx.store.set(t);
-    const [p, j] = CV.applyTailor(ctx.base, ctx.job, t);
-    const r = await CV.build(p, j);
+    const [p, j0] = CV.applyTailor(ctx.base, ctx.job, t), j = Object.assign(j0, { template: ctx.template });
+    let r;
+    try { r = await CV.build(p, j); } catch (e) { $("st-status").textContent = "Could not build: " + e.message; return; }
     if (my !== building) return;
     ctx.def = r.def;
-    const meta = { pages: r.pages, lines: r.lines };
-    renderScores(score(t, p, j, meta, t.jd || jdDefault(ctx.job), ctx.base));
-    $("st-status").textContent = `${r.pages === 1 ? "1 page" : r.pages + " pages"} · body ${r.used[0]}pt · summary ${r.lines} line${r.lines === 1 ? "" : "s"}${r.squeezed ? " · too long, text squeezed" : ""}`;
-    $("st-status").classList.toggle("warn", r.pages > 1 || r.lines > 5 || !!r.squeezed);
+    const meta = { pages: r.pages, lines: r.lines, maxPages: r.maxPages || 1 };
+    const res = score(t, p, j, meta, t.jd || jdDefault(ctx.job), ctx.base);
+    renderScores(res);
+    if (ctx.store.scores) ctx.store.scores({ ats: res.ats.n, match: res.match.n, ready: res.ready.n, gaps: res.match.gaps.length, template: ctx.template });
+    const T = CV.TEMPLATES[ctx.template];
+    $("st-status").textContent = `${T.name} · ${r.pages === 1 ? "1 page" : r.pages + " pages"} · body ${r.used[0]}pt · summary ${r.lines} line${r.lines === 1 ? "" : "s"}${r.squeezed ? " · too long, text squeezed" : ""}`;
+    $("st-status").classList.toggle("warn", r.pages > (r.maxPages || 1) || r.lines > 5 || !!r.squeezed);
     pdfMake.createPdf(r.def).getBuffer(async buf => {
       if (my !== building) return;
       try { await paint(new Uint8Array(buf), my); } catch (e) { $("st-status").textContent += " · preview failed: " + e.message; }
@@ -206,12 +254,15 @@ window.Studio = (function () {
 
   async function open(job, profile, store, makeLetter) {
     await Match.load();
-    ctx = { job, base: CV.upgrade(profile), store, makeLetter, def: null };
+    const saved0 = store.get();
+    ctx = { job, base: CV.upgrade(profile), store, makeLetter, def: null, template: (saved0 && saved0.template) || job.template || "octo" };
     $("st-title").textContent = job.title; $("st-sub").textContent = `${job.company} · ${job.location || job.region || ""}`;
     $("studio").showModal(); loadPdfjs().catch(() => {});
     $("st-status").textContent = "Building the tailored version…"; $("st-scores").innerHTML = ""; $("st-frame").replaceChildren();
     const saved = store.get();
-    const t = saved && saved.summary ? saved : Object.assign(await CV.tailored(profile, job), { jd: saved && saved.jd });
+    const auto = await CV.tailored(profile, Object.assign({}, job, { template: ctx.template }));
+    ctx.auto = auto;
+    const t = saved && saved.summary ? saved : Object.assign(auto, { jd: saved && saved.jd });
     fillForm(t); refresh();
   }
   function init() {
@@ -221,9 +272,35 @@ window.Studio = (function () {
     $("st-title-list").addEventListener("click", e => { const b = e.target.closest("[data-title]"); if (b) removeTitle(b.dataset.title); });
     $("st-reset").addEventListener("click", async () => {
       const jd = $("st-jd").value; ctx.store.set(null);
-      fillForm(Object.assign(await CV.tailored(ctx.base, ctx.job), { jd })); refresh();
+      const auto = await CV.tailored(ctx.base, Object.assign({}, ctx.job, { template: ctx.template })); ctx.auto = auto;
+      fillForm(Object.assign(auto, { jd })); refresh();
     });
     $("st-dl").addEventListener("click", () => { if (ctx && ctx.def) CV.downloadDef(ctx.def, ctx.job.company); });
+    // switching template rebuilds the automatic version for that layout (page limits differ),
+    // unless the CV has hand edits, which are kept as typed
+    $("st-tpls").addEventListener("click", async e => {
+      const b = e.target.closest("[data-tpl]"); if (!b || !ctx || b.dataset.tpl === ctx.template) return;
+      ctx.template = b.dataset.tpl; fillTemplates();
+      const cur = readForm(), edited = ctx.auto && (cur.summary !== ctx.auto.summary || cur.skills !== ctx.auto.skills || JSON.stringify(cur.bullets) !== JSON.stringify(ctx.auto.bullets) || cur.projects.join("\n") !== ctx.auto.projects.join("\n") || cur.second !== ctx.auto.second);
+      $("st-status").textContent = "Switching template…";
+      if (!edited) {
+        const auto = await CV.tailored(ctx.base, Object.assign({}, ctx.job, { template: ctx.template })); ctx.auto = auto;
+        fillForm(Object.assign(auto, { jd: cur.jd }));
+      }
+      refresh();
+    });
+    // "Add to skills" in the gaps card: the skill goes on the skills line that fits it best
+    $("st-scores").addEventListener("click", e => {
+      const b = e.target.closest("[data-add-skill]"); if (!b) return;
+      const k = b.dataset.addSkill, lines = $("st-skills").value.split("\n");
+      const pick = /llm|rag|langchain|openai|hugging|fine|lora|agent|prompt|pytorch|tensorflow|vector/i.test(k) ? /ai|llm/i
+        : /mlflow|airflow|dvc|docker|kubernetes|helm|terraform|jenkins|ci\/cd|github actions|linux/i.test(k) ? /mlops|platform|deploy/i
+        : /sql|postgres|mysql|mongo|redis/i.test(k) ? /databases/i : /aws|azure|gcp/i.test(k) ? /cloud/i
+        : /prometheus|grafana|elk|datadog|opentelemetry|observab|oauth/i.test(k) ? /observab|security/i : /pytest|test/i.test(k) ? /quality/i : /backend/i;
+      let i = lines.findIndex(l => pick.test(l.split(":")[0])); if (i < 0) i = 0;
+      lines[i] = lines[i].replace(/\s*$/, "") + (lines[i].includes(":") ? ", " : "") + k;
+      $("st-skills").value = lines.join("\n"); note(`${k} added to "${lines[i].split(":")[0]}"`); refresh();
+    });
     $("st-letter").addEventListener("click", () => ctx && ctx.makeLetter(ctx.job));
     $("st-close").addEventListener("click", () => $("studio").close());
     $("studio").addEventListener("close", () => { clearTimeout(timer); building++; });
