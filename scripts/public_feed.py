@@ -18,7 +18,7 @@ KEEP_DAYS_CLOSED = 3  # closed postings disappear quickly from the public page
 
 # Standard roles shown as chips on the match page: label -> title pattern.
 STANDARD_ROLES = {
-    "Software Engineer": r"software (engineer|developer|development engineer)|\bsde\b|\bswe\b|application developer|programmer",
+    "Software Engineer": r"software (engineer|developer|development engineer)|\bsde\b|\bswe\b|application developer|programmer|product engineer|systems engineer|distributed systems|member of technical staff|\bmts\b",
     "Backend Engineer": r"back[- ]?end|java developer|java engineer|python developer|python engineer|node(\.js)? (developer|engineer)|golang|\bgo engineer|api engineer|integration (developer|engineer)",
     "Frontend Engineer": r"front[- ]?end|react|angular|vue|ui (engineer|developer)|web developer|javascript (developer|engineer)",
     "Full Stack Engineer": r"full[- ]?stack",
@@ -62,7 +62,34 @@ PUBLIC_TERMS = {k: v for k, v in TERMS.items() if k != "C#"}
 PUBLIC_TERMS.update(EXTRA_TERMS)
 PUBLIC_TERMS["C#"] = r"c#"
 _TERM_RX = {k: re.compile(v, re.I) for k, v in PUBLIC_TERMS.items()}
-YEARS = re.compile(r"(\d{1,2})\s*\+?\s*(?:-\s*\d{1,2}\s*)?(?:years|yrs)", re.I)
+YEARS = re.compile(r"(\d{1,2})\s*\+?\s*(?:(?:-|to|–)\s*\d{1,2}\s*)?\+?\s*(?:years|yrs)", re.I)
+
+
+# When the title alone names no standard role (e.g. "Senior II Product Engineer",
+# "Java Distributed Systems Engineer"), infer roles from the skills in the posting so the
+# job still reaches people who want that kind of work. Before this, about 4 in 10 postings
+# had no role and never appeared on the match page.
+TERM_ROLES = [
+    ("AI / GenAI Engineer", {"LLMs", "RAG", "LangChain", "OpenAI API", "Hugging Face", "AI Agents", "LangGraph", "Fine-Tuning", "Prompt Engineering"}, 2),
+    ("MLOps / ML Engineer", {"MLflow", "Kubeflow", "SageMaker", "Vertex AI", "KServe", "PyTorch", "TensorFlow", "scikit-learn", "Feast", "Seldon"}, 2),
+    ("Data Engineer", {"Spark", "Airflow", "dbt", "Databricks", "BigQuery", "Snowflake", "ETL", "Kafka", "Hadoop"}, 2),
+    ("DevOps / Platform / SRE", {"Kubernetes", "Terraform", "Helm", "ArgoCD", "Prometheus", "Grafana", "CloudFormation", "Observability"}, 3),
+    ("Frontend Engineer", {"React", "Angular", "Vue", "Next.js", "CSS", "HTML", "Redux", "Tailwind"}, 2),
+    ("Mobile Engineer", {"Swift", "Kotlin", "Flutter", "React Native"}, 1),
+    ("QA / Test Engineer", {"Selenium", "Cypress", "Playwright", "Jest"}, 2),
+    ("Backend Engineer", {"Java", "Spring Boot", "Go", "Node.js", "Django", "Flask", "FastAPI", "Microservices", "Hibernate", "C#", ".NET", "Ruby", "PHP", "Rust", "Scala"}, 1),
+]
+
+
+def roles_for(title: str, terms: list) -> list:
+    roles = [k for k, rx in _ROLE_RX.items() if rx.search(title or "")]
+    if roles and roles != ["Software Engineer"]:
+        return roles
+    have = set(terms)
+    roles += [r for r, keys, need in TERM_ROLES if len(have & keys) >= need and r not in roles]
+    if re.search(r"engineer|developer|programmer|\bsde\b|\bswe\b", title or "", re.I) and "Software Engineer" not in roles:
+        roles.append("Software Engineer")
+    return roles
 
 
 def keep_public(title: str) -> bool:
@@ -107,7 +134,7 @@ def public_job(raw, company):
         "company": raw.get("company") or company["name"],
         "location": loc,
         "region": region,
-        "roles": [k for k, rx in _ROLE_RX.items() if rx.search(title)],
+        "roles": roles_for(title, terms),
         "level": level_of(title),
         "terms": terms[:30],
         "years": max(asked) if asked else None,

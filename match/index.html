@@ -8,8 +8,8 @@
 <meta name="color-scheme" content="dark light">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
-<link rel="stylesheet" href="../assets/app.css">
-<link rel="stylesheet" href="match.css">
+<link rel="stylesheet" href="../assets/app.css?v=20261016">
+<link rel="stylesheet" href="match.css?v=20261016">
 <script>try{var t=localStorage.getItem("jobocto.theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body>
@@ -72,7 +72,7 @@
       </section>
     </aside>
 
-    <section class="mresults">
+    <section class="mresults" id="mresults">
       <div class="kpis" id="kpis"></div>
       <div class="listhead"><span class="count" id="count"></span><span class="grow"></span>
         <select id="sort" aria-label="Sort"><option value="match">Best match first</option><option value="new">Newest first</option><option value="visa">Best visa odds first</option></select></div>
@@ -83,6 +83,6 @@
   <p class="foot">Job Octo CV Match · job postings are collected from public company job boards and Sweden's Platsbanken. Match % compares the skills in each posting with the skills in your CV; visa odds assume you are applying from India.</p>
 </main>
 <div id="toast" role="status" aria-live="polite"></div>
-<script src="match.js"></script>
+<script src="match.js?v=20261016"></script>
 </body>
 </html>
