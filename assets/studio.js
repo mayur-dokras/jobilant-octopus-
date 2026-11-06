@@ -23,11 +23,13 @@ window.Studio = (function () {
   function score(t, p, j, meta, jd, original) {
     const cv = CV.plainText(p, j), cvL = cv.toLowerCase(), jdL = jd.toLowerCase();
     const summary = String(j.summary).replace(/\*\*/g, "");
+    // JD match comes from assets/jdscore.js: weighted sections, exact tools, CV evidence by section, must-have caps
+    const fit = JDScore.score(jd, p, { summary, visa: ctx.job.visa });
     const terms = Match.found(jd);
     // weight: 2 when the term is in the job title or repeated in the JD, else 1
     const weighted = terms.map(k => ({ k, w: (Match.test(k, ctx.job.title) || Match.count(k, jd) > 1) ? 2 : 1, on: Match.test(k, cv), inSum: Match.test(k, summary) }));
     const wAll = weighted.reduce((n, x) => n + x.w, 0) || 1, wOn = weighted.filter(x => x.on).reduce((n, x) => n + x.w, 0);
-    const coverage = terms.length ? wOn / wAll : 0.6;
+    const coverage = fit.must.length + fit.resp.length + fit.nice.length === 0 ? (terms.length ? wOn / wAll : 0.6) : fit.coverage;
     const missingHave = weighted.filter(x => !x.on && Match.has(x.k)), missingGap = weighted.filter(x => !x.on && !Match.has(x.k));
     const titleWords = (ctx.job.title || "").toLowerCase().split(/[^a-z+]+/).filter(w => w.length > 2 && !/senior|junior|mid|level|team|the|and/.test(w));
     const sub = [p.first_title, j.first_title, j.second_title].join(" ").toLowerCase();
@@ -46,23 +48,21 @@ window.Studio = (function () {
     const origAll = origNums + " " + original.projects.map(b => typeof b === "string" ? b : b.text).join(" ") + " 4+ " + JSON.stringify(original.summaries || {});
     const newNums = [...new Set((expB.join(" ") + " " + summary + " " + allB.join(" ")).match(/\d+(?:[.,]\d+)?/g) || [])].filter(n => !origAll.includes(n));
     const lostNums = (origNums.match(/\d+(?:[.,]\d+)?%?/g) || []).filter(n => !cv.includes(n.replace("%", "")));
-    const yrsAsked = Math.max(0, ...[...jd.matchAll(/(\d{1,2})\s*\+?\s*(?:(?:-|to|–)\s*\d{1,2}\s*)?\+?\s*(?:years|yrs)/gi)].map(m => +m[1]).filter(n => n <= 15));
+    const yrsAsked = fit.years.need || 0;
     const sumWords = summary.split(/\s+/).length;
 
     const S = (label, pts, max, tip) => ({ label, pts: Math.round(pts * 10) / 10, max, tip: pts < max - 0.01 ? tip : "" });
 
-    const match = [
-      S("Hard skills from the JD found in your CV (weighted)", 80 * coverage, 80, missingHave.length
-        ? `On your skills list but not on this CV: ${missingHave.map(x => x.k).join(", ")}. If you have really used them, add them to the skills line and, if they matter for this role, to the summary.`
-        : `The remaining JD skills are real gaps (${missingGap.map(x => x.k).join(", ") || "none"}). Do not add them; name them honestly in the cover letter.`),
-      S("Role title alignment", 20 * titleHit, 20, `Your subtitle does not echo the posting's title "${ctx.job.title}". Pick the closest second title you can defend (e.g. Python Developer or MLOps Engineer).`),
-    ];
-    let matchPenalty = 0, matchNotes = [];
-    if (yrsAsked > 4) { matchPenalty = Math.min(15, 5 * (yrsAsked - 4)); matchNotes.push(`The JD asks for ${yrsAsked}+ years; you have 4+. Apply only if the posting treats years as a guide, and show depth with numbers.`); }
-    if (terms.length < 5) matchNotes.push("The JD text is short, so this score is an estimate. Paste the full job description above for an exact result.");
+    // every row of the match score is one JD requirement (or a cap / years deduction), so each point is traceable
+    const match = fit.trace.map(t => ({ label: t.label + (t.note ? ` (${t.note})` : ""), pts: t.pts, max: t.max, tip: "" }));
+    const matchNotes = fit.suggestions.filter(x => x.kind !== "nice").slice(0, 6).map(x => `${x.item}: ${x.text}`);
+    if (fit.thin) matchNotes.push("Few requirements could be read from this text, so the score is capped at 70%. Paste the full job description for an exact result.");
+    // skills you really have (My CV details) that this tailored CV does not show: safe to add
+    const fitItems = [...fit.must, ...fit.resp, ...fit.nice].flatMap(r => r.items);
+    const addable = [...new Set(fitItems.filter(x => x.status === "missing" || x.status === "related").map(x => x.any.find(k => Match.has(k) && !Match.test(k, cv))).filter(Boolean))];
 
     const ats = [
-      S("Keyword match", 40 * coverage, 40, missingHave.length ? `Use the posting's exact wording for skills you have and show them: ${missingHave.map(x => x.k).join(", ")}.` : ""),
+      S("Keyword match (requirements shown, weighted)", 40 * coverage, 40, addable.length ? `Use the posting's exact wording for skills you have and show them: ${addable.join(", ")}.` : "Show must-have tools in experience bullets, not only in the skills list."),
       S("Job title match", 10 * titleHit, 10, "Use a second title that matches the posting's title wording."),
       S("Keywords placed in the summary", 5 * topInSum, 5, `Name the posting's top skills in the summary too: ${top.filter(x => !x.inSum && x.on).map(x => x.k).join(", ") || "already covered"}. Systems weight a keyword more when it appears near the top.`),
       S("Standard section headings", 10, 10, ""),
@@ -86,7 +86,8 @@ window.Studio = (function () {
     const total = arr => Math.round(arr.reduce((n, x) => n + x.pts, 0) / arr.reduce((n, x) => n + x.max, 0) * 100);
     return {
       yrsAsked, titleHit, jobTitle: ctx.job.title, sub: [j.first_title || p.first_title, j.second_title].filter(Boolean).join(" | "),
-      match: { n: Math.max(0, total(match) - matchPenalty), parts: match, notes: matchNotes, matched: weighted.filter(x => x.on).map(x => x.k), gaps: missingGap.map(x => x.k), addable: missingHave.map(x => x.k) },
+      match: { n: fit.pct, parts: match, notes: matchNotes, matched: fit.covered, gaps: fit.missing.filter(k => !addable.includes(k)), addable, fit },
+      quality: JDScore.quality(p, original, { pages: meta.pages, maxPages, summary, skillGroups: p.skill_groups }),
       ats: { n: total(ats), parts: ats, notes: [] },
       ready: { n: total(ready), parts: ready, notes: [] },
       words,
@@ -121,29 +122,48 @@ window.Studio = (function () {
     [/\bon-?call\b/i, () => "On-call rota mentioned. Your 40+ production defects and MTTR work is the evidence to point to."],
     [/\b(\d)\s*days?\s*(a|per)\s*week\s*(in|on-?site|at)\b|\bfully on-?site\b|\bon-?site only\b/i, () => "Office attendance: the role is fully or partly on-site."],
   ];
+  // The match report, in this order: score and reason, blockers and warnings, must-haves (with the CV line that
+  // proves each), responsibilities, nice-to-haves, honest suggestions, then CV checks (not part of the score).
+  const MARK = { covered: "✓", partial: "◐", learning: "◐", related: "~", missing: "✗" };
+  const STATUS = { covered: "covered", partial: "partly covered", missing: "missing" };
+  function reqList(rows, addable) {
+    if (!rows.length) return `<p class="m">None in this posting.</p>`;
+    return `<ul class="gap-list fit">${rows.map(r => `<li class="${r.status === "covered" ? "g-ok" : r.status === "partial" ? "g-check" : "g-gap"}">
+      <b>${esc(r.text)}</b><span class="m">${STATUS[r.status]} · ${Math.round(r.credit * 100)}% of ${r.weight} pts</span>
+      ${r.items.map(x => `<span class="fit-item fit-${x.status}"><b>${MARK[x.status]} ${esc(x.label)}</b> ${x.status === "related" ? `related experience: ${esc(x.proof)}` : x.status === "missing" ? "not on this CV" : esc(x.proof)}${x.status === "learning" ? ` <em>(${esc(x.tag)})</em>` : x.where === "skills" ? " <em>(skills list only)</em>" : ""}</span>${(x.status === "missing" || x.status === "related") && x.any.some(k => addable.includes(k)) ? `<button type="button" class="btn sm" data-add-skill="${esc(x.any.find(k => addable.includes(k)))}">Add to skills (you have it)</button>` : ""}`).join("")}
+    </li>`).join("")}</ul>`;
+  }
   function gapsCard(r) {
-    const jd = ($("st-jd").value || "");
-    const rows = [];
-    r.match.gaps.forEach(k => rows.push(["gap", `${k}`, "Not on your CV. Do not add it; name it honestly in the cover letter."]));
-    r.match.addable.forEach(k => rows.push(["fix", k, "You have this skill but this CV does not show it.", k]));
-    if (r.yrsAsked > 4) rows.push(["check", `${r.yrsAsked}+ years asked`, "You have 4+. Apply if the posting treats years as a guide, and lead with numbers."]);
-    if (r.titleHit < 1) rows.push(["check", "Title", `The posting says "${r.jobTitle}"; your subtitle says "${r.sub}". Pick the closest second title you can defend.`]);
+    const jd = ($("st-jd").value || ""), F = r.match.fit, add = r.match.addable;
+    const warn = F.warnings.map(w => w.text);
+    if (r.titleHit < 1) warn.push(`Title: the posting says "${r.jobTitle}"; your subtitle says "${r.sub}". Pick the closest second title you can defend.`);
+    // checks the engine does not raise as blockers (people management, certifications, on-call)
+    const engineTypes = /^(Language|Education|Security clearance|Sponsorship|Office attendance)/;
     const seen = new Set();
-    CHECKS.forEach(([rx, say]) => { const m = jd.match(rx); if (m) { const t = say(m); if (!seen.has(t)) { seen.add(t); rows.push(["check", t.split(":")[0].replace(/ is .*| mentioned.*/, ""), t.includes(":") ? t.slice(t.indexOf(":") + 1).trim() : t]); } } });
-    const n = { gap: r.match.gaps.length, fix: r.match.addable.length, check: rows.filter(x => x[0] === "check").length };
-    return `<section class="score gaps"><h3>Gaps between your CV and this JD</h3>
-      <div class="gap-sum"><span class="g-gap">${n.gap} skill gap${n.gap === 1 ? "" : "s"}</span><span class="g-fix">${n.fix} quick fix${n.fix === 1 ? "" : "es"}</span><span class="g-check">${n.check} to check</span></div>
-      ${rows.length ? `<ul class="gap-list">${rows.map(([t, k, msg, add]) => `<li class="g-${t}"><b>${esc(k)}</b><span>${esc(msg)}</span>${add ? `<button type="button" class="btn sm" data-add-skill="${esc(add)}">Add to skills</button>` : ""}</li>`).join("")}</ul>` : `<p class="m">No gaps found. Paste the full posting for a complete check.</p>`}
+    CHECKS.forEach(([rx, say]) => { const m = jd.match(rx); if (m) { const t = say(m); if (!engineTypes.test(t) && !seen.has(t)) { seen.add(t); warn.push(t); } } });
+    const n = { must: F.missingMust.length, fix: add.length, check: F.blockers.length + warn.length };
+    return `<section class="score gaps"><h3>JD match report</h3>
+      <p class="fit-reason"><b>${esc(F.reason)}</b></p>
+      <div class="gap-sum"><span class="g-gap">${n.must} must-have${n.must === 1 ? "" : "s"} missing</span><span class="g-fix">${n.fix} quick fix${n.fix === 1 ? "" : "es"}</span><span class="g-check">${n.check} to check</span></div>
+      <h4>Blockers and warnings</h4>
+      ${F.blockers.length || warn.length ? `<ul class="gap-list">${F.blockers.map(b => `<li class="g-gap"><b>Blocker</b><span>${esc(b.text)}</span><span class="m">"${esc(b.quote)}"</span></li>`).join("")}${warn.map(w => `<li class="g-check"><b>Check</b><span>${esc(w)}</span></li>`).join("")}</ul>` : `<p class="m">None found.</p>`}
+      <h4>Must-haves</h4>${reqList(F.must, add)}
+      <h4>Responsibilities</h4>${reqList(F.resp, add)}
+      <h4>Nice-to-haves</h4>${reqList(F.nice, add)}
+      <h4>Honest suggestions</h4>
+      ${F.suggestions.length ? `<ul class="fit-sugg">${F.suggestions.map(x => `<li><b>${esc(x.item)}</b> ${esc(x.text)}</li>`).join("")}</ul>` : `<p class="m">Nothing to add: every requirement is shown.</p>`}
+      <h4>CV checks <span class="m">(not part of the score)</span></h4>
+      ${r.quality.length ? `<ul class="gap-list">${r.quality.map(q => `<li class="g-check"><b>${esc({ facts: "Facts differ", missing: "Left out", unconfirmed: "Never shown in use", length: "Length" }[q.type] || q.type)}</b><span>${esc(q.text)}</span></li>`).join("")}</ul>` : `<p class="m">No problems found.</p>`}
     </section>`;
   }
   function renderScores(r) {
     $("st-scores").innerHTML = gapsCard(r) +
       scoreCard("ATS score", "How well an applicant tracking system can read this CV and match it to the posting.", r.ats) +
-      scoreCard("JD match", "Share of the posting's hard skills your CV shows, weighted by importance, plus title fit.", r.match) +
+      scoreCard("JD match", "Each requirement weighted by section (must-have 3, responsibility 1.5, nice-to-have 1) and credited by where your CV proves it. A missing must-have caps the score.", r.match) +
       scoreCard("Readiness", "Recruiter-facing quality: facts intact, summary length, action verbs, measurable results, clean wording.", r.ready) +
       `<section class="score kw"><h3>Keywords from this posting</h3>
-        <div class="skills">${r.match.matched.map(k => `<span class="sk">${esc(k)}</span>`).join("")}${r.match.addable.map(k => `<span class="sk add" title="You have this; add it">${esc(k)} +</span>`).join("")}${r.match.gaps.map(k => `<span class="sk miss" title="Real gap; do not add">${esc(k)}</span>`).join("")}</div>
-        <p class="m">Green: on your CV. Blue +: you have it but this CV does not show it. Red: a real gap; mention it in the cover letter instead.</p></section>` +
+        <div class="skills">${r.match.matched.map(k => `<span class="sk">${esc(k)}</span>`).join("")}${r.match.addable.map(k => `<span class="sk add" title="You have this; add it">${esc(k)} +</span>`).join("")}${r.match.gaps.map(k => { const rel = r.match.fit.related.find(x => x.item === k); return `<span class="sk miss" title="${rel ? "Related experience, not the same tool" : "Real gap; do not add"}">${esc(k)}${rel ? ` · related: ${esc(rel.via)}` : ""}</span>`; }).join("")}</div>
+        <p class="m">Green: shown on your CV. Blue +: you have it but this CV does not show it. Red: not on your CV; "related" means a similar tool you can mention honestly.</p></section>` +
       (window.Prep ? `<section class="score"><h3>Interview prep</h3>${Prep.html(Object.assign({}, ctx.job, { description: $("st-jd").value }), ctx.base)}</section>` : "");
   }
 

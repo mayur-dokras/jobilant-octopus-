@@ -64,13 +64,13 @@ def lever(token, eu=False):
     out = []
     for j in d:
         cats = j.get("categories") or {}
-        lists = " ".join(strip_html(x.get("content", "")) for x in j.get("lists") or [])
+        lists = "\n".join(f"{x.get('text', '')}:\n" + strip_html(x.get("content", "")) for x in j.get("lists") or [])
         created = j.get("createdAt")
         out.append({
             "title": j.get("text", ""),
             "location": cats.get("location", "") or ", ".join(cats.get("allLocations") or []),
             "url": j.get("hostedUrl", ""),
-            "description": f"{j.get('descriptionPlain', '')} {lists} {j.get('additionalPlain', '')}",
+            "description": f"{j.get('descriptionPlain', '')}\n{lists}\n{j.get('additionalPlain', '')}",
             "posted": time.strftime("%Y-%m-%d", time.gmtime(created / 1000)) if created else "",
             "salary": salary.lever(j),
         })

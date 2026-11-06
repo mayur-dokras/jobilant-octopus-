@@ -51,7 +51,7 @@ REQ_START = re.compile(r"(requirements|what you('ll| will) (need|bring)|you (hav
 def brief(desc):
     """The useful part of a posting, capped so the private feed stays small:
     from the first responsibilities/requirements heading when there is one."""
-    text = re.sub(r"\s+", " ", desc or "").strip()
+    text = re.sub(r"[ \t]+", " ", desc or "").strip()
     if len(text) <= BRIEF_MAX:
         return text
     m = REQ_START.search(text)
@@ -71,8 +71,10 @@ def score(raw, company):
     pay = raw.get("salary") or salary.from_text(desc)
     return {
         "salary": pay,
-        # trimmed posting text: the editor scores against it and the Prep panel reads it
+        # trimmed posting text: the editor scores against it and the Prep panel reads it.
+        # scripts/rescore.js replaces it with the requirement sections of the full text.
         "description": brief(desc),
+        "_full": desc,
         "id": job_id(raw["url"], title),
         "kind": kind_of(title),
         "title": title,
@@ -193,6 +195,10 @@ def main():
         if (dt.date.today() - dt.date.fromisoformat(prev["closed_on"])).days <= 14:
             by_id[jid] = prev  # keep briefly so board cards can show "posting closed"
 
+    # full posting text for scripts/rescore.js (next workflow step); not kept in jobs.json
+    save_json("_jd_full.json", {j["id"]: j.pop("_full") for j in by_id.values() if j.get("_full")})
+    for j in by_id.values():
+        j.pop("_full", None)
     jobs = sorted(by_id.values(), key=lambda j: (j.get("closed", False), -j["match"], -j["visa"]))
     new_today = [j for j in jobs if j.get("first_seen") == TODAY and not j.get("closed")]
     save_json("jobs.json", {

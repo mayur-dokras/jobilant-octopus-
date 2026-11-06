@@ -94,9 +94,15 @@ SENIOR_TEXT = re.compile(r"\bsenior (engineer|level)|staff level|10\+ years", re
 
 
 def strip_html(text: str) -> str:
+    """HTML to plain text that keeps one line per paragraph, heading and bullet, so the
+    JD scorer can tell requirements from benefits."""
     text = html.unescape(text or "")
+    text = re.sub(r"(?i)<\s*li[^>]*>", "\n• ", text)
+    text = re.sub(r"(?i)<\s*(br|/p|/li|/h[1-6]|h[1-6][^>]*|/div|/ul|/ol|/tr|p[^>]*)\s*/?>", "\n", text)
     text = re.sub(r"<[^>]+>", " ", text)
-    return re.sub(r"\s+", " ", text).strip()
+    text = re.sub(r"[ \t\r\f\v\u00a0]+", " ", text)
+    text = re.sub(r"\s*\n\s*", "\n", text)
+    return text.strip()
 
 
 def skills_match(title: str, description: str, years_have: int = 4):

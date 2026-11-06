@@ -48,6 +48,33 @@
   const ring = (m, big) => m == null ? "" : `<div class="ring ${matchCls(m)}${big ? " lg" : ""}" style="--p:${m}" role="img" aria-label="Skills match ${m} percent"><b>${m}%</b></div>`;
   const open = () => DATA.jobs.filter(j => !j.closed && !S.hidden[j.id] && !S.board[j.id]);
 
+  // ------------------------------------------------ JD match (assets/jdscore.js) ---
+  // Same engine as the daily run: weighted JD sections, exact tools, CV evidence by section, must-have caps.
+  // Scored against the CV the site builds from "My CV details" (so local edits count straight away).
+  let FIT_CV = null;
+  function fitCV() {
+    if (!FIT_CV && PROFILE && window.JDScore) FIT_CV = CV.upgrade(PROFILE);
+    return FIT_CV;
+  }
+  function fitScore(title, jd, job = {}) {
+    const p = fitCV();
+    if (!p || !String(jd || "").trim()) return Object.assign(Match.score(title, jd), { fit: null });
+    let summary = "";
+    try { summary = String(CV.composeSummary(p, Object.assign({ title, kind: Match.kind(title) }, job)) || "").replace(/\*\*/g, ""); } catch (e) { /* optional evidence */ }
+    const r = JDScore.score(jd, p, { summary, visa: typeof job.visa === "number" ? job.visa : undefined });
+    return { match: r.pct, matched: r.covered.slice(0, 12), missing: r.missing.slice(0, 8), flag: r.reason.replace(/^\d+%, /, ""), fit: r };
+  }
+  // feed roles carry the posting's requirement text; score them here too so list, details and filters agree
+  function rescoreFeed() {
+    FIT_CV = null;
+    if (!fitCV()) return;
+    DATA.jobs.forEach(j => {
+      if (j.closed || !j.description || j.description.length < 80) return;
+      const sc = fitScore(j.title, j.description, j);
+      Object.assign(j, { match: sc.match, matched: sc.matched, missing: sc.missing, flag: sc.flag, _fit: sc.fit });
+    });
+  }
+
   // salary: shown in the posting's own currency; the filter compares the top of the range in rough pounds a year
   const FX = { GBP: 1, EUR: 0.85, USD: 0.75, SEK: 0.072, NZD: 0.45, TRY: 0.021, CHF: 0.9, DKK: 0.114, NOK: 0.07, PLN: 0.19, INR: 0.0089, CZK: 0.034, AUD: 0.49, CAD: 0.54 };
   const PER_YEAR = { year: 1, month: 12, day: 220, hour: 1800 }, PER_TXT = { year: "", month: "/mo", day: "/day", hour: "/hr" };
@@ -104,7 +131,7 @@
   function renderDetail(j) {
     const d = $("jobDetail");
     if (!j) { d.innerHTML = `<div class="empty" style="border:0">Select a role to see the details.</div>`; return; }
-    const miss = (j.missing || []).filter(Boolean), v = j.visa;
+    const miss = (j.missing || []).filter(Boolean), v = j.visa, F = j._fit;
     d.innerHTML = `<div class="d-head">
         <div><h2>${esc(j.title)}</h2><div class="c">${esc(j.company)} · ${esc(j.location || "")}</div>
           <div class="tags">${isNew(j) ? '<span class="tag new">New</span>' : ""}<span class="tag">${KIND[j.kind] || esc(j.kind)}</span><span class="tag">${esc(j.region)}</span></div></div>
@@ -119,9 +146,11 @@
         <button type="button" class="btn ghost" data-act="hide">Hide role</button>
       </div>
       <div class="d-body">
-        ${j.flag ? `<div class="flag">${esc(j.flag)}</div>` : ""}
+        ${F ? `<div class="d-sec"><h3>Why ${F.pct}%</h3><p>${esc(F.reason.replace(/^\d+%, /, "").replace(/^\w/, c => c.toUpperCase()))}.</p></div>` : j.flag ? `<div class="flag">${esc(j.flag)}</div>` : ""}
+        ${F && (F.blockers.length || F.warnings.length) ? `<div class="d-sec"><h3>Blockers and warnings</h3>${F.blockers.map(b => `<div class="flag" title="${esc(b.quote)}">${esc(b.text)}</div>`).join("")}${F.warnings.map(w => `<p class="m">${esc(w.text)}</p>`).join("")}</div>` : ""}
+        ${F && F.must.length ? `<div class="d-sec"><h3>Must-haves</h3><ul class="fit-list">${F.must.map(fitRow).join("")}</ul></div>` : ""}
         <div class="d-sec"><h3>Skills you have</h3><div class="skills">${(j.matched || []).map(x => `<span class="sk">${esc(x)}</span>`).join("") || '<span class="m">None detected</span>'}</div></div>
-        ${miss.length ? `<div class="d-sec"><h3>Gaps</h3><div class="skills">${miss.map(x => `<span class="sk miss">${esc(x)}</span>`).join("")}</div></div>` : ""}
+        ${miss.length ? `<div class="d-sec"><h3>Gaps</h3><div class="skills">${miss.map(x => { const rel = F && F.related.find(r => r.item === x); return `<span class="sk miss"${rel ? ` title="Related experience: ${esc(rel.via)}"` : ""}>${esc(x)}${rel ? ` · related: ${esc(rel.via)}` : ""}</span>`; }).join("")}</div></div>` : ""}
         ${j.note ? `<div class="d-sec"><h3>Recruiter note</h3><p>${esc(j.note)}</p></div>` : ""}
         ${j.salary ? `<div class="d-sec"><h3>Salary</h3><div class="pay-row"><b>${esc(payTxt(j.salary))}</b><span class="m">${esc(payTxt(j.salary, true))}${j.salary.cur !== "GBP" && payGBP(j.salary) ? ` · about £${Math.round(payGBP(j.salary) / 1000)}k a year at the top` : ""} · ${j.salary.src === "board" ? "from the job board" : "read from the posting"}</span></div></div>` : ""}
         <div class="d-sec"><h3>Interview prep</h3>${Prep.html(j, PROFILE, { feed: true })}</div>
@@ -131,6 +160,11 @@
         <div class="d-sec"><h3>Posting</h3><dl class="facts"><dt>Source</dt><dd>${esc(j.source || "")}</dd>${j.posted ? `<dt>Posted</dt><dd>${esc(j.posted)}</dd>` : ""}<dt>First seen</dt><dd>${esc(j.first_seen || "")}</dd></dl></div>
       </div>
 `;
+  }
+  // one requirement of the posting: what it asks and the CV line that proves each part
+  const FIT_MARK = { covered: "✓", partial: "◐", learning: "◐", related: "~", missing: "✗" };
+  function fitRow(r) {
+    return `<li class="fit-${r.status}"><span class="fit-req">${esc(r.text)}</span>${r.items.map(x => `<span class="fit-item fit-${x.status}"><b>${FIT_MARK[x.status]} ${esc(x.label)}</b> ${x.status === "related" ? `related experience: ${esc(x.via)}` : x.status === "missing" ? "not on your CV" : esc(x.proof)}${x.status === "learning" ? ` (${esc(x.tag)})` : ""}</span>`).join("")}</li>`;
   }
   $("feedGrid").addEventListener("click", e => {
     const r = e.target.closest(".row"); if (!r) return;
@@ -245,7 +279,7 @@
   function jdJob() {
     const title = $("jd-title").value.trim(), company = $("jd-company").value.trim() || "Company", jd = $("jd-text").value.trim();
     const { location: loc, region } = jdWhere();
-    const sc = Match.score(title, jd), kind = jdKind || detectKind(title, jd);
+    const sc = fitScore(title, jd), kind = jdKind || detectKind(title, jd);
     const want = cleanJdTitle(title).toLowerCase();
     const second = [...ownTitles(), ...CV.SECOND_TITLES].find(x => x.toLowerCase() === want);
     let h = 0; for (const ch of title + "|" + company + "|" + jd.slice(0, 400)) h = (h * 31 + ch.charCodeAt(0)) | 0;
@@ -265,11 +299,18 @@
   function renderJdLive() {
     const title = $("jd-title").value.trim(), jd = $("jd-text").value.trim();
     if (!jd) { $("jd-live").innerHTML = ""; return; }
-    const sc = Match.score(title, jd), kind = jdKind || detectKind(title, jd), found = Match.found(title + " " + jd);
-    const yrs = Math.max(0, ...[...jd.matchAll(/(\d{1,2})\s*\+?\s*(?:(?:-|to|–)\s*\d{1,2}\s*)?\+?\s*(?:years|yrs)/gi)].map(m => +m[1]).filter(n => n <= 15));
-    $("jd-live").innerHTML = `<div class="live-top"><span class="ring ${sc.match >= 75 ? "m-hi" : sc.match >= 60 ? "m-mid" : "m-lo"}" style="--p:${sc.match}"><b>${sc.match}%</b></span>
-      <div><b>Quick read</b><span class="m">${KIND[kind]} · ${found.length} skills named · ${found.filter(k => !Match.has(k)).length} not on your CV${yrs ? ` · asks ${yrs}+ years` : ""}${sc.flag ? " · " + esc(sc.flag) : ""}</span></div></div>
-      <div class="skills">${found.filter(k => Match.has(k)).map(k => `<span class="sk">${esc(k)}</span>`).join("")}${found.filter(k => !Match.has(k)).map(k => `<span class="sk miss" title="Not on your CV">${esc(k)}</span>`).join("")}</div>`;
+    const sc = fitScore(title, jd), kind = jdKind || detectKind(title, jd), F = sc.fit;
+    if (!F) {
+      const found = Match.found(title + " " + jd);
+      $("jd-live").innerHTML = `<div class="live-top"><span class="ring ${sc.match >= 75 ? "m-hi" : sc.match >= 60 ? "m-mid" : "m-lo"}" style="--p:${sc.match}"><b>${sc.match}%</b></span>
+        <div><b>Quick read</b><span class="m">${KIND[kind]} · ${found.length} skills named${sc.flag ? " · " + esc(sc.flag) : ""}</span></div></div>`;
+      return;
+    }
+    const items = [...F.must, ...F.resp, ...F.nice].flatMap(r => r.items), seen = new Set(), uniq = items.filter(x => !seen.has(x.label) && seen.add(x.label));
+    $("jd-live").innerHTML = `<div class="live-top"><span class="ring ${sc.match >= 75 ? "" : sc.match >= 60 ? "m-mid" : "m-lo"}" style="--p:${sc.match}"><b>${sc.match}%</b></span>
+      <div><b>Quick read</b><span class="m">${KIND[kind]} · ${esc(F.reason.replace(/^\d+%, /, ""))}</span></div></div>
+      ${F.blockers.map(b => `<div class="flag">${esc(b.text)}</div>`).join("")}
+      <div class="skills">${uniq.map(x => `<span class="sk${x.status === "covered" ? "" : x.status === "missing" || x.status === "related" ? " miss" : " add"}" title="${esc(x.status === "related" ? "Related experience: " + x.via : x.proof || "Not on your CV")}">${esc(x.label)}${x.status === "related" ? " ~" : x.status === "partial" || x.status === "learning" ? " ◐" : ""}</span>`).join("")}</div>`;
   }
   function renderJdRecent() {
     const items = Object.values(S.jd || {}).sort((a, b) => (b.created || "").localeCompare(a.created || ""));
@@ -499,7 +540,7 @@
     if (!e.submitter || e.submitter.value !== "add") return;
     await Match.load();
     const title = $("a-title").value.trim(), jd = $("a-jd").value;
-    const sc = jd.trim() ? Match.score(title, jd) : { match: null, matched: [], missing: [], flag: "" };
+    const sc = jd.trim() ? fitScore(title, jd) : { match: null, matched: [], missing: [], flag: "" };
     const j = { id: "manual-" + Date.now(), title, company: $("a-company").value.trim(), url: $("a-url").value.trim(), location: $("a-loc").value.trim(),
       region: $("a-reg").value, kind: Match.kind(title), match: sc.match, matched: sc.matched, missing: sc.missing, flag: sc.flag, visa: null, source: "Added by you" };
     addToBoard(j, "Applied"); show("board"); toast("Added to Applied, dated today");
@@ -570,13 +611,13 @@
   function renderAll() { renderFeed(); renderBoard(); renderCompanies(); renderDisc(); }
 
   // ------------------------------------------------------- my details ---
-  function applyProfile() { PROFILE = S.profileOverride ? Object.assign({}, BASE_PROFILE, S.profileOverride) : BASE_PROFILE; }
+  function applyProfile() { PROFILE = S.profileOverride ? Object.assign({}, BASE_PROFILE, S.profileOverride) : BASE_PROFILE; FIT_CV = null; }
   function fillDetails() { $("profileText").value = JSON.stringify(PROFILE, null, 2); }
   $("profileSave").addEventListener("click", () => {
-    try { const d = JSON.parse($("profileText").value); S.profileOverride = d; save(); applyProfile(); toast("Saved on this device. Export a backup to keep it."); }
+    try { const d = JSON.parse($("profileText").value); S.profileOverride = d; save(); applyProfile(); rescoreFeed(); renderFeed(); toast("Saved on this device. Export a backup to keep it."); }
     catch (err) { toast("Not saved: the text is not valid JSON (" + err.message + ")"); }
   });
-  $("profileReset").addEventListener("click", () => { delete S.profileOverride; save(); applyProfile(); fillDetails(); toast("Back to the CV details stored in your vault"); });
+  $("profileReset").addEventListener("click", () => { delete S.profileOverride; save(); applyProfile(); rescoreFeed(); renderFeed(); fillDetails(); toast("Back to the CV details stored in your vault"); });
 
   // ------------------------------------------------------------ theme ---
   // Follows the system until the toggle is used; the choice is remembered on this device.
@@ -604,6 +645,7 @@
     const OFF = /\b(pakistan|karachi|lahore|islamabad|dubai|uae|saudi|riyadh|qatar|doha|egypt|cairo|bangalore|bengaluru|hyderabad|mumbai|gurgaon|noida|singapore|manila|jakarta)\b/i;
     DATA.jobs = (DATA.jobs || []).filter(j => OK.has(j.region) && !(OFF.test(j.location || "") && !/london|uk|europe|amsterdam|berlin|dublin|stockholm/i.test(j.location || ""))); COMPANIES = (bundle["companies.json"] || {}).companies || [];
     DISC = bundle["discovered.json"] || { items: [] }; BASE_PROFILE = bundle["profile.json"] || null; applyProfile();
+    rescoreFeed();
     document.body.classList.remove("locked"); $("lock").hidden = true;
     const when = DATA.generated_at ? new Date(DATA.generated_at) : null;
     $("refresh").parentElement.classList.toggle("stale", !!DATA.seeded_by_hand || !when || (Date.now() - when) > 36 * 3600e3);
